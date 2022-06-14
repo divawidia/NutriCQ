@@ -44,6 +44,7 @@ class UpdateUsersTable extends Migration
             $table->dropColumn('tinggi_badan');
             $table->dropColumn('berat_badan');
             $table->dropColumn('tingkat_aktivitas');
+            $table->dropColumn('roles_id');
         });
     }
 }
