@@ -15,27 +15,27 @@ class CreateGoalsTable extends Migration
     {
         Schema::create('goals', function (Blueprint $table) {
             $table->id();
-            $table->double('air');
-            $table->double('energi');
-            $table->double('protein');
-            $table->double('lemak');
-            $table->double('karbohidrat');
-            $table->double('serat');
-            $table->double('abu');
-            $table->double('kalsium');
-            $table->double('fosfor');
-            $table->double('besi');
-            $table->double('natrium');
-            $table->double('kalium');
-            $table->double('tembaga');
-            $table->double('seng');
-            $table->double('retinol');
-            $table->double('b_karoten');
-            $table->double('karoten_total');
-            $table->double('thiamin');
-            $table->double('riboflamin');
-            $table->double('niasin');
-            $table->double('vitamin_c');
+            $table->double('total_air');
+            $table->double('total_energi');
+            $table->double('total_protein');
+            $table->double('total_lemak');
+            $table->double('total_karbohidrat');
+            $table->double('total_serat');
+            $table->double('total_abu');
+            $table->double('total_kalsium');
+            $table->double('total_fosfor');
+            $table->double('total_besi');
+            $table->double('total_natrium');
+            $table->double('total_kalium');
+            $table->double('total_tembaga');
+            $table->double('total_seng');
+            $table->double('total_retinol');
+            $table->double('total_b_karoten');
+            $table->double('total_karoten_total');
+            $table->double('total_thiamin');
+            $table->double('total_riboflamin');
+            $table->double('total_niasin');
+            $table->double('total_vitamin_c');
             $table->unsignedBigInteger('user_id');
 
             $table->foreign('user_id')->references('id')->on('users');
