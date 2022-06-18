@@ -2,18 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Laratrust\Models\LaratrustRole;
 
-class Role extends Model
+class Role extends LaratrustRole
 {
-    protected $table = 'roles';
-
-    protected $fillable = [
-        'roles_name',
-        'created_at',
-        'updated_At'
-    ];
-    
-    use HasFactory;
+    public $guarded = [];
 }
