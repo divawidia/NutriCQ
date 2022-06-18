@@ -22,9 +22,6 @@ class UpdateUsersTable extends Migration
             $table->integer('tinggi_badan');
             $table->integer('berat_badan');
             $table->integer('tingkat_aktivitas');
-            $table->unsignedBigInteger('roles_id');
-
-            $table->foreign('roles_id')->references('id')->on('roles');
         });
     }
 
@@ -44,7 +41,6 @@ class UpdateUsersTable extends Migration
             $table->dropColumn('tinggi_badan');
             $table->dropColumn('berat_badan');
             $table->dropColumn('tingkat_aktivitas');
-            $table->dropColumn('roles_id');
         });
     }
 }
