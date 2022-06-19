@@ -20,10 +20,36 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Route::get('role', [Controller::class, 'index']);
-Route::get('/goal', [GoalController::class, 'index']);
-Route::get('/goal/{id}', [GoalController::class, 'show']);
-Route::post('/goal', [GoalController::class, 'store']);
-Route::put('/goal/{id}', [GoalController::class, 'update']);
-Route::delete('/goal/{id}', [GoalController::class, 'destroy']);
 
+//User Login Route
+Route::get('/login', [AuthController::class, 'indexUser']);
+Route::post('/login/authenticate', [AuthController::class, 'loginUser']);
+
+//Admin Login Route
+Route::get('/login/admin', [AuthController::class, 'indexAdmin']);
+Route::post('/login/admin/authenticate', [AuthController::class, 'loginAdmin']);
+
+//Logout Route
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+Route::group(['middleware' => ['auth:sanctum', 'role:user']], function() {
+    Route::get('/dashboard/user', [UserController::class, 'index']);
+
+    //Goal Route
+    Route::get('/goal', [GoalController::class, 'index']);
+    Route::get('/goal/{id}', [GoalController::class, 'show']);
+    Route::post('/goal', [GoalController::class, 'store']);
+    Route::put('/goal/{id}', [GoalController::class, 'update']);
+    Route::delete('/goal/{id}', [GoalController::class, 'destroy']);
+    
+});
+
+Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function() {
+    Route::get('/dashboard/doctor', [UserController::class, 'index']);
+});
+
+Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function() {
+    Route::get('/dashboard/admin', [UserController::class, 'index']);
+});
