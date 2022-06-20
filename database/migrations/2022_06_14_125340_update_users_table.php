@@ -17,11 +17,11 @@ class UpdateUsersTable extends Migration
             $table->date('tgl_lahir');
             $table->string('no_telp');
             $table->string('gender');
-            $table->string('cv');
-            $table->string('license');
-            $table->integer('tinggi_badan');
-            $table->integer('berat_badan');
-            $table->integer('tingkat_aktivitas');
+            $table->string('cv')->nullable();
+            $table->string('license')->nullable();
+            $table->integer('tinggi_badan')->nullable();
+            $table->integer('berat_badan')->nullable();
+            $table->integer('tingkat_aktivitas')->nullable();
         });
     }
 
