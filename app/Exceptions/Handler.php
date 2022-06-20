@@ -16,6 +16,8 @@ class Handler extends ExceptionHandler
         //
     ];
 
+    // Just adding new comment here
+
     /**
      * A list of the inputs that are never flashed for validation exceptions.
      *
