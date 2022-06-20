@@ -19,6 +19,7 @@ class UpdateUsersTable extends Migration
             $table->string('gender');
             $table->string('cv')->nullable();
             $table->string('license')->nullable();
+            $table->boolean('status')->nullable();
             $table->integer('tinggi_badan')->nullable();
             $table->integer('berat_badan')->nullable();
             $table->integer('tingkat_aktivitas')->nullable();

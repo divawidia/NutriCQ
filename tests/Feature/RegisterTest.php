@@ -23,6 +23,16 @@ class RegisterTest extends TestCase
         $response->assertStatus(200);
     }
 
+    // public function test_if_user_can_create_new_data()
+    // {
+    //     $user = User::factory(1)->create([]);
+
+    //     //$response = $this->post('/register',[array_keys($user)]);
+    //     $response = $this->post('/register', $user);
+
+    //     $response->assertDatabaseHas();
+    // }
+
     public function test_valid_if_minimum_data_is_filled()
     {
         //$user = User::factory()->create([]);
@@ -279,8 +289,17 @@ class RegisterTest extends TestCase
         $response->assertInvalid(['roles_id']);
     }
 
-    public function test_is_valid_when_role_is_doctor()
-    {
-        
-    }
+    // public function test_is_valid_when_role_is_doctor()
+    // {
+    //     $response = $this->post('/register', [
+    //         'name' => 'I Putu Fajar Tapa Mahendra',
+    //         'email' => 'ftapamahendra@gmail.com',
+    //         'password' => 'rahasia1234',
+    //         'tgl_lahir' => '2001-08-20',
+    //         'no_telp' => '082146077890',
+    //         'gender' => 'Pria',
+    //         'roles_id' => 1,
+            
+    //     ]);
+    // }
 }
