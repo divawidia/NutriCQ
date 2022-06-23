@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Food;
+use App\Models\FoodCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FoodFactory extends Factory
@@ -40,7 +41,10 @@ class FoodFactory extends Factory
             'riboflamin' => $this->faker->randomFloat(1),
             'niasin' => $this->faker->randomFloat(1),
             'vitamin_c' => $this->faker->randomFloat(1),
-            'berat_per_takaran_saji' => $this->faker->randomFloat(1)
+            'berat_per_takaran_saji' => $this->faker->randomFloat(1),
+            'category_id' => function(){
+                FoodCategory::factory()->create()->id;
+            }
         ];
     }
 }

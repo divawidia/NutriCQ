@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Food;
+use App\Models\FoodCategory;
 use Database\Factories\FoodFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -19,7 +20,8 @@ class FoodTest extends TestCase
 
     public function test_seach_food()
     {
-        Food::factory()->create();
+        $foodCategory = FoodCategory::factory()->create();
+        Food::factory()->create(['category_id' => $foodCategory->id]);
 
         $response = $this->getJson(route('foods.search'));
 
