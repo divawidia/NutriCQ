@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Food;
+use Database\Factories\FoodFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -17,8 +19,10 @@ class FoodTest extends TestCase
 
     public function test_seach_food()
     {
-        $response = $this->get('/');
+        Food::factory()->create();
 
-        $response->assertStatus(200);
+        $response = $this->getJson(route('food.search'));
+
+        $this->assertEquals(1, $this->count($response->json()));
     }
 }
