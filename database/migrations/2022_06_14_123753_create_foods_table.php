@@ -39,10 +39,10 @@ class CreateFoodsTable extends Migration
             $table->double('niasin');
             $table->double('vitamin_c');
             $table->double('berat_per_takaran_saji');
-            //$table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id');
             $table->timestamps();
 
-            //$table->foreign('category_id')->references('id')->on('food_categories')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('food_categories')->onDelete('cascade');
         });
     }
 
