@@ -21,9 +21,9 @@ class FoodTest extends TestCase
     public function test_seach_food()
     {
         $foodCategory = FoodCategory::factory()->create();
-        Food::factory()->create(['category_id' => $foodCategory->id]);
+        $food = Food::factory()->create(['category_id' => $foodCategory->id]);
 
-        $response = $this->getJson(route('foods.search'));
+        $response = $this->getJson(route('foods.search', ['search' => $food->name]));
 
         $this->assertEquals(1, $this->count($response->json()));
     }

@@ -36,9 +36,9 @@ class FoodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Food $id)
     {
-        //
+        return response($id);
     }
 
     /**
@@ -66,7 +66,7 @@ class FoodController extends Controller
 
     public function search(Request $request)
     {
-        $food_query = Food::where('name', 'LIKE', '%'.$request->search.'%')->get();
-        return response($food_query, Response::HTTP_OK);
+        $foodQuery = Food::where('name', 'LIKE', '%'.$request->search.'%')->get();
+        return response($foodQuery, Response::HTTP_OK);
     }
 }
