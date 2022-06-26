@@ -85,7 +85,7 @@ class FoodController extends Controller
     public function calculate(Food $food, Request $request)
     {
         $servingSize = $request->serving_size;
-        $calculateFood = $food->selectRaw(
+        $calculateFood = $food->with('foodCategory')->selectRaw(
             'id,
             name,
             sumber,
@@ -98,6 +98,7 @@ class FoodController extends Controller
             abu *' . $servingSize . '/100 AS abu,
             kalsium *' . $servingSize . '/100 AS kalsium,
             fosfor *' . $servingSize . '/100 AS fosfor,
+            besi *' . $servingSize . '/100 AS besi,
             natrium *' . $servingSize . '/100 AS natrium,
             kalium *' . $servingSize . '/100 AS kalium,
             tembaga *' . $servingSize . '/100 AS tembaga,
