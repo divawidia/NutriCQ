@@ -69,9 +69,16 @@ class FoodController extends Controller
     public function search(Request $request)
     {
         $foodQuery = Food::with('foodCategory');
+        $foodId = $request->food_id;
 
-        $foodQuery->where('name', 'LIKE', '%'.$request->search.'%');
+        if ($request->search){
+            $foodQuery->where('name', 'LIKE', '%'.$request->search.'%');
+        }
+        if ($foodId){
+            $foodQuery->where('id', $foodId);
+        }
 
-        return response($foodQuery, Response::HTTP_OK);
+        $food = $foodQuery->get();
+        return response($food, Response::HTTP_OK);
     }
 }
