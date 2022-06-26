@@ -18,13 +18,29 @@ class FoodTest extends TestCase
      */
     use RefreshDatabase;
 
-    public function test_seach_food()
+    public function test_seach_food_by_name()
     {
+        //preparation
         $foodCategory = FoodCategory::factory()->create();
         $food = Food::factory()->create(['category_id' => $foodCategory->id]);
 
+        //action
         $response = $this->getJson(route('foods.search', ['search' => $food->name]));
 
+        //assertion
+        $this->assertEquals(1, $this->count($response->json()));
+    }
+
+    public function test_seach_food_by_id()
+    {
+        //preparation
+        $foodCategory = FoodCategory::factory()->create();
+        $food = Food::factory()->create(['category_id' => $foodCategory->id]);
+
+        //action
+        $response = $this->getJson(route('foods.search', ['food_id' => $food->id]));
+
+        //assertion
         $this->assertEquals(1, $this->count($response->json()));
     }
 }

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Food;
+use App\Models\FoodDiary;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Carbon\Carbon;
 
 class FoodController extends Controller
 {
@@ -27,7 +29,7 @@ class FoodController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -66,7 +68,10 @@ class FoodController extends Controller
 
     public function search(Request $request)
     {
-        $foodQuery = Food::where('name', 'LIKE', '%'.$request->search.'%')->get();
+        $foodQuery = Food::with('foodCategory');
+
+        $foodQuery->where('name', 'LIKE', '%'.$request->search.'%');
+
         return response($foodQuery, Response::HTTP_OK);
     }
 }
