@@ -59,3 +59,4 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
 });
 
 Route::get('/foods', [FoodController::class, 'search'])->name('foods.search');
+Route::get('/foods/{food}', [FoodController::class, 'calculate'])->name('foods.calculate');
