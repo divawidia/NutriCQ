@@ -40,7 +40,7 @@ class FoodDiaryFactory extends Factory
              'total_riboflamin'=> $this->faker->randomFloat(1),
              'total_niasin'=> $this->faker->randomFloat(1),
              'total_vitamin_c'=> $this->faker->randomFloat(1),
-             'jumlah_makanan'=> $this->faker->randomFloat(1),
+             'jumlah_makanan'=> $this->faker->randomDigit(),
              'user_id'=> function(){
                  return User::factory()->create()->id;
              }
