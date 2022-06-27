@@ -1,11 +1,16 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+<<<<<<< HEAD
 use App\Http\Controllers\API\DoctorController;
 use App\Http\Controllers\API\GoalController;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\API\RegisterController;
+=======
+use App\Http\Controllers\API\FoodController;
+use App\Http\Controllers\API\GoalController;
+>>>>>>> 211a2e07248d6aa603939b82586614ac19609bbb
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -65,7 +70,11 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('/dashboard/admin', [UserController::class, 'index']);
 });
 
+<<<<<<< HEAD
 //Logout Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+=======
+Route::get('/foods', [FoodController::class, 'search'])->name('foods.search');
+>>>>>>> 211a2e07248d6aa603939b82586614ac19609bbb
