@@ -31,7 +31,7 @@ class HomeController extends Controller
             'Status' => $data->status,
             'message' => 'Booking successfull!'
         ], 201);
-        // return redirect()->back()->with('message', 'Booking successfull, please wait for next information.');
+ 
     }
 
     public function my_booking()
