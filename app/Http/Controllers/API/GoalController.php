@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Goal;
+use App\Models\GoalHistory;
 use Illuminate\Http\Request;
 
 class GoalController extends Controller
@@ -17,7 +19,7 @@ class GoalController extends Controller
     {
         $data = Goal::all();
         
-        if ($data) {
+        if (count($data) > 0) {
             return response()->json([
                 'message' => 'success',
                 'status_code' => 200,
@@ -39,12 +41,24 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
-        Goal::create($request->all());
+        $user_id = $request->input('user_id');
 
-        return response()->json([
-            'message' => 'success',
-            'status_code' => 200,
-        ]);
+        if (Goal::where('user_id', '=', $user_id)->exists()) {
+            return response()->json([
+                'message' => 'Goal onle can be stored once',
+                'status_code' => 403,
+            ], 403);
+        } else {
+            Goal::create($request->all());
+            GoalHistory::create($request->all());
+            
+            return response()->json([
+                'message' => 'success',
+                'status_code' => 200,
+            ]);
+        }
+
+        
     }
 
     /**
@@ -53,7 +67,7 @@ class GoalController extends Controller
      * @param  \App\Models\Goal  $goal
      * @return \Illuminate\Http\Response
      */
-    public function show(Goal $id)
+    public function show($id)
     {
         $data = Goal::find($id);
         
@@ -62,13 +76,13 @@ class GoalController extends Controller
                 'message' => 'success',
                 'status_code' => 200,
                 'data' => $data
-            ]);
+            ], 200);
         } 
         else {
             return response()->json([
                 'message' => 'data not found.',
                 'status_code' => 404
-            ]);
+            ], 404);
         }
     }
 
@@ -81,12 +95,15 @@ class GoalController extends Controller
      */
     public function update(Request $request, Goal $id)
     {
+        // $user = auth()->user()->goals();
+        // $goal = auth()->user()->goals()->update($request->all());
         $id->update($request->all());
+        GoalHistory::create($request->all());
 
         return response()->json([
             'message' => 'success',
-            'status_code' => 200,
-        ]);
+            'status_code' => 200
+        ], 200);
     }
 
     /**
@@ -103,5 +120,9 @@ class GoalController extends Controller
             'message' => 'success',
             'status_code' => 200,
         ]);
+    }
+
+    public function test() {
+        
     }
 }
