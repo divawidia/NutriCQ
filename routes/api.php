@@ -1,7 +1,12 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\DoctorController;
 use App\Http\Controllers\API\GoalController;
+use App\Http\Controllers\API\HomeController;
+use App\Http\Controllers\api\LoginController;
+use App\Http\Controllers\API\RegisterController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
@@ -22,23 +27,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Register route
-Route::post('/register', [AuthController::class, 'register']);
+Route::get('/register', [RegisterController::class, 'register']);
+Route::post('/register', [RegisterController::class, 'store']);
 
-//User Login Route
+// User Login Route
 Route::get('/login', [AuthController::class, 'indexUser']);
 Route::post('/login/authenticate', [AuthController::class, 'loginUser']);
 
-//Admin Login Route
+// Admin Login Route
 Route::get('/login/admin', [AuthController::class, 'indexAdmin']);
 Route::post('/login/admin/authenticate', [AuthController::class, 'loginAdmin']);
 
-//Logout Route
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-});
-
 Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
-    Route::get('/dashboard/user', [UserController::class, 'index']);
+    // Booking Route
+    Route::post('/booking', [HomeController::class, 'store']);
+    Route::get('/mybooking', [HomeController::class, 'my_booking']);
+    Route::delete('/mybooking/{id}', [HomeController::class, 'cancel_booking']);
 
     //Goal Route
     Route::get('/goal', [GoalController::class, 'index']);
@@ -49,9 +53,19 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
-    Route::get('/dashboard/doctor', [UserController::class, 'index']);
+    Route::get('/dashboard/doctor', [DoctorController::class, 'index']);
+
+    // Booking Route
+    Route::get('/bookinglist', [DoctorController::class, 'bookinglist']);
+    Route::put('bookinglist/{id}/approved', [DoctorController::class, 'approved']);
+    Route::put('bookinglist/{id}/canceled', [DoctorController::class, 'canceled']);
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('/dashboard/admin', [UserController::class, 'index']);
+});
+
+//Logout Route
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
 });

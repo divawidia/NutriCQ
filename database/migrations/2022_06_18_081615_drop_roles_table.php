@@ -23,6 +23,6 @@ class DropRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExist('roless');
+        // Schema::dropIfExist('roless');
     }
 }
