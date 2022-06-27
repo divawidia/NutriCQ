@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Food;
 use App\Models\FoodDiary;
+use App\Models\FoodDiaryDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FoodDiaryDetailFactory extends Factory
@@ -13,6 +14,8 @@ class FoodDiaryDetailFactory extends Factory
      *
      * @return array
      */
+    public $model = FoodDiaryDetail::class;
+
     public function definition()
     {
         return [

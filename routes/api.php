@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\FoodController;
+use App\Http\Controllers\API\FoodDiaryController;
 use App\Http\Controllers\API\GoalController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
@@ -48,6 +49,8 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::post('/goal', [GoalController::class, 'store']);
     Route::put('/goal/{id}', [GoalController::class, 'update']);
     Route::delete('/goal/{id}', [GoalController::class, 'destroy']);
+
+    Route::apiResource('food-diary', FoodDiaryController::class);
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {

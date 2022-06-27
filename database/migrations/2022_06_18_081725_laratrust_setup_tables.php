@@ -35,12 +35,12 @@ class LaratrustSetupTables extends Migration
         Schema::create('role_user', function (Blueprint $table) {
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('user_id');
-            $table->string('user_type');
+            $table->string('user_type')->nullable();
 
             $table->foreign('role_id')->references('id')->on('roles')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->primary(['user_id', 'role_id', 'user_type']);
+            $table->primary(['user_id', 'role_id']);
         });
 
         // Create table for associating permissions to users (Many To Many Polymorphic)
