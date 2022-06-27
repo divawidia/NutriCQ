@@ -37,6 +37,7 @@ class CreateFoodDiariesTable extends Migration
             $table->double('total_riboflamin');
             $table->double('total_niasin');
             $table->double('total_vitamin_c');
+            $table->integer('jumlah');
             $table->unsignedBigInteger('user_id');
 
             $table->foreign('user_id')->references('id')->on('users');

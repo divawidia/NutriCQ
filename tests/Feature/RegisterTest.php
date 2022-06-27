@@ -23,15 +23,15 @@ class RegisterTest extends TestCase
         $response->assertStatus(200);
     }
 
-    // public function test_if_user_can_create_new_data()
-    // {
-    //     $user = User::factory(1)->create([]);
+    public function test_if_user_can_create_new_data()
+    {
+        $user = User::factory(1)->create([]);
 
-    //     //$response = $this->post('/register',[array_keys($user)]);
-    //     $response = $this->post('/register', $user);
+        //$response = $this->post('/register',[array_keys($user)]);
+        //$response = $this->post('/register', $user);
 
-    //     $response->assertDatabaseHas();
-    // }
+        $response->assertDatabaseHas($user);
+    }
 
     public function test_valid_if_minimum_data_is_filled()
     {
@@ -45,7 +45,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '2001-08-20',
             'no_telp' => '082146077890',
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
 
         $response->assertValid();
@@ -60,7 +60,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '2001-08-20',
             'no_telp' => '082146077890',
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
  
         $response->assertInvalid(['name']);
@@ -75,7 +75,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '2001-08-20',
             'no_telp' => '082146077890',
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
  
         $response->assertInvalid(['name']);
@@ -90,7 +90,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '2001-08-20',
             'no_telp' => '082146077890',
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
  
         $response->assertInvalid(['email']);
@@ -108,7 +108,7 @@ class RegisterTest extends TestCase
                 'tgl_lahir' => '2001-08-20',
                 'no_telp' => '082146077890',
                 'gender' => 'Pria',
-                'roles_id' => 1
+                'roles_id' => 3
 
         ]);
 
@@ -119,7 +119,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '2001-08-26',
             'no_telp' => '082146071234',
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
         
         $response->assertInvalid(['email']);
@@ -134,7 +134,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '2001-08-20',
             'no_telp' => '082146077890',
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
  
         $response->assertInvalid(['email']);
@@ -149,7 +149,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '2001-08-20',
             'no_telp' => '082146077890',
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
 
         $response->assertInvalid(['password']);
@@ -164,7 +164,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '2001-08-20',
             'no_telp' => '082146077890',
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
 
         $response->assertInvalid(['password']);
@@ -179,7 +179,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '2001-08-20',
             'no_telp' => '082146077890',
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
 
         $response->assertInvalid(['password']);
@@ -194,7 +194,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '',
             'no_telp' => '082146077890',
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
 
         $response->assertInvalid(['tgl_lahir']);
@@ -208,7 +208,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '-08-20',
             'no_telp' => '082146077890',
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
 
         $response->assertInvalid(['tgl_lahir']);
@@ -223,7 +223,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '2001-08-20',
             'no_telp' => NULL,
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
 
         $response->assertInvalid(['no_telp']);
@@ -238,7 +238,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '2001-08-20',
             'no_telp' => 'hallo',
             'gender' => 'Pria',
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
 
         $response->assertInvalid(['no_telp']);
@@ -253,7 +253,7 @@ class RegisterTest extends TestCase
             'tgl_lahir' => '2001-08-20',
             'no_telp' => '082146077890',
             'gender' => NULL,
-            'roles_id' => 1,
+            'roles_id' => 3,
         ]);
 
         $response->assertInvalid(['gender']);
@@ -298,7 +298,7 @@ class RegisterTest extends TestCase
     //         'tgl_lahir' => '2001-08-20',
     //         'no_telp' => '082146077890',
     //         'gender' => 'Pria',
-    //         'roles_id' => 1,
+    //         'roles_id' => 3,
             
     //     ]);
     // }

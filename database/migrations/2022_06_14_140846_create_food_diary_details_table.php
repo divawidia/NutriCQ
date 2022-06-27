@@ -20,7 +20,7 @@ class CreateFoodDiaryDetailsTable extends Migration
             $table->double('takaran_saji');
 
             $table->foreign('food_id')->references('id')->on('foods');
-            $table->foreign('food_diary_id')->references('id')->on('food_diaries');
+            $table->foreign('food_diary_id')->references('id')->on('food_diaries')->onDelete('cascade');
 
             $table->timestamps();
         });

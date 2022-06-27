@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Food_Diary;
+
+class FoodController extends Controller
+{
+    public function index()
+    {
+        $diary = Food_Diary::latest()->get();
+
+        return view('food_diary', [
+            'title' => 'Food Diary',
+            'diarys' => $diary
+        ]);
+    }
+}

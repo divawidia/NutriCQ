@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FoodController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -23,3 +24,9 @@ Route::get('/register', function (){
 });
 
 Route::post('/register', [UserController::class, 'store']);
+
+Route::resource('food', FoodController::class);
+
+//Route::get('/food-diary', [FoodController::class, 'index']);
+
+// Route::post('/food-diary', [])

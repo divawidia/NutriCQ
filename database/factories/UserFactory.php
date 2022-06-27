@@ -21,8 +21,8 @@ class UserFactory extends Factory
             'password' => $this->faker->password(8, 16), // password
             'tgl_lahir' => $this->faker->dateTime(),
             'no_telp'=> $this->faker->numerify(12, true),
-            'gender' => $this->faker->randomElement('Pria', 'Wanita'),
-            'roles_id' => 1,
+            'gender' => $this->faker->randomElement(['Pria', 'Wanita']),
+            'roles_id' => 3,
             'remember_token' => Str::random(10),
         ];
     }
