@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\GoalController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
@@ -55,3 +57,5 @@ Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('/dashboard/admin', [UserController::class, 'index']);
 });
+
+Route::get('/foods', [FoodController::class, 'search'])->name('foods.search');

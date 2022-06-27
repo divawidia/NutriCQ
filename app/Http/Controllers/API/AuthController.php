@@ -29,11 +29,11 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'tgl_lahir' => '',
             'no_telp' => 'required|string',
-            'gender' => 'required|string',
+            'gender' => 'string',
             'cv' => '',
             'license' => '',
-            'tinggi_badan' => 'required|int',
-            'berat_badan' => 'required|int'
+            'tinggi_badan' => 'int',
+            'berat_badan' => 'int'
         ]);
 
         // store to database
@@ -59,7 +59,7 @@ class AuthController extends Controller
             'status' => 'Success',
             'message' => 'Successfull registgered',
             'token' => $token,
-        ], 203);
+        ], Response::HTTP_CREATED);
     }
 
     //Login User
@@ -99,6 +99,7 @@ class AuthController extends Controller
     public function indexAdmin()
     {
         return 'This is API page for Login Admin';
+
     }
 
     public function loginAdmin(Request $request)
@@ -107,6 +108,7 @@ class AuthController extends Controller
             'email' => 'required|string',
             'password' => 'required|string'
         ]);
+
 
         //Check email
         $user = User::where('email', $fields['email'])->first();

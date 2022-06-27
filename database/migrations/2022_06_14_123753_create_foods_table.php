@@ -38,7 +38,7 @@ class CreateFoodsTable extends Migration
             $table->double('riboflamin');
             $table->double('niasin');
             $table->double('vitamin_c');
-            $table->double('berat_per_takaran_saji');
+            $table->double('porsi_berat_dapat_dimakan');
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
 
