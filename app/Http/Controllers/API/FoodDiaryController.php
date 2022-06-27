@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Food;
+use App\Models\FoodDiary;
 use App\Models\FoodDiaryDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,8 @@ class FoodDiaryController extends Controller
      */
     public function index()
     {
-        //
+        $foodDiary = auth()->user()->foodDiaries;
+        return response($foodDiary, Response::HTTP_OK);
     }
 
     /**
@@ -130,9 +132,11 @@ class FoodDiaryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(FoodDiary $food_diary)
     {
-        //
+        $foodDiary = $food_diary->where('id', $food_diary->id)->with('foodDiaryDetails')->get();
+
+        return response($foodDiary, Response::HTTP_OK);
     }
 
     /**
