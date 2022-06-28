@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\BookingController;
 use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\GoalController;
+use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +26,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Register route
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register/user', [RegisterController::class, 'register_user']);
+Route::post('/register/doctor', [RegisterController::class, 'register_doctor']);
 
 //User Login Route
 Route::get('/login', [AuthController::class, 'indexUser']);
@@ -41,6 +44,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::get('/dashboard/user', [UserController::class, 'index']);
+
+    // Booking Route
+    Route::post('/booking', [BookingController::class, 'store']);
+    Route::get('/mybooking', [BookingController::class, 'my_booking']);
+    Route::delete('/mybooking/{id}', [BookingController::class, 'cancel_booking']);
 
     //Goal Route
     Route::get('/goal', [GoalController::class, 'index']);
