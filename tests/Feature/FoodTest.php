@@ -4,9 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Food;
 use App\Models\FoodCategory;
-use Database\Factories\FoodFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class FoodTest extends TestCase
@@ -44,7 +42,7 @@ class FoodTest extends TestCase
         $this->assertEquals(1, $this->count($response->json()));
     }
 
-    public function test_search_and_calculate_serving_size_of_food()
+    public function test_calculate_serving_size_of_food()
     {
         //preparation
         $foodCategory = FoodCategory::factory()->create();

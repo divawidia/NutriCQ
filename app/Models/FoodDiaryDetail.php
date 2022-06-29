@@ -14,8 +14,14 @@ class FoodDiaryDetail extends Model
 
     protected $guarded = [];
 
+    protected $with = ['foods'];
+
     public function foodDiary(): BelongsTo
     {
         return $this->belongsTo(FoodDiary::class);
+    }
+    public function foods(): BelongsTo
+    {
+        return $this->belongsTo(Food::class, 'food_id', 'id');
     }
 }

@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::delete('/goal/{id}', [GoalController::class, 'destroy']);
 
     Route::apiResource('food-diary', FoodDiaryController::class);
+    Route::patch('/food-diary/{food_diary}', [FoodDiaryController::class, 'addFoodToExistingFoodDiary'])->name('food-diary.addFoodToExistingFoodDiary');
+    Route::patch('/foods/{food}', [FoodController::class, 'storeCalculatedFoodToFoodDiary'])->name('foods.storeCalculatedFoodToFoodDiary');
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {

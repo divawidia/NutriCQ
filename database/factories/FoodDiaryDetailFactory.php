@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Food;
+use App\Models\FoodCategory;
 use App\Models\FoodDiary;
 use App\Models\FoodDiaryDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,7 +21,8 @@ class FoodDiaryDetailFactory extends Factory
     {
         return [
             'food_id' => function(){
-                return Food::factory()->create()->id;
+                $foodCategory = FoodCategory::factory()->create();
+                return Food::factory()->create(['category_id' => $foodCategory->id])->id;
             },
             'food_diary_id' => function(){
                 return FoodDiary::factory()->create()->id;

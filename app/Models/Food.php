@@ -15,9 +15,16 @@ class Food extends Model
 
     protected $guarded = [];
 
+    protected $with = ['foodCategory'];
+
     public function foodCategory(): BelongsTo
     {
         return $this->belongsTo(FoodCategory::class, 'category_id', 'id');
+    }
+
+    public function foodDiaryDetails(): HasMany
+    {
+        return $this->hasMany(FoodDiaryDetail::class, 'food_id', 'id');
     }
 
 }
