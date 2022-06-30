@@ -53,7 +53,7 @@ class BookingController extends Controller
 
             return response()->json([
                 $bookings
-            ], 201);
+            ], 200);
         }
     }
 
