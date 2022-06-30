@@ -45,7 +45,7 @@ class GoalController extends Controller
 
         if (Goal::where('user_id', '=', $user_id)->exists()) {
             return response()->json([
-                'message' => 'Goal onle can be stored once',
+                'message' => 'Goal only can be stored once',
                 'status_code' => 403,
             ], 403);
         } else {
@@ -54,8 +54,8 @@ class GoalController extends Controller
             
             return response()->json([
                 'message' => 'success',
-                'status_code' => 200,
-            ]);
+                'status_code' => 201,
+            ], 201);
         }
 
         
@@ -102,8 +102,8 @@ class GoalController extends Controller
 
         return response()->json([
             'message' => 'success',
-            'status_code' => 200
-        ], 200);
+            'status_code' => 201
+        ], 201);
     }
 
     /**
@@ -120,9 +120,5 @@ class GoalController extends Controller
             'message' => 'success',
             'status_code' => 200,
         ]);
-    }
-
-    public function test() {
-        
     }
 }
