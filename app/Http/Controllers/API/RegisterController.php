@@ -23,7 +23,6 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:3|confirmed',
-            // 'no_telp' => 'required|string',
         ]);
 
         // store data to database
@@ -31,7 +30,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            // 'no_telp' => $request->no_telp,
+            'role' => 'user'
         ]);
 
         // $user->attachRole($request->role_id);
@@ -61,9 +60,8 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:3|confirmed',
-            // 'no_telp' => 'required|string',
-            // 'cv' => '',
-            // 'license' => '',
+            // 'cv' => 'required',
+            // 'license' => 'required',
         ]);
 
         // store data to database
@@ -71,7 +69,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            // 'no_telp' => $request->no_telp,
+            'role' => "doctor"
             // 'cv' => $request->cv,
             // 'license' => $request->license,
         ]);
@@ -82,7 +80,7 @@ class RegisterController extends Controller
         $token = $user->createToken('doctor')->plainTextToken;
         return response()->json([
             'status' => 'Success',
-            'message' => 'Successfull registgered',
+            'message' => 'Successfull register',
             'token' => $token,
             'roles' => $user->roles->first()->name
         ], 201);
