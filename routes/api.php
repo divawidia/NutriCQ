@@ -60,6 +60,12 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
 
 Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
     Route::get('/dashboard/doctor', [UserController::class, 'index']);
+
+    // Route for booking
+    Route::get('/bookinglist', [BookingController::class, 'bookinglist']);
+    Route::put('/bookinglist/{id}/approved', [BookingController::class, 'approved']);
+    Route::put('/bookinglist/{id}/canceled', [BookingController::class, 'canceled']);
+    Route::put('/bookinglist/{id}/done', [BookingController::class, 'done']);
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
