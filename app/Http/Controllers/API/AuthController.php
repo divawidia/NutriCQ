@@ -28,7 +28,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'tgl_lahir' => '',
-            'no_telp' => 'required|string',
+            'no_telp' => 'string',
             'gender' => 'string',
             'cv' => '',
             'license' => '',
