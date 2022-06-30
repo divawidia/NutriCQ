@@ -45,11 +45,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::get('/dashboard/user', [UserController::class, 'index']);
 
-    // Booking Route
-    Route::post('/booking', [BookingController::class, 'store']);
-    Route::get('/mybooking', [BookingController::class, 'my_booking']);
-    Route::delete('/mybooking/{id}', [BookingController::class, 'cancel_booking']);
-
     //Goal Route
     Route::get('/goal', [GoalController::class, 'index']);
     Route::get('/goal/{id}', [GoalController::class, 'show']);
