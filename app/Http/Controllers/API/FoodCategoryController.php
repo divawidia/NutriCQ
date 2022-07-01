@@ -82,8 +82,10 @@ class FoodCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(FoodCategory $food_category)
     {
-        //
+        $food_category->delete();
+
+        return response('', Response::HTTP_NO_CONTENT);
     }
 }
