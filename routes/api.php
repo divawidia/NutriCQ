@@ -58,4 +58,15 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('/dashboard/admin', [UserController::class, 'index']);
 });
 
-Route::get('/foods', [FoodController::class, 'search'])->name('foods.search');
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/foods', [FoodController::class, 'search'])->name('foods.search');
+    Route::get('/foods-diary', [FoodController::class, 'index'])->name('food.index');
+    Route::get('/foods-diary/{id}', [FoodController::class, 'show'])->name('food.show');
+    Route::put('/foods-diary/{id}/{detail_id}', [FoodController::class, 'update'])->name('fooddetail.update');
+    Route::delete('/foods-diary/{id}', [FoodController::class, 'destroy'])->name('food.destroy');
+    Route::delete('/foods-diary/{id}/{detail_id}', [FoodController::class, 'destroy_food_detail'])->name('food.destroy2');
+});
+// Route::get(['middleware' => ['auth:sanctum']], function (){
+//     Route::get('/foods', [FoodController::class, 'index']);
+//     Route::delete('/foods{id}', [FoodController::class, 'destroy']);
+// });

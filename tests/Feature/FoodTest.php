@@ -43,4 +43,22 @@ class FoodTest extends TestCase
         //assertion
         $this->assertEquals(1, $this->count($response->json()));
     }
+
+    public function test_index_foods()
+    {
+        //preparation
+
+        //action
+        $response = $this->getJson(route('foods.index'))->json();
+        //dd($response);
+        //assertion
+        $response->assertStatus(response()['status']);
+    }
+
+    public function test_if_food_can_be_deleted()
+    {
+        $response->deleteJson(route('foods.destroy', 1));
+
+        $response->assertNoContent();
+    }
 }

@@ -4,7 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Food;
+use App\Models\User;
 use App\Models\FoodDiary;
+use App\Models\FoodDetail;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Carbon\Carbon;
@@ -18,7 +22,27 @@ class FoodController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        //dd($user->id);
+        $diary = FoodDiary::where('user_id', $user->id)->latest()->get();
+
+        // return view('food.index', [
+        //     'title' => 'Food Diary',
+        //     'diarys' => $diary
+        // ]);
+
+        if ($diary) {
+            return response()->json([
+                'message' => 'success',
+                'status_code' => 200,
+                'data' => $diary
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'data not found.',
+                'status_code' => 404
+            ]);
+        }
     }
 
     /**
@@ -38,9 +62,25 @@ class FoodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Food $id)
+    public function show(FoodDiary $id)
     {
-        return response($id);
+        // dd($id->id);
+        $data = FoodDetail::where('food_diary_id', $id->id)->get();
+        //dd($data);
+        if($data)
+        {
+            return response()->json([
+                'message' => 'success',
+                'status_code' => 200,
+                'data' => $data
+            ]);
+        }else
+        {
+            return response()->json([
+                'message' => 'data not found.',
+                'status_code' => 404
+            ]);
+        }
     }
 
     /**
@@ -50,9 +90,17 @@ class FoodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, FoodDetail $detail_id)
     {
-        //
+        $detail_id->update([
+            'takaran_saji' => $request->takaran_saji
+        ]);
+
+        return response()->json([
+            'message' => 'success',
+            'status_code' => 200,
+            'data' => $detail_id
+        ]);
     }
 
     /**
@@ -63,7 +111,25 @@ class FoodController extends Controller
      */
     public function destroy($id)
     {
-        //
+        FoodDiary::destroy($id);
+
+        return response()->json([
+            'message' => 'success',
+            'status_code' => 200,
+        ]);
+        //return redirect('foods');
+    }
+
+    public function destroy_food_detail($id, $detail_id)
+    {
+        // dd($detail_id);
+        FoodDetail::destroy($detail_id);
+
+        return response()->json([
+            'message' => 'success',
+            'status_code' => 200,
+        ]);
+        //return redirect('foods');
     }
 
     public function search(Request $request)
