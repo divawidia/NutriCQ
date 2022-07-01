@@ -219,4 +219,42 @@ class FoodController extends Controller
     {
         return response($food, Response::HTTP_OK);
     }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'sumber' => 'required|string',
+            'air' => 'required|numeric',
+            'energi' => 'required|numeric',
+            'protein' => 'required|numeric',
+            'lemak' => 'required|numeric',
+            'karbohidrat' => 'required|numeric',
+            'serat' => 'required|numeric',
+            'abu' => 'required|numeric',
+            'kalsium' => 'required|numeric',
+            'fosfor' => 'required|numeric',
+            'besi' => 'required|numeric',
+            'natrium' => 'required|numeric',
+            'kalium' => 'required|numeric',
+            'tembaga' => 'required|numeric',
+            'seng' => 'required|numeric',
+            'retinol' => 'required|numeric',
+            'b_karoten' => 'required|numeric',
+            'karoten_total' => 'required|numeric',
+            'thiamin' => 'required|numeric',
+            'riboflamin' => 'required|numeric',
+            'niasin' => 'required|numeric',
+            'vitamin_c' => 'required|numeric',
+            'porsi_berat_dapat_dimakan' => 'required|numeric',
+            'category_id' => 'sometimes'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $food = Food::create($request->all());
+        return response($food, Response::HTTP_CREATED);
+    }
 }
