@@ -62,4 +62,12 @@ class FoodCategoryTest extends TestCase
 
         $this->assertDatabaseHas('food_categories', ['category_name' => 'updated food category name']);
     }
+
+    public function test_admin_delete_food_category_data()
+    {
+        $this->deleteJson(route('food-categories.destroy', $this->foodCategory->id))
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('food_categories', ['category_name' => $this->foodCategory->category_name]);
+    }
 }
