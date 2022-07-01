@@ -61,9 +61,19 @@ class FoodCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, FoodCategory $food_category)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'category_name' => 'string|unique:food_categories,category_name'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $food_category->update($request->all());
+
+        return response($food_category, Response::HTTP_OK);
     }
 
     /**
