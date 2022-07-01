@@ -53,4 +53,13 @@ class FoodCategoryTest extends TestCase
         $this->assertEquals($foodCategory->category_name, $response['category_name']);
         $this->assertDatabaseHas('food_categories', ['category_name' => $foodCategory->category_name]);
     }
+
+    public function test_admin_update_food_category_data()
+    {
+        $response = $this->patchJson(route('food-categories.update', $this->foodCategory->id), [
+            'category_name' => 'updated food category name'
+        ])->assertOk();
+
+        $this->assertDatabaseHas('food_categories', ['category_name' => 'updated food category name']);
+    }
 }
