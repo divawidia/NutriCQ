@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\FoodCategory;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FoodCategoryController extends Controller
 {
@@ -14,7 +16,9 @@ class FoodCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $foodCategory = FoodCategory::all();
+
+        return response($foodCategory, Response::HTTP_OK);
     }
 
     /**
