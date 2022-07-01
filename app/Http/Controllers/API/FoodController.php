@@ -223,7 +223,7 @@ class FoodController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'name' => 'required|string|unique:foods,name',
             'sumber' => 'required|string',
             'air' => 'required|numeric',
             'energi' => 'required|numeric',
@@ -269,6 +269,6 @@ class FoodController extends Controller
     {
         $food->delete();
 
-        return response('Food data successfully deleted', Response::HTTP_NO_CONTENT);
+        return response('', Response::HTTP_NO_CONTENT);
     }
 }
