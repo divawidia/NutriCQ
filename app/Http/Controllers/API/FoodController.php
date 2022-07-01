@@ -264,4 +264,11 @@ class FoodController extends Controller
 
         return response($food, Response::HTTP_OK);
     }
+
+    public function destroy(Food $food)
+    {
+        $food->delete();
+
+        return response('Food data successfully deleted', Response::HTTP_NO_CONTENT);
+    }
 }
