@@ -40,6 +40,5 @@ class FoodCategoryTest extends TestCase
             ->assertOk();
 
         $this->assertEquals(1, $this->count($response->json()));
-        $this->assertEquals($this->foodCategory->category_name, $response['category_name']);
     }
 }
