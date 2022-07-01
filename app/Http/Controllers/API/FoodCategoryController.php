@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\FoodCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class FoodCategoryController extends Controller
@@ -29,7 +30,17 @@ class FoodCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator  = Validator::make($request->all(), [
+           'category_name' => 'required|string|unique:food_categories,category_name'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $foodCategory = FoodCategory::create($request->all());
+
+        return response($foodCategory, Response::HTTP_CREATED);
     }
 
     /**

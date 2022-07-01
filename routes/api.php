@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\FoodCategoryController;
 use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\FoodDiaryController;
 use App\Http\Controllers\API\GoalController;
