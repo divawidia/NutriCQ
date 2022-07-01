@@ -52,7 +52,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
 
     Route::apiResource('food-diary', FoodDiaryController::class);
     Route::patch('/food-diary/{food_diary}', [FoodDiaryController::class, 'addFoodToExistingFoodDiary'])->name('food-diary.addFoodToExistingFoodDiary');
-    Route::patch('/foods/{food}', [FoodController::class, 'storeCalculatedFoodToFoodDiary'])->name('foods.storeCalculatedFoodToFoodDiary');
+    Route::patch('/food/{food}', [FoodController::class, 'storeCalculatedFoodToFoodDiary'])->name('foods.storeCalculatedFoodToFoodDiary');
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
@@ -63,7 +63,8 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('/dashboard/admin', [UserController::class, 'index']);
 
     Route::get('/foods', [FoodController::class, 'index'])->name('foods.index');
+    Route::get('/foods/{food}', [FoodController::class, 'show'])->name('foods.show');
 });
 
 Route::get('/food', [FoodController::class, 'search'])->name('foods.search');
-Route::get('/foods/{food}', [FoodController::class, 'calculate'])->name('foods.calculate');
+Route::get('/food/{food}', [FoodController::class, 'calculate'])->name('foods.calculate');
