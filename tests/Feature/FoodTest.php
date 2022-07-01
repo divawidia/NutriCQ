@@ -108,4 +108,67 @@ class FoodTest extends TestCase
 
         $this->assertEquals($response['name'], $this->food->name);
     }
+
+    public function test_admin_store_new_food_data()
+    {
+        $food = Food::factory()->make();
+
+        $response = $this->postJson(route('foods.store'), [
+            'name' => $food->name,
+            'sumber' => $food->sumber,
+            'air' => $food->air,
+            'energi' => $food->energi,
+            'protein' => $food->protein,
+            'lemak' => $food->lemak,
+            'karbohidrat' => $food->karbohidrat,
+            'serat' => $food->serat,
+            'abu' => $food->abu,
+            'kalsium' => $food->kalsium,
+            'fosfor' => $food->fosfor,
+            'besi' => $food->besi,
+            'natrium' => $food->natrium,
+            'kalium' => $food->kalium,
+            'tembaga' => $food->tembaga,
+            'seng' => $food->seng,
+            'retinol' => $food->retinol,
+            'b_karoten' => $food->b_karoten,
+            'karoten_total' => $food->karoten_total,
+            'thiamin' => $food->thiamin,
+            'riboflamin' => $food->riboflamin,
+            'niasin' => $food->niasin,
+            'vitamin_c' => $food->vitamin_c,
+            'porsi_berat_dapat_dimakan' => $food->porsi_berat_dapat_dimakan,
+            'category_id' => $this->foodCategory->id,
+        ])->assertCreated()
+        ->json();
+
+        $this->assertEquals($food->name, $response['name']);
+        $this->assertDatabaseHas('foods', [
+            'name' => $food->name,
+            'sumber' => $food->sumber,
+            'air' => $food->air,
+            'energi' => $food->energi,
+            'protein' => $food->protein,
+            'lemak' => $food->lemak,
+            'karbohidrat' => $food->karbohidrat,
+            'serat' => $food->serat,
+            'abu' => $food->abu,
+            'kalsium' => $food->kalsium,
+            'fosfor' => $food->fosfor,
+            'besi' => $food->besi,
+            'natrium' => $food->natrium,
+            'kalium' => $food->kalium,
+            'tembaga' => $food->tembaga,
+            'seng' => $food->seng,
+            'retinol' => $food->retinol,
+            'b_karoten' => $food->b_karoten,
+            'karoten_total' => $food->karoten_total,
+            'thiamin' => $food->thiamin,
+            'riboflamin' => $food->riboflamin,
+            'niasin' => $food->niasin,
+            'vitamin_c' => $food->vitamin_c,
+            'porsi_berat_dapat_dimakan' => $food->porsi_berat_dapat_dimakan,
+            'category_id' => $this->foodCategory->id,
+        ]);
+    }
 }

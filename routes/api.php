@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
 
     Route::get('/foods', [FoodController::class, 'index'])->name('foods.index');
     Route::get('/foods/{food}', [FoodController::class, 'show'])->name('foods.show');
+    Route::post('/foods', [FoodController::class, 'store'])->name('foods.store');
 });
 
 Route::get('/food', [FoodController::class, 'search'])->name('foods.search');
