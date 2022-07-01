@@ -260,6 +260,38 @@ class FoodController extends Controller
 
     public function update(Food $food, Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'string|unique:foods,name',
+            'sumber' => 'string',
+            'air' => 'numeric',
+            'energi' => 'numeric',
+            'protein' => 'numeric',
+            'lemak' => 'numeric',
+            'karbohidrat' => 'numeric',
+            'serat' => 'numeric',
+            'abu' => 'numeric',
+            'kalsium' => 'numeric',
+            'fosfor' => 'numeric',
+            'besi' => 'numeric',
+            'natrium' => 'numeric',
+            'kalium' => 'numeric',
+            'tembaga' => 'numeric',
+            'seng' => 'numeric',
+            'retinol' => 'numeric',
+            'b_karoten' => 'numeric',
+            'karoten_total' => 'numeric',
+            'thiamin' => 'numeric',
+            'riboflamin' => 'numeric',
+            'niasin' => 'numeric',
+            'vitamin_c' => 'numeric',
+            'porsi_berat_dapat_dimakan' => 'numeric',
+            'category_id' => 'sometimes'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         $food->update($request->all());
 
         return response($food, Response::HTTP_OK);
