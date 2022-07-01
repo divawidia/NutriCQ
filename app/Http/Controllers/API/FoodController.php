@@ -257,4 +257,11 @@ class FoodController extends Controller
         $food = Food::create($request->all());
         return response($food, Response::HTTP_CREATED);
     }
+
+    public function update(Food $food, Request $request)
+    {
+        $food->update($request->all());
+
+        return response($food, Response::HTTP_OK);
+    }
 }
