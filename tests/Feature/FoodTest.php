@@ -95,8 +95,7 @@ class FoodTest extends TestCase
     public function test_admin_fetch_all_food_data()
     {
         $response = $this->getJson(route('foods.index'))
-            ->assertOk()
-            ->json();
+            ->assertOk();
 
         $this->assertEquals(1, $this->count($response->json()));
     }

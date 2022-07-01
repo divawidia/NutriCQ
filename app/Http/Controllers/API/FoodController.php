@@ -214,4 +214,9 @@ class FoodController extends Controller
         $foods = Food::all();
         return response($foods, Response::HTTP_OK);
     }
+
+    public function show(Food $food)
+    {
+        return response($food, Response::HTTP_OK);
+    }
 }
