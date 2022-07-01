@@ -208,4 +208,10 @@ class FoodController extends Controller
             'data' => $food_diary
         ], Response::HTTP_CREATED);
     }
+
+    public function index()
+    {
+        $foods = Food::all();
+        return response($foods, Response::HTTP_OK);
+    }
 }
