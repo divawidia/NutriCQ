@@ -171,4 +171,12 @@ class FoodTest extends TestCase
             'category_id' => $this->foodCategory->id,
         ]);
     }
+
+    public function test_admin_update_food_data()
+    {
+        $this->patchJson(route('foods.update', $this->food->id), ['name' => 'updated food name'])
+            ->assertOk();
+
+        $this->assertDatabaseHas('foods', ['name' => 'updated food name']);
+    }
 }
