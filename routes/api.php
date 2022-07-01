@@ -65,7 +65,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
 
     Route::apiResource('admin/foods', FoodController::class);
 
-    Route::apiResource('admin/food-categories', FoodCategoryController::class);
+    Route::apiResource('admin/food-categories', FoodCategoryController::class)->except('show');
 });
 
 Route::get('/foods', [FoodController::class, 'search'])->name('foods.search');
