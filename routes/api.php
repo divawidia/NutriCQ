@@ -52,7 +52,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
 
     Route::apiResource('food-diary', FoodDiaryController::class);
     Route::patch('/food-diary/{food_diary}', [FoodDiaryController::class, 'addFoodToExistingFoodDiary'])->name('food-diary.addFoodToExistingFoodDiary');
-    Route::patch('/food/{food}', [FoodController::class, 'storeCalculatedFoodToFoodDiary'])->name('foods.storeCalculatedFoodToFoodDiary');
+    Route::patch('/foods/{food}', [FoodController::class, 'storeCalculatedFoodToFoodDiary'])->name('foods.storeCalculatedFoodToFoodDiary');
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
@@ -62,11 +62,12 @@ Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('/dashboard/admin', [UserController::class, 'index']);
 
-    Route::get('/foods', [FoodController::class, 'index'])->name('foods.index');
-    Route::get('/foods/{food}', [FoodController::class, 'show'])->name('foods.show');
-    Route::post('/foods', [FoodController::class, 'store'])->name('foods.store');
-    Route::patch('/foods/{food}', [FoodController::class, 'update'])->name('foods.update');
+    Route::get('/admin/foods', [FoodController::class, 'index'])->name('foods.index');
+    Route::get('/admin/foods/{food}', [FoodController::class, 'show'])->name('foods.show');
+    Route::post('/admin/foods', [FoodController::class, 'store'])->name('foods.store');
+    Route::patch('/admin/foods/{food}', [FoodController::class, 'update'])->name('foods.update');
+    Route::delete('/admin/foods/{food}', [FoodController::class, 'destroy'])->name('foods.destroy');
 });
 
-Route::get('/food', [FoodController::class, 'search'])->name('foods.search');
-Route::get('/food/{food}', [FoodController::class, 'calculate'])->name('foods.calculate');
+Route::get('/foods', [FoodController::class, 'search'])->name('foods.search');
+Route::get('/foods/{food}', [FoodController::class, 'calculate'])->name('foods.calculate');

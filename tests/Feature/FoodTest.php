@@ -179,4 +179,12 @@ class FoodTest extends TestCase
 
         $this->assertDatabaseHas('foods', ['name' => 'updated food name']);
     }
+
+    public function test_admin_destroy_food_data()
+    {
+        $this->deleteJson(route('foods.destroy', $this->food->id))
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('foods', ['name' => $this->food->id]);
+    }
 }
