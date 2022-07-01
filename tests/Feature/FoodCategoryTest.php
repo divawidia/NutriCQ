@@ -41,4 +41,16 @@ class FoodCategoryTest extends TestCase
 
         $this->assertEquals(1, $this->count($response->json()));
     }
+
+    public function test_admin_store_new_food_category()
+    {
+        $foodCategory = FoodCategory::factory()->make();
+
+        $response = $this->postJson(route('food-categories.store'), ['category_name' => $foodCategory->category_name])
+            ->assertCreated()
+            ->json();
+
+        $this->assertEquals($foodCategory->category_name, $response['category_name']);
+        $this->assertDatabaseHas('food_categories', ['category_name' => $foodCategory->category_name]);
+    }
 }
