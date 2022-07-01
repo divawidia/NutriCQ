@@ -57,4 +57,18 @@ class FoodTest extends TestCase
         //assertion
         $this->assertEquals($food->air * $servingSize/100, $response[0]['air']);
     }
+
+//    public function test_search_food_by_name_only_input_alphabet()
+//    {
+//        $foodCategory = FoodCategory::factory()->create();
+//        $food = Food::factory()->create(['category_id' => $foodCategory->id]);
+//
+//        //action
+//        $response = $this->getJson(route('foods.search', ['search' => null]));
+//
+//        //assertion
+//        $response->assertSessionHasErrors([
+//            "search" => "The search field is required when food id is not present."
+//        ]);
+//    }
 }
