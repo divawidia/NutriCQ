@@ -22,6 +22,7 @@ class UpdateUsersTable extends Migration
             $table->integer('tinggi_badan')->nullable();
             $table->integer('berat_badan')->nullable();
             $table->integer('tingkat_aktivitas')->nullable();
+            $table->string('status');
         });
     }
 
