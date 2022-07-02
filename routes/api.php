@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\FoodDiaryController;
 use App\Http\Controllers\API\GoalController;
+use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
