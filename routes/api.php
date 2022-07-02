@@ -63,6 +63,12 @@ Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
 
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('/dashboard/admin', [UserController::class, 'index']);
+
+    Route::get('/admin/foods', [FoodController::class, 'index'])->name('foods.index');
+    Route::get('/admin/foods/{food}', [FoodController::class, 'show'])->name('foods.show');
+    Route::post('/admin/foods', [FoodController::class, 'store'])->name('foods.store');
+    Route::patch('/admin/foods/{food}', [FoodController::class, 'update'])->name('foods.update');
+    Route::delete('/admin/foods/{food}', [FoodController::class, 'destroy'])->name('foods.destroy');
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
