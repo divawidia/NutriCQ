@@ -13,26 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FoodController extends Controller
 {
-    public function index()
-    {
-        $user = Auth::user();
-
-        $diary = FoodDiary::where('user_id', $user->id)->latest()->get();
-
-        if ($diary) {
-            return response()->json([
-                'message' => 'success',
-                'status_code' => 200,
-                'data' => $diary
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'data not found.',
-                'status_code' => 404
-            ]);
-        }
-    }
-
     public function show(FoodDiary $id)
     {
 
@@ -54,16 +34,127 @@ class FoodController extends Controller
         }
     }
 
-    public function update(Request $request, $id, FoodDiaryDetail $detail_id)
+    public function update(Request $request, FoodDiary $id, FoodDiaryDetail $detail_id)
     {
-        $detail_id->update([
-            'takaran_saji' => $request->takaran_saji
+        // $detail_id->update([
+        //     'takaran_saji' => $request->takaran_saji
+        // ]);
+
+        //validate request
+        $validator = Validator::make($request->all(), [
+            'serving_size' => 'required|numeric',
         ]);
 
+        //cek jika validasi gagal
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $servingSize = $request->serving_size;
+        $food = Food::find($detail_id->foods->id);
+
+        $authUserId = auth()->user()->id;
+
+        //mengurangi nilai fooddetail sebelumnya dari food diary agar dapat memperbarui nilai dari food diary saat takaran saji di update
+        if ($id->user_id == $authUserId) {
+            $id->update([
+                'total_air' => DB::raw('total_air - ' . $detail_id->air),
+                'total_energi' => DB::raw('total_energi - ' . $detail_id->energi),
+                'total_protein' => DB::raw('total_protein - ' . $detail_id->protein),
+                'total_lemak' => DB::raw('total_lemak - ' . $detail_id->lemak),
+                'total_karbohidrat' => DB::raw('total_karbohidrat - ' . $detail_id->karbohidrat),
+                'total_serat' => DB::raw('total_serat - ' . $detail_id->serat),
+                'total_abu' => DB::raw('total_abu - ' . $detail_id->abu),
+                'total_kalsium' => DB::raw('total_kalsium - ' . $detail_id->kalsium),
+                'total_fosfor' => DB::raw('total_fosfor - ' . $detail_id->fosfor),
+                'total_besi' => DB::raw('total_besi - ' . $detail_id->besi),
+                'total_natrium' => DB::raw('total_natrium - ' . $detail_id->natrium),
+                'total_kalium' => DB::raw('total_kalium - ' . $detail_id->kalium),
+                'total_tembaga' => DB::raw('total_tembaga - ' . $detail_id->tembaga),
+                'total_seng' => DB::raw('total_seng - ' . $detail_id->seng),
+                'total_retinol' => DB::raw('total_retinol - ' . $detail_id->retinol),
+                'total_b_karoten' => DB::raw('total_b_karoten - ' . $detail_id->b_karoten),
+                'total_karoten_total' => DB::raw('total_karoten_total - ' . $detail_id->karoten_total),
+                'total_thiamin' => DB::raw('total_thiamin - ' . $detail_id->thiamin),
+                'total_riboflamin' => DB::raw('total_riboflamin - ' . $detail_id->riboflamin),
+                'total_niasin' => DB::raw('total_niasin - ' . $detail_id->niasin),
+                'total_vitamin_c' => DB::raw('total_vitamin_c - ' . $detail_id->vitamin_c),
+                'jumlah_makanan' => DB::raw('jumlah_makanan - 1')
+            ]);
+        }
+        else{
+            return response()->json(['message' => 'Unauthorized User'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $detail_id->update(['takaran_saji' => $servingSize]);
+
+        // $calculateFood = calculateFood($food, $servingSize);
+        $calculateFood = FoodDiaryDetail::calculateFood($servingSize, $food->id);
+        // $calculateFood = $food->with('foodCategory')->selectRaw(
+        //     'id,
+        //     name,
+        //     sumber,
+        //     air *' . $servingSize . '/100 AS air,
+        //     energi *' . $servingSize . '/100 AS energi,
+        //     protein *' . $servingSize . '/100 AS protein,
+        //     lemak *' . $servingSize . '/100 AS lemak,
+        //     karbohidrat *' . $servingSize . '/100 AS karbohidrat,
+        //     serat *' . $servingSize . '/100 AS serat,
+        //     abu *' . $servingSize . '/100 AS abu,
+        //     kalsium *' . $servingSize . '/100 AS kalsium,
+        //     fosfor *' . $servingSize . '/100 AS fosfor,
+        //     besi *' . $servingSize . '/100 AS besi,
+        //     natrium *' . $servingSize . '/100 AS natrium,
+        //     kalium *' . $servingSize . '/100 AS kalium,
+        //     tembaga *' . $servingSize . '/100 AS tembaga,
+        //     seng *' . $servingSize . '/100 AS seng,
+        //     retinol *' . $servingSize . '/100 AS retinol,
+        //     b_karoten *' . $servingSize . '/100 AS b_karoten,
+        //     karoten_total *' . $servingSize . '/100 AS karoten_total,
+        //     thiamin *' . $servingSize . '/100 AS thiamin,
+        //     riboflamin *' . $servingSize . '/100 AS riboflamin,
+        //     niasin *' . $servingSize . '/100 AS niasin,
+        //     vitamin_c *' . $servingSize . '/100 AS vitamin_c,
+        //     porsi_berat_dapat_dimakan,
+        //     category_id,
+        //     created_at,
+        //     updated_at')
+        //     ->where('id', $food->id)
+        //     ->get();
+
+        if ($id->user_id == $authUserId) {
+            $id->update([
+                'total_air' => DB::raw('total_air + ' . $calculateFood[0]['air']),
+                'total_energi' => DB::raw('total_energi + ' . $calculateFood[0]['energi']),
+                'total_protein' => DB::raw('total_protein + ' . $calculateFood[0]['protein']),
+                'total_lemak' => DB::raw('total_lemak + ' . $calculateFood[0]['lemak']),
+                'total_karbohidrat' => DB::raw('total_karbohidrat + ' . $calculateFood[0]['karbohidrat']),
+                'total_serat' => DB::raw('total_serat + ' . $calculateFood[0]['serat']),
+                'total_abu' => DB::raw('total_abu + ' . $calculateFood[0]['abu']),
+                'total_kalsium' => DB::raw('total_kalsium + ' . $calculateFood[0]['kalsium']),
+                'total_fosfor' => DB::raw('total_fosfor + ' . $calculateFood[0]['fosfor']),
+                'total_besi' => DB::raw('total_besi + ' . $calculateFood[0]['besi']),
+                'total_natrium' => DB::raw('total_natrium + ' . $calculateFood[0]['natrium']),
+                'total_kalium' => DB::raw('total_kalium + ' . $calculateFood[0]['kalium']),
+                'total_tembaga' => DB::raw('total_tembaga + ' . $calculateFood[0]['tembaga']),
+                'total_seng' => DB::raw('total_seng + ' . $calculateFood[0]['seng']),
+                'total_retinol' => DB::raw('total_retinol + ' . $calculateFood[0]['retinol']),
+                'total_b_karoten' => DB::raw('total_b_karoten + ' . $calculateFood[0]['b_karoten']),
+                'total_karoten_total' => DB::raw('total_karoten_total + ' . $calculateFood[0]['karoten_total']),
+                'total_thiamin' => DB::raw('total_thiamin + ' . $calculateFood[0]['thiamin']),
+                'total_riboflamin' => DB::raw('total_riboflamin + ' . $calculateFood[0]['riboflamin']),
+                'total_niasin' => DB::raw('total_niasin + ' . $calculateFood[0]['niasin']),
+                'total_vitamin_c' => DB::raw('total_vitamin_c + ' . $calculateFood[0]['vitamin_c']),
+                'jumlah_makanan' => DB::raw('jumlah_makanan + 1')
+            ]);
+        }
+        else{
+            return response()->json(['message' => 'Unauthorized User'], Response::HTTP_UNAUTHORIZED);
+        }
+
         return response()->json([
-            'message' => 'success',
-            'status_code' => 200,
-            'data' => $detail_id
+            'message' => 'successfully added food',
+            'data' => $id
         ]);
     }
 
@@ -74,19 +165,53 @@ class FoodController extends Controller
         return response()->json([
             'message' => 'success',
             'status_code' => 200,
-        ]);
+        ], Response::HTTP_NO_CONTENT);
         //return redirect('foods');
     }
 
-    public function destroy_food_detail($id, $detail_id)
+    public function destroy_food_detail(FoodDiary $id, $detail_id)
     {
         // dd($detail_id);
+        $detail = FoodDiaryDetail::find($detail_id);
+        $authUserId = auth()->user()->id;
+        //mengurangi nilai nutrisi pada food diary sebelum food detail dihapus
+        if ($id->user_id == $authUserId) {
+            $id->update([
+                'total_air' => DB::raw('total_air - ' . $detail->air),
+                'total_energi' => DB::raw('total_energi - ' . $detail->energi),
+                'total_protein' => DB::raw('total_protein - ' . $detail->protein),
+                'total_lemak' => DB::raw('total_lemak - ' . $detail->lemak),
+                'total_karbohidrat' => DB::raw('total_karbohidrat - ' . $detail->karbohidrat),
+                'total_serat' => DB::raw('total_serat - ' . $detail->serat),
+                'total_abu' => DB::raw('total_abu - ' . $detail->abu),
+                'total_kalsium' => DB::raw('total_kalsium - ' . $detail->kalsium),
+                'total_fosfor' => DB::raw('total_fosfor - ' . $detail->fosfor),
+                'total_besi' => DB::raw('total_besi - ' . $detail->besi),
+                'total_natrium' => DB::raw('total_natrium - ' . $detail->natrium),
+                'total_kalium' => DB::raw('total_kalium - ' . $detail->kalium),
+                'total_tembaga' => DB::raw('total_tembaga - ' . $detail->tembaga),
+                'total_seng' => DB::raw('total_seng - ' . $detail->seng),
+                'total_retinol' => DB::raw('total_retinol - ' . $detail->retinol),
+                'total_b_karoten' => DB::raw('total_b_karoten - ' . $detail->b_karoten),
+                'total_karoten_total' => DB::raw('total_karoten_total - ' . $detail->karoten_total),
+                'total_thiamin' => DB::raw('total_thiamin - ' . $detail->thiamin),
+                'total_riboflamin' => DB::raw('total_riboflamin - ' . $detail->riboflamin),
+                'total_niasin' => DB::raw('total_niasin - ' . $detail->niasin),
+                'total_vitamin_c' => DB::raw('total_vitamin_c - ' . $detail->vitamin_c),
+                'jumlah_makanan' => DB::raw('jumlah_makanan - 1')
+            ]);
+        }
+        else{
+            return response()->json(['message' => 'Unauthorized User'], Response::HTTP_UNAUTHORIZED);
+        }
+
+
         FoodDiaryDetail::destroy($detail_id);
 
         return response()->json([
             'message' => 'success',
-            'status_code' => 200,
-        ]);
+            'status_code' => 204,
+        ], Response::HTTP_NO_CONTENT);
         //return redirect('foods');
     }
 
@@ -184,37 +309,38 @@ class FoodController extends Controller
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $calculateFood = $food->with('foodCategory')->selectRaw(
-            'id,
-            name,
-            sumber,
-            air *' . $servingSize . '/100 AS air,
-            energi *' . $servingSize . '/100 AS energi,
-            protein *' . $servingSize . '/100 AS protein,
-            lemak *' . $servingSize . '/100 AS lemak,
-            karbohidrat *' . $servingSize . '/100 AS karbohidrat,
-            serat *' . $servingSize . '/100 AS serat,
-            abu *' . $servingSize . '/100 AS abu,
-            kalsium *' . $servingSize . '/100 AS kalsium,
-            fosfor *' . $servingSize . '/100 AS fosfor,
-            besi *' . $servingSize . '/100 AS besi,
-            natrium *' . $servingSize . '/100 AS natrium,
-            kalium *' . $servingSize . '/100 AS kalium,
-            tembaga *' . $servingSize . '/100 AS tembaga,
-            seng *' . $servingSize . '/100 AS seng,
-            retinol *' . $servingSize . '/100 AS retinol,
-            b_karoten *' . $servingSize . '/100 AS b_karoten,
-            karoten_total *' . $servingSize . '/100 AS karoten_total,
-            thiamin *' . $servingSize . '/100 AS thiamin,
-            riboflamin *' . $servingSize . '/100 AS riboflamin,
-            niasin *' . $servingSize . '/100 AS niasin,
-            vitamin_c *' . $servingSize . '/100 AS vitamin_c,
-            porsi_berat_dapat_dimakan,
-            category_id,
-            created_at,
-            updated_at')
-            ->where('id', $food->id)
-            ->get();
+        $calculateFood = FoodDiaryDetail::calculateFood($servingSize, $food->id);
+        // $calculateFood = $food->with('foodCategory')->selectRaw(
+        //     'id,
+        //     name,
+        //     sumber,
+        //     air *' . $servingSize . '/100 AS air,
+        //     energi *' . $servingSize . '/100 AS energi,
+        //     protein *' . $servingSize . '/100 AS protein,
+        //     lemak *' . $servingSize . '/100 AS lemak,
+        //     karbohidrat *' . $servingSize . '/100 AS karbohidrat,
+        //     serat *' . $servingSize . '/100 AS serat,
+        //     abu *' . $servingSize . '/100 AS abu,
+        //     kalsium *' . $servingSize . '/100 AS kalsium,
+        //     fosfor *' . $servingSize . '/100 AS fosfor,
+        //     besi *' . $servingSize . '/100 AS besi,
+        //     natrium *' . $servingSize . '/100 AS natrium,
+        //     kalium *' . $servingSize . '/100 AS kalium,
+        //     tembaga *' . $servingSize . '/100 AS tembaga,
+        //     seng *' . $servingSize . '/100 AS seng,
+        //     retinol *' . $servingSize . '/100 AS retinol,
+        //     b_karoten *' . $servingSize . '/100 AS b_karoten,
+        //     karoten_total *' . $servingSize . '/100 AS karoten_total,
+        //     thiamin *' . $servingSize . '/100 AS thiamin,
+        //     riboflamin *' . $servingSize . '/100 AS riboflamin,
+        //     niasin *' . $servingSize . '/100 AS niasin,
+        //     vitamin_c *' . $servingSize . '/100 AS vitamin_c,
+        //     porsi_berat_dapat_dimakan,
+        //     category_id,
+        //     created_at,
+        //     updated_at')
+        //     ->where('id', $food->id)
+        //     ->get();
 
         $authUserId = auth()->user()->id;
         $foodDiary = FoodDiary::find($foodDiaryId);
