@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\FoodDiaryController;
 use App\Http\Controllers\API\GoalController;
+use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,7 +26,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Register route
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register/user', [RegisterController::class, 'register_user']);
+Route::post('/register/doctor', [RegisterController::class, 'register_doctor']);
 
 //User Login Route
 Route::get('/login', [AuthController::class, 'indexUser']);
