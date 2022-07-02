@@ -7,7 +7,6 @@ use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
@@ -16,31 +15,37 @@ class BookingController extends Controller
         $userid = Auth::user();
         $data = new booking;
         $data->nama_user = $userid->name;
-        $data->tgl_booking = $request->tgl_booking;
-        $data->deskripsi_booking = $request->deskripsi_booking;
+        $data->tanggal = $request->tanggal;
+        $data->deskripsi = $request->deskripsi;
+        $data->start_time = $request->start_time;
+        $data->end_time = $request->end_time;
         $data->status = 'Waiting';
         $data->user_id = $userid->id;
 
-        $doctor = User::where('role', 'doctor')
+        $doctor = User::WhereRoleIs('doctor')
             ->where('id', '=', $request->input('user_dokter_id'))
             ->first();
 
         if ($doctor != null) {
             $data->user_dokter_id = $doctor->id;
+            $data->nama_dokter = $doctor->name;
         } else {
             return response([
                 'message' => "doctor id not found!"
-            ], 400);
+            ], 404);
         }
 
         $data->save();
 
         return response()->json([
-            'Tanggal Booking' => $data->tgl_booking,
-            'Deskripsi Booking' => $data->deskripsi_booking,
-            'Status' => $data->status,
+            'ID' => $data->id,
+            'Nama User' => $data->nama_user,
             'Dokter ID' => $data->user_dokter_id,
-            "ALl Doktor" => $doctor,
+            'Nama Dokter' => $data->nama_dokter,
+            'Jam' => $data->start_time . "-" . $data->end_time,
+            'Tanggal' => $data->tanggal,
+            'Deskripsi' => $data->deskripsi,
+            'Status' => $data->status,
             'message' => 'Booking successfull!'
         ], 201);
     }
@@ -51,9 +56,25 @@ class BookingController extends Controller
             $userid = Auth::user()->id;
             $bookings = booking::where('user_id', $userid)->get();
 
-            return response()->json([
-                $bookings
-            ], 200);
+            $response = [];
+            if ($bookings) {
+                foreach ($bookings as $list) {
+                    $response[] = [
+                        'ID' => $list->id,
+                        'Nama User' => $list->nama_user,
+                        'Dokter ID' => $list->user_dokter_id,
+                        'Nama Dokter' => $list->nama_dokter,
+                        'Tanggal' => $list->tanggal,
+                        'Deskripsi' => $list->deskripsi,
+                        'Status' => $list->status,
+                    ];
+                }
+
+                if ($response != null) {
+                    return response([$response], 200);
+                }
+                return response([], 200);
+            }
         }
     }
 
@@ -72,9 +93,23 @@ class BookingController extends Controller
         $doctorid = Auth::user()->id;
         $bookinglist = booking::where('user_dokter_id', $doctorid)->get();
 
-        return response()->json([
-            $bookinglist
-        ], 201);
+        $response = [];
+        if ($bookinglist) {
+            foreach ($bookinglist as $list) {
+                $response[] = [
+                    'ID' => $list->id,
+                    'Nama User' => $list->nama_user,
+                    'Tanggal' => $list->tanggal,
+                    'Deskripsi' => $list->deskripsi,
+                    'Status' => $list->status,
+                ];
+            }
+
+            if ($response != null) {
+                return response([$response], 200);
+            }
+            return response([], 200);
+        }
     }
 
     public function approved($id)
@@ -88,10 +123,10 @@ class BookingController extends Controller
         ], 201);
     }
 
-    public function canceled($id)
+    public function rejected($id)
     {
         $data = booking::find($id);
-        $data->status = 'canceled';
+        $data->status = 'rejected';
         $data->save();
         return response()->json([
             'status' => $data->status

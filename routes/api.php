@@ -45,6 +45,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::get('/dashboard/user', [UserController::class, 'index']);
 
+    // Route Booking
+    Route::post('/booking', [BookingController::class, 'store']);
+    Route::get('/mybooking', [BookingController::class, 'my_booking']);
+
     //Goal Route
     Route::get('/goal', [GoalController::class, 'index']);
     Route::get('/goal/{id}', [GoalController::class, 'show']);
@@ -59,7 +63,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
     // Route for booking
     Route::get('/bookinglist', [BookingController::class, 'bookinglist']);
     Route::put('/bookinglist/{id}/approved', [BookingController::class, 'approved']);
-    Route::put('/bookinglist/{id}/canceled', [BookingController::class, 'canceled']);
+    Route::put('/bookinglist/{id}/rejected', [BookingController::class, 'rejected']);
     Route::put('/bookinglist/{id}/done', [BookingController::class, 'done']);
 });
 
