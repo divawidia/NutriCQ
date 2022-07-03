@@ -45,9 +45,20 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+//Get Route Review 
+Route::get('/doctor/reviews', [ReviewController::class, 'index'])->name('review.index');
+Route::get('/doctor/{id}/reviews', [ReviewController::class, 'reviewList'])->name('review.reviewList');
+Route::get('/doctor/{id}/reviewstar', [ReviewController::class, 'reviewStar'])->name('review.reviewStar');
+Route::get('/doctor/{id}/review/{id_review}', [ReviewController::class, 'specificReview'])->name('review.specificReview');
+
 //middleware for user
 Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::get('/dashboard/user', [UserController::class, 'index']);
+
+    //Route review
+    Route::post('/doctor/{id}/review/add', [ReviewController::class, 'addReview'])->name('review.addReview');
+    Route::patch('/doctor/{id}/review/{id_review}', [ReviewController::class, 'editReview'])->name('review.editReview');
+    Route::delete('/doctor/{id}/review/{id_review}', [ReviewController::class, 'destroyReview'])->name('review.destroyReview');    
 
     // Route Booking
     Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
