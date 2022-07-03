@@ -71,7 +71,7 @@ class AuthController extends Controller
     public function loginUser(Request $request)
     {
         $fields = $request->validate([
-            'email' => 'required|string',
+            'email' => 'required|string|email',
             'password' => 'required|string'
         ]);
 
@@ -92,7 +92,10 @@ class AuthController extends Controller
             'token' => $token
         ];
 
-        return response($response, 201);
+        return response()->json([
+            'user' => $user,
+            'token' => $token
+        ], 200);
     }
 
     //Login ADMIN
