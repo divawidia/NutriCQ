@@ -17,10 +17,48 @@ class AuthController extends Controller
         //This could be view file
         return 'This is API for Login';
     }
-
+    
     public function indexUser()
     {
         return 'This is API page for Login User';
+    }
+
+    public function loginUser()
+    {
+        $fields = $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string'
+        ]);
+
+        //Check email
+        $user = User::where('email', $fields['email'])->where('status', 'active')->first();
+        
+        //check if user active
+        if($user == null)
+        {
+            return response([
+                'message' => "Account Inactive"
+            ], 401);
+        }
+
+        //Check Password
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return response([
+                'message' => "Bad Crendential"
+            ], 401);
+        }
+
+        $token = $user->createToken('myapptoken')->plainTextToken;
+
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token
+        ], 200);
     }
 
     public function indexAdmin()
