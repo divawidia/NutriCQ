@@ -1,66 +1,76 @@
 # NutriCQ - Backend Capstone Project
 
-NutriCQ merupakan aplikasi yang dapat membantu
-pengguna dalam mengontrol dan melacak asupan gizi 
-mereka, serta membantu pengguna dalam membantu menjawab 
-pertanyaan atau keluhan mereka terkait dengan gizi dengan 
-mengadakan konsultasi langsung dengan dokter gizi. Dengan itu
-maka pengguna akan lebih teredukasi serta lebih peduli dengan
-kecukupan gizi mereka.
+NutriCQ is a web API based application that can assist users in 
+controlling and tracking their nutritional intake, 
+as well as assisting users in answering their questions 
+or complaints related to nutrition by consulting directly
+with a nutritionist. With that, users will be more 
+educated and more concerned with their nutritional 
+adequacy.
 
-Dibuatnya aplikasi NutriCQ ini datang dari suatu permasalahan, 
-dimana berdasarkan studi pada tahun 2014 yang dilakukan Kementerian Kesehatan,
-pola diet yang tidak sehat dikarenakan tidak terpenuhinya gizi seimbang masih 
-menjadi masalah di Indonesia.  Merujuk pada studi tersebut diketahui juga perbandingan 
-konsumsi protein nabati dan hewani masih tidak berimbang sehingga mempengaruhi kualitas makanan masyarakat.
+The creation of NutriCQ application came from a problem, 
+where based on a 2014 study conducted by the Ministry of 
+Health, unhealthy diet patterns due to unfulfilled balanced 
+nutrition are still a problem in Indonesia. Referring to 
+the study, it is also known that the ratio of consumption 
+of vegetable and animal protein is still not balanced, 
+thus affecting the quality of people's food.
 
-## Fitur Aplikasi
-Aplikasi ini memiliki 3 sisi pengguna, yaitu user, admin, dan dokter. Berikut ini merupakan fitur-fitur dari aplikasi NutriCQ:
-- Menghitung gizi dari suatu makanan
-- Mencatat kebutuhan gizi dari pengguna
-- Mencatat semua asupan gizi yang diinputkan oleh user
-- Pengguna bisa berkonsultasi dengan dokter gizi
-- Pengguna bisa membuat booking konsultasi langsung dengan dokter gizi
-- Dokter bisa menyetujui booking dari pengguna dan melayani konsultasi
-- Pengguna bisa mengubah kebutuhan gizi perharinya sesuai yg diinginkan
-- Admin bisa menambahkan, mengubah, dan menghapus data makanan
-- Admin bisa menyetujui calon dokter yang mendaftarkan diri di aplikasi ini
+## Features
+This application has 3 user sides, namely user, admin, and doctor. The following are the features of the NutriCQ application:
+- User authentication (login and register)
+- User profile
+- Record daily nutritional goals of users
+- Calculate the nutrition of a food
+- Record the nutritional needs of users
+- Record all nutritional intake inputted by the user
+- Users can consult a nutritionist
+- Users can make a direct consultation booking with a nutritionist
+- Doctors can approve bookings from users and serve consultations
+- Users can change their daily nutritional needs as desired
+- Admin can add, change, and delete food data
+- Admin can approve prospective doctors who register in this application
 
 ## Tech Stack
-* PHP version: `7.4`
-* Laravel version: `8`
-* Database: `MySql`
-* Laratrust version: `7.1`
-* Sanctum auth version: `2.11`
-* PHPUnit version: `9.5`
+* PHP : `7.4`
+* Laravel : `8`
+* Database : `MySql`
+* Laratrust : `7.1`
+* Sanctum auth : `2.11`
+* PHPUnit : `9.5`
+* fakerphp : `1.9.1`
 
 ## How to Run
 
-Jika ingin menjalankan aplikasi ini di local bisa dengan mengikuti step berikut:
-1. Clone repositori ini
+If you want to run this application locally, you can follow these steps:
+1. Clone this repository
  ```
 git clone https://github.com/divawidia/capstone-project.git
 ```
-2. Update modul yang ada di composer 
+2. Update composer module
 ```
 composer update
 ```
-3. Rename file `.env.example` menjadi `.env`
-4. Buat database baru pada MySql sesuai dengan nama database di `DB_DATABASE` yang ada di file `.env`
-5. Jalankan migrasi dan seeder database 
+3. Rename file `.env.example` to `.env`
+4. Create new database in MySql according to the database name in `DB_DATABASE` which is in the `.env` . file
+5. Run the database migration and seeder 
 ```
 php artisan migrate --seed
 ```
-6. Import data makanan yang ada di file `foodData.sql` pada database yang telah dibuat
-7. Set app key
+6. Run file storage link configuration
+```
+php artisan storage:link
+```
+7. Import food data which in `foodData.sql` file to the created database
+8. Set app key
 ```
 php artisan key:generate
 ```
-8. Jalankan project
+8. Run the project
 ```
 php artisan serve
 ```
 9. navigate to `http://127.0.0.1:8000/api/`
 
 ## API Documentation
-Dokumentasi API dari aplikasi NutriCQ bisa dilihat pada collection Postman berikut ini:
+The API documentation of the NutriCQ application can be seen in the following Postman collection:
