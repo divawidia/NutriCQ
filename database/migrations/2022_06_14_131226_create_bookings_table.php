@@ -28,8 +28,8 @@ class CreateBookingsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('user_dokter_id');
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('user_dokter_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('user_dokter_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
