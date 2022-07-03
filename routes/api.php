@@ -71,6 +71,11 @@ Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('/dashboard/admin', [UserController::class, 'index']);
 
+    Route::get('/admin/doctor-list', [UserController::class, 'doctorIndex'])->name('admin.doctorList');
+    Route::get('/admin/doctor-list/{doctor}', [UserController::class, 'showDoctor'])->name('admin.showDoctor');
+    Route::patch('/admin/doctor-list/{doctor}/', [UserController::class, 'updateStatusDoctor'])->name('admin.updateStatusDoctor');
+
+
     Route::apiResource('admin/foods', FoodController::class);
 
     Route::apiResource('admin/food-categories', FoodCategoryController::class)->except('show');
