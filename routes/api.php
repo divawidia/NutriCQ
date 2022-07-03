@@ -25,11 +25,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Register route
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register'])->name('register.user');
 
 //User Login Route
 Route::get('/login', [AuthController::class, 'indexUser']);
-Route::post('/login/authenticate', [AuthController::class, 'loginUser']);
+Route::post('/login/authenticate', [AuthController::class, 'loginUser'])->name('login.user');
 
 //Admin Login Route
 Route::get('/login/admin', [AuthController::class, 'indexAdmin']);
@@ -64,7 +64,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::put('/food-diary/{id}/{detail_id}', [FoodController::class, 'update'])->name('fooddetail.update');
+    Route::put('/food-diary/{id}/{detail_id}', [FoodController::class, 'update'])->name('fooddetail.update');    
     Route::delete('/food-diary/{id}', [FoodController::class, 'destroy'])->name('food.destroy');
     Route::delete('/food-diary/{id}/{detail_id}', [FoodController::class, 'destroy_food_detail'])->name('food.destroy2');
 });

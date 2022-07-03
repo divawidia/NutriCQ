@@ -243,4 +243,15 @@ class FoodDiaryController extends Controller
             return response()->json(['message' => 'Unauthorized User'], Response::HTTP_UNAUTHORIZED);
         }
     }
+
+    public function destroy($id)
+    {
+        FoodDiary::destroy($id);
+
+        return response()->json([
+            'message' => 'success',
+            'status_code' => 200,
+        ], Response::HTTP_NO_CONTENT);
+        //return redirect('foods');
+    }
 }

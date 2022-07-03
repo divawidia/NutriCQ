@@ -177,6 +177,7 @@ class FoodDiaryTest extends TestCase
             'id' => $this->foodDiary->id,
             'detail_id' => $foodDiaryDetail->id]),
             ['serving_size' => $servingSize])
+            ->assertValid()
             ->assertOk();
         
         $this->assertDatabaseHas('food_diary_details', ['id' => $foodDiaryDetail->id, 'takaran_saji' => $servingSize]);
