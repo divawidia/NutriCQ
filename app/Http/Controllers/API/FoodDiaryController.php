@@ -16,19 +16,29 @@ class FoodDiaryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $foodDiary = auth()->user()->foodDiaries;
-        return response($foodDiary, Response::HTTP_OK);
+
+        if ($foodDiary) {
+            return response()->json([
+                'message' => 'success',
+                'data' => $foodDiary
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'message' => 'data not found.'
+            ], Response::HTTP_NO_CONTENT);
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -243,15 +253,14 @@ class FoodDiaryController extends Controller
             return response()->json(['message' => 'Unauthorized User'], Response::HTTP_UNAUTHORIZED);
         }
     }
-
+    
     public function destroy($id)
     {
         FoodDiary::destroy($id);
 
         return response()->json([
-            'message' => 'success',
-            'status_code' => 200,
-        ], Response::HTTP_NO_CONTENT);
-        //return redirect('foods');
+            'message' => 'successfully deleted'
+        ], Response::HTTP_OK);
+
     }
 }

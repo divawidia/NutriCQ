@@ -15,17 +15,21 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->datetime('tgl_booking');
-            $table->string('deskripsi_booking');
-            $table->string('meeting_link');
-            $table->time('lama_meeting');
-            $table->string('file_resep');
+            $table->string('nama_user');
+            $table->string('nama_dokter')->nullable();
+            $table->date('tanggal');
+            $table->string('deskripsi');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->string('meeting_link')->nullable();
+            $table->time('lama_meeting')->nullable();
+            $table->string('file_resep')->nullable();
             $table->string('status');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('user_dokter_id');
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('user_dokter_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('user_dokter_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
