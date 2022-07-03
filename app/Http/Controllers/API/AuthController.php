@@ -11,13 +11,19 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    //Login User
+
+    public function index()
+    {
+        //This could be view file
+        return 'This is API for Login';
+    }
+    
     public function indexUser()
     {
         return 'This is API page for Login User';
     }
 
-    public function loginUser(Request $request)
+    public function loginUser()
     {
         $fields = $request->validate([
             'email' => 'required|string|email',
@@ -55,22 +61,20 @@ class AuthController extends Controller
         ], 200);
     }
 
-    //Login ADMIN
     public function indexAdmin()
     {
         return 'This is API page for Login Admin';
     }
 
-    public function loginAdmin(Request $request)
+    public function login(Request $request)
     {
         $fields = $request->validate([
             'email' => 'required|string',
             'password' => 'required|string'
         ]);
 
-
         //Check email
-        $user = User::where('email', $fields['email'])->first();
+        $user = User::where('email', $fields['email'])->where('status', 'active')->first();
 
         //Check Password
         if (!$user || !Hash::check($fields['password'], $user->password)) {
@@ -87,12 +91,6 @@ class AuthController extends Controller
         ];
 
         return response($response, 201);
-    }
-
-    public function index()
-    {
-        //This could be view file
-        return 'This is API for Login';
     }
 
     public function logout(Request $request)
