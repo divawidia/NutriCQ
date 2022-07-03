@@ -151,4 +151,50 @@ class FoodDiaryTest extends TestCase
         $this->assertEquals($response['data'][0]['total_air'], $this->foodDiary->total_air + $food->air * $servingSize/100);
         $this->assertDatabaseHas('food_diary_details', ['food_id' => $food->id, 'food_diary_id' => $response['data'][0]['id'], 'air' => $food->air * $servingSize/100]);
     }
+
+    public function test_delete_food_diary()
+    {
+        //preparation
+        $foodDiary = FoodDiary::factory()->make(['user_id' => $this->user->id]);
+        
+
+        //assertion
+        $this->deleteJson(route('food.destroy', ['id' => $this->foodDiary->id]))
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('food_diaries', ['id' => $this->foodDiary->id]);
+    }
+
+    public function test_delete_food_detail()
+    {
+        //preparation
+        $foodDiary = FoodDiary::factory()->create(['user_id' => $this->user->id]);
+        $foodDiaryDetail = FoodDiaryDetail::factory()->create(['food_diary_id' => $foodDiary->id]);
+
+        //assertion
+        $this->deleteJson(route('food.destroy2', [
+            'id' => $this->foodDiary->id,
+            'detail_id' => $foodDiaryDetail->id]))
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('food_diary_details', ['id' => $foodDiaryDetail->id]);
+    }
+
+    public function test_update_serving_size()
+    {
+        //preparation
+        $foodDiary = FoodDiary::factory()->create(['user_id' => $this->user->id]);
+        $foodDiaryDetail = FoodDiaryDetail::factory()->create(['food_diary_id' => $foodDiary->id]);
+        $servingSize = 200;
+
+        //assertion
+        $this->putJson(route('fooddetail.update', [
+            'id' => $this->foodDiary->id,
+            'detail_id' => $foodDiaryDetail->id]),
+            ['serving_size' => $servingSize])
+            ->assertValid()
+            ->assertOk();
+        
+        $this->assertDatabaseHas('food_diary_details', ['id' => $foodDiaryDetail->id, 'takaran_saji' => $servingSize]);
+    }
 }

@@ -34,7 +34,7 @@ Route::post('/register/doctor', [RegisterController::class, 'register_doctor']);
 
 //User Login Route
 Route::get('/login', [AuthController::class, 'indexUser']);
-Route::post('/login/authenticate', [AuthController::class, 'loginUser']);
+Route::post('/login/authenticate', [AuthController::class, 'loginUser'])->name('login.user');
 
 //Admin Login Route
 Route::get('/login/admin', [AuthController::class, 'indexAdmin']);
@@ -63,9 +63,10 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::apiResource('food-diary', FoodDiaryController::class);
     Route::patch('/food-diary/{food_diary}', [FoodDiaryController::class, 'addFoodToExistingFoodDiary'])->name('food-diary.addFoodToExistingFoodDiary');
     Route::patch('/foods/{food}', [FoodController::class, 'storeCalculatedFoodToFoodDiary'])->name('foods.storeCalculatedFoodToFoodDiary');
-    Route::patch('/foods-diary/{id}/{detail_id}', [FoodDiaryController::class, 'update'])->name('fooddetail.update');
-    //    Route::delete('/foods-diary/{id}', [FoodController::class, 'destroy'])->name('food.destroy');
-    Route::delete('/foods-diary/{id}/{detail_id}', [FoodDiaryController::class, 'destroy_food_detail'])->name('fooddetail.destroy');
+    
+    Route::put('/foods-diary/{id}/{detail_id}', [FoodController::class, 'updateFoodDiaryDetail'])->name('fooddetail.update');
+    Route::delete('/foods-diary/{id}', [FoodDiaryController::class, 'destroy'])->name('food.destroy');
+    Route::delete('/foods-diary/{id}/{detail_id}', [FoodController::class, 'destroy_food_detail'])->name('fooddetail.destroy');
 });
 
 //middleware for doctor
@@ -82,7 +83,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
 //middleware for admin
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('/dashboard/admin', [UserController::class, 'index']);
-
+    
     Route::get('/admin/doctor-list', [UserController::class, 'doctorIndex'])->name('admin.doctorList');
     Route::get('/admin/doctor-list/{doctor}', [UserController::class, 'showDoctor'])->name('admin.showDoctor');
     Route::patch('/admin/doctor-list/{doctor}/', [UserController::class, 'updateStatusDoctor'])->name('admin.updateStatusDoctor');

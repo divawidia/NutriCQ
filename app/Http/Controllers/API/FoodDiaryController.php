@@ -253,32 +253,10 @@ class FoodDiaryController extends Controller
             return response()->json(['message' => 'Unauthorized User'], Response::HTTP_UNAUTHORIZED);
         }
     }
-
-    public function update(Request $request, $id, FoodDiaryDetail $detail_id)
-    {
-        $detail_id->update([
-            'takaran_saji' => $request->takaran_saji
-        ]);
-
-        return response()->json([
-            'message' => 'success',
-            'data' => $detail_id
-        ], Response::HTTP_OK);
-    }
-
+    
     public function destroy($id)
     {
         FoodDiary::destroy($id);
-
-        return response()->json([
-            'message' => 'successfully deleted'
-        ], Response::HTTP_OK);
-
-    }
-
-    public function destroy_food_detail($id, $detail_id)
-    {
-        FoodDiaryDetail::destroy($detail_id);
 
         return response()->json([
             'message' => 'successfully deleted'
