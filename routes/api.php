@@ -50,7 +50,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::get('/dashboard/user', [UserController::class, 'index']);
 
     // Route Booking
-    Route::post('/booking', [BookingController::class, 'store']);
+    Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
     Route::get('/mybooking', [BookingController::class, 'my_booking']);
 
     //Goal Route
@@ -64,7 +64,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::patch('/food-diary/{food_diary}', [FoodDiaryController::class, 'addFoodToExistingFoodDiary'])->name('food-diary.addFoodToExistingFoodDiary');
     Route::patch('/foods/{food}', [FoodController::class, 'storeCalculatedFoodToFoodDiary'])->name('foods.storeCalculatedFoodToFoodDiary');
     Route::patch('/foods-diary/{id}/{detail_id}', [FoodDiaryController::class, 'update'])->name('fooddetail.update');
-//    Route::delete('/foods-diary/{id}', [FoodController::class, 'destroy'])->name('food.destroy');
+    //    Route::delete('/foods-diary/{id}', [FoodController::class, 'destroy'])->name('food.destroy');
     Route::delete('/foods-diary/{id}/{detail_id}', [FoodDiaryController::class, 'destroy_food_detail'])->name('fooddetail.destroy');
 });
 
