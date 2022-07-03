@@ -26,6 +26,14 @@ class AuthController extends Controller
 
         //Check email
         $user = User::where('email', $fields['email'])->where('status', 'active')->first();
+        
+        //check if user active
+        if($user == null)
+        {
+            return response([
+                'message' => "Account Inactive"
+            ], 401);
+        }
 
         //Check Password
         if (!$user || !Hash::check($fields['password'], $user->password)) {

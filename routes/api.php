@@ -30,8 +30,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Register route
-Route::post('/register/user', [RegisterController::class, 'register_user']);
-Route::post('/register/doctor', [RegisterController::class, 'register_doctor']);
+Route::post('/register/user', [RegisterController::class, 'register_user'])->name('register.user');
+Route::post('/register/doctor', [RegisterController::class, 'register_doctor'])->name('register.doctor');
 
 //User Login Route
 Route::get('/login', [AuthController::class, 'indexUser']);
