@@ -156,11 +156,11 @@ class FoodDiaryTest extends TestCase
     {
         //preparation
         $foodDiary = FoodDiary::factory()->make(['user_id' => $this->user->id]);
-        
+
 
         //assertion
         $this->deleteJson(route('food.destroy', ['id' => $this->foodDiary->id]))
-            ->assertNoContent();
+            ->assertOk();
 
         $this->assertDatabaseMissing('food_diaries', ['id' => $this->foodDiary->id]);
     }
@@ -172,7 +172,7 @@ class FoodDiaryTest extends TestCase
         $foodDiaryDetail = FoodDiaryDetail::factory()->create(['food_diary_id' => $foodDiary->id]);
 
         //assertion
-        $this->deleteJson(route('food.destroy2', [
+        $this->deleteJson(route('fooddetail.destroy', [
             'id' => $this->foodDiary->id,
             'detail_id' => $foodDiaryDetail->id]))
             ->assertNoContent();
@@ -194,7 +194,7 @@ class FoodDiaryTest extends TestCase
             ['serving_size' => $servingSize])
             ->assertValid()
             ->assertOk();
-        
+
         $this->assertDatabaseHas('food_diary_details', ['id' => $foodDiaryDetail->id, 'takaran_saji' => $servingSize]);
     }
 }

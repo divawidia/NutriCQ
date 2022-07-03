@@ -70,4 +70,12 @@ class FoodCategoryTest extends TestCase
 
         $this->assertDatabaseMissing('food_categories', ['category_name' => $this->foodCategory->category_name]);
     }
+
+    public function test_store_new_food_category_validation()
+    {
+        FoodCategory::factory()->make(['category_name' => $this->foodCategory->category_name]);
+
+        $this->postJson(route('food-categories.store'), ['category_name' => $this->foodCategory->category_namev])
+            ->assertUnprocessable();
+    }
 }
