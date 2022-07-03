@@ -16,19 +16,29 @@ class FoodDiaryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $foodDiary = auth()->user()->foodDiaries;
-        return response($foodDiary, Response::HTTP_OK);
+
+        if ($foodDiary) {
+            return response()->json([
+                'message' => 'success',
+                'data' => $foodDiary
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'message' => 'data not found.'
+            ], Response::HTTP_NO_CONTENT);
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -242,5 +252,37 @@ class FoodDiaryController extends Controller
         else{
             return response()->json(['message' => 'Unauthorized User'], Response::HTTP_UNAUTHORIZED);
         }
+    }
+
+    public function update(Request $request, $id, FoodDiaryDetail $detail_id)
+    {
+        $detail_id->update([
+            'takaran_saji' => $request->takaran_saji
+        ]);
+
+        return response()->json([
+            'message' => 'success',
+            'data' => $detail_id
+        ], Response::HTTP_OK);
+    }
+
+    public function destroy($id)
+    {
+        FoodDiary::destroy($id);
+
+        return response()->json([
+            'message' => 'successfully deleted'
+        ], Response::HTTP_OK);
+
+    }
+
+    public function destroy_food_detail($id, $detail_id)
+    {
+        FoodDiaryDetail::destroy($detail_id);
+
+        return response()->json([
+            'message' => 'successfully deleted'
+        ], Response::HTTP_OK);
+
     }
 }
