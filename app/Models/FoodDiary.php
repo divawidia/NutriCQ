@@ -7,24 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Food extends Model
+class FoodDiary extends Model
 {
     use HasFactory;
-
-    protected $table = 'foods';
+    protected $table = 'food_diaries';
 
     protected $guarded = [];
 
-    protected $with = ['foodCategory'];
+    protected $with = ['foodDiaryDetails'];
 
-    public function foodCategory(): BelongsTo
+    public $timestamps = false;
+
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(FoodCategory::class, 'category_id', 'id');
+        return $this->belongsTo(User::class);
     }
 
     public function foodDiaryDetails(): HasMany
     {
-        return $this->hasMany(FoodDiaryDetail::class, 'food_id', 'id');
+        return $this->hasMany(FoodDiaryDetail::class);
     }
-
 }
