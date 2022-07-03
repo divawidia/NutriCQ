@@ -52,6 +52,21 @@ class FoodDiaryTest extends TestCase
         $this->assertDatabaseHas('food_diaries', ['tgl_food_diary' => $foodDiary->tgl_food_diary]);
     }
 
+//    public function test_store_food_diary_without_foods_validation()
+//    {
+//        //preparation
+//        $foodDiary = FoodDiary::factory()->make(['user_id' => $this->user->id]);
+//
+//        //action
+//        $response = $this->postJson(route('food-diary.store'), [
+//            'tgl_food_diary' => null]);
+//
+//        $response->assertJsonMissingValidationErrors(['tgl_food_diary']);
+//        //assertion
+////        $this->assertEquals($foodDiary->tgl_food_diary, $response[0]['tgl_food_diary']);
+////        $this->assertDatabaseHas('food_diaries', ['tgl_food_diary' => $foodDiary->tgl_food_diary]);
+//    }
+
     public function test_fetch_all_food_diary()
     {
         //action

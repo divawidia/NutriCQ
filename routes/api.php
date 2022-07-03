@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+
 use App\Http\Controllers\API\BookingController;
+use App\Http\Controllers\API\FoodCategoryController;
 use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\FoodDiaryController;
 use App\Http\Controllers\API\GoalController;
@@ -43,6 +45,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+//middleware for user
 Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::get('/dashboard/user', [UserController::class, 'index']);
 
@@ -60,8 +63,12 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::apiResource('food-diary', FoodDiaryController::class);
     Route::patch('/food-diary/{food_diary}', [FoodDiaryController::class, 'addFoodToExistingFoodDiary'])->name('food-diary.addFoodToExistingFoodDiary');
     Route::patch('/foods/{food}', [FoodController::class, 'storeCalculatedFoodToFoodDiary'])->name('foods.storeCalculatedFoodToFoodDiary');
+    Route::patch('/foods-diary/{id}/{detail_id}', [FoodDiaryController::class, 'update'])->name('fooddetail.update');
+//    Route::delete('/foods-diary/{id}', [FoodController::class, 'destroy'])->name('food.destroy');
+    Route::delete('/foods-diary/{id}/{detail_id}', [FoodDiaryController::class, 'destroy_food_detail'])->name('fooddetail.destroy');
 });
 
+//middleware for doctor
 Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
     Route::get('/dashboard/doctor', [UserController::class, 'index']);
 
@@ -72,17 +79,22 @@ Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
     Route::put('/bookinglist/{id}/done', [BookingController::class, 'done']);
 });
 
+//middleware for admin
 Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('/dashboard/admin', [UserController::class, 'index']);
+
+    Route::apiResource('admin/foods', FoodController::class);
+
+    Route::apiResource('admin/food-categories', FoodCategoryController::class)->except('show');
 });
 
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/foods-diary', [FoodController::class, 'index'])->name('food.index');
-    Route::get('/foods-diary/{id}', [FoodController::class, 'show'])->name('food.show');
-    Route::put('/foods-diary/{id}/{detail_id}', [FoodController::class, 'update'])->name('fooddetail.update');
-    Route::delete('/foods-diary/{id}', [FoodController::class, 'destroy'])->name('food.destroy');
-    Route::delete('/foods-diary/{id}/{detail_id}', [FoodController::class, 'destroy_food_detail'])->name('food.destroy2');
-});
+//Route::group(['middleware' => ['auth:sanctum']], function () {
+//    Route::get('/foods-diary', [FoodController::class, 'index'])->name('food.index');
+//    Route::get('/foods-diary/{id}', [FoodController::class, 'show'])->name('food.show');
+//    Route::put('/foods-diary/{id}/{detail_id}', [FoodController::class, 'update'])->name('fooddetail.update');
+//    Route::delete('/foods-diary/{id}', [FoodController::class, 'destroy'])->name('food.destroy');
+//    Route::delete('/foods-diary/{id}/{detail_id}', [FoodController::class, 'destroy_food_detail'])->name('food.destroy2');
+//});
 
 Route::get('/foods', [FoodController::class, 'search'])->name('foods.search');
 Route::get('/foods/{food}', [FoodController::class, 'calculate'])->name('foods.calculate');

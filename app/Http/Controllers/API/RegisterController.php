@@ -20,6 +20,7 @@ class RegisterController extends Controller
         ]);
 
         $users = User::where('email', '=', $request->input('email'))->first();
+
         // Check if user exist or not
         if ($users != null) {
             // User exist
@@ -52,6 +53,7 @@ class RegisterController extends Controller
     public function register_doctor(Request $request)
     {
         $users = User::where('email', '=', $request->input('email'))->first();
+
         if ($users != null) {
             // User exist
             return response([

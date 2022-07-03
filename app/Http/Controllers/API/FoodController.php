@@ -13,82 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FoodController extends Controller
 {
-    public function index()
-    {
-        $user = Auth::user();
-
-        $diary = FoodDiary::where('user_id', $user->id)->latest()->get();
-
-        if ($diary) {
-            return response()->json([
-                'message' => 'success',
-                'status_code' => 200,
-                'data' => $diary
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'data not found.',
-                'status_code' => 404
-            ]);
-        }
-    }
-
-    public function show(FoodDiary $id)
-    {
-
-        $data = FoodDiaryDetail::where('food_diary_id', $id->id)->get();
-
-        if($data)
-        {
-            return response()->json([
-                'message' => 'success',
-                'status_code' => 200,
-                'data' => $data
-            ]);
-        }else
-        {
-            return response()->json([
-                'message' => 'data not found.',
-                'status_code' => 404
-            ]);
-        }
-    }
-
-    public function update(Request $request, $id, FoodDiaryDetail $detail_id)
-    {
-        $detail_id->update([
-            'takaran_saji' => $request->takaran_saji
-        ]);
-
-        return response()->json([
-            'message' => 'success',
-            'status_code' => 200,
-            'data' => $detail_id
-        ]);
-    }
-
-    public function destroy($id)
-    {
-        FoodDiary::destroy($id);
-
-        return response()->json([
-            'message' => 'success',
-            'status_code' => 200,
-        ]);
-        //return redirect('foods');
-    }
-
-    public function destroy_food_detail($id, $detail_id)
-    {
-        // dd($detail_id);
-        FoodDiaryDetail::destroy($detail_id);
-
-        return response()->json([
-            'message' => 'success',
-            'status_code' => 200,
-        ]);
-        //return redirect('foods');
-    }
 
     public function search(Request $request)
     {
@@ -284,5 +208,100 @@ class FoodController extends Controller
             'message' => 'successfully added food',
             'data' => $food_diary
         ], Response::HTTP_CREATED);
+    }
+
+    public function index()
+    {
+        $foods = Food::all();
+        return response($foods, Response::HTTP_OK);
+    }
+
+    public function show(Food $food)
+    {
+        return response($food, Response::HTTP_OK);
+    }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|unique:foods,name',
+            'sumber' => 'required|string',
+            'air' => 'required|numeric',
+            'energi' => 'required|numeric',
+            'protein' => 'required|numeric',
+            'lemak' => 'required|numeric',
+            'karbohidrat' => 'required|numeric',
+            'serat' => 'required|numeric',
+            'abu' => 'required|numeric',
+            'kalsium' => 'required|numeric',
+            'fosfor' => 'required|numeric',
+            'besi' => 'required|numeric',
+            'natrium' => 'required|numeric',
+            'kalium' => 'required|numeric',
+            'tembaga' => 'required|numeric',
+            'seng' => 'required|numeric',
+            'retinol' => 'required|numeric',
+            'b_karoten' => 'required|numeric',
+            'karoten_total' => 'required|numeric',
+            'thiamin' => 'required|numeric',
+            'riboflamin' => 'required|numeric',
+            'niasin' => 'required|numeric',
+            'vitamin_c' => 'required|numeric',
+            'porsi_berat_dapat_dimakan' => 'required|numeric',
+            'category_id' => 'sometimes'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $food = Food::create($request->all());
+        return response($food, Response::HTTP_CREATED);
+    }
+
+    public function update(Food $food, Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'string|unique:foods,name',
+            'sumber' => 'string',
+            'air' => 'numeric',
+            'energi' => 'numeric',
+            'protein' => 'numeric',
+            'lemak' => 'numeric',
+            'karbohidrat' => 'numeric',
+            'serat' => 'numeric',
+            'abu' => 'numeric',
+            'kalsium' => 'numeric',
+            'fosfor' => 'numeric',
+            'besi' => 'numeric',
+            'natrium' => 'numeric',
+            'kalium' => 'numeric',
+            'tembaga' => 'numeric',
+            'seng' => 'numeric',
+            'retinol' => 'numeric',
+            'b_karoten' => 'numeric',
+            'karoten_total' => 'numeric',
+            'thiamin' => 'numeric',
+            'riboflamin' => 'numeric',
+            'niasin' => 'numeric',
+            'vitamin_c' => 'numeric',
+            'porsi_berat_dapat_dimakan' => 'numeric',
+            'category_id' => 'sometimes'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $food->update($request->all());
+
+        return response($food, Response::HTTP_OK);
+    }
+
+    public function destroy(Food $food)
+    {
+        $food->delete();
+
+        return response('', Response::HTTP_NO_CONTENT);
     }
 }

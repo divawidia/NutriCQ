@@ -16,6 +16,6 @@ class FoodCategory extends Model
 
     public function foods(): HasMany
     {
-        return $this->hasMany(Food::class);
+        return $this->hasMany(Food::class, 'category_id', 'id');
     }
 }
