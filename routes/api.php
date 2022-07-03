@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+
+use App\Http\Controllers\API\BookingController;
 use App\Http\Controllers\API\FoodCategoryController;
 use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\FoodDiaryController;
@@ -47,6 +49,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::get('/dashboard/user', [UserController::class, 'index']);
 
+    // Route Booking
+    Route::post('/booking', [BookingController::class, 'store']);
+    Route::get('/mybooking', [BookingController::class, 'my_booking']);
+
     //Goal Route
     Route::get('/goal', [GoalController::class, 'index']);
     Route::get('/goal/{id}', [GoalController::class, 'show']);
@@ -65,6 +71,12 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
 //middleware for doctor
 Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
     Route::get('/dashboard/doctor', [UserController::class, 'index']);
+
+    // Route for booking
+    Route::get('/bookinglist', [BookingController::class, 'bookinglist']);
+    Route::put('/bookinglist/{id}/approved', [BookingController::class, 'approved']);
+    Route::put('/bookinglist/{id}/rejected', [BookingController::class, 'rejected']);
+    Route::put('/bookinglist/{id}/done', [BookingController::class, 'done']);
 });
 
 //middleware for admin
