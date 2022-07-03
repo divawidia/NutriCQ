@@ -14,14 +14,15 @@ class UpdateUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->date('tgl_lahir');
+            $table->date('tgl_lahir')->nullable();
             $table->string('no_telp');
-            $table->string('gender');
-            $table->string('cv');
-            $table->string('license');
-            $table->integer('tinggi_badan');
-            $table->integer('berat_badan');
-            $table->integer('tingkat_aktivitas');
+            $table->string('gender')->nullable();
+            $table->string('cv')->nullable();
+            $table->string('license')->nullable();
+            $table->integer('tinggi_badan')->nullable();
+            $table->integer('berat_badan')->nullable();
+            $table->integer('tingkat_aktivitas')->nullable();
+            $table->string('status');
         });
     }
 

@@ -11,127 +11,86 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Register User
-    public function register(Request $request)
-    {
-
-        $users = User::where('email', '=', $request->input('email'))->first();
-        if ($users != null) {
-            // User exist
-            return response([
-                'message' => "Email has been registered!"
-            ], 401);
-        }
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'tgl_lahir' => '',
-            'no_telp' => 'required|string',
-            'gender' => 'required|string',
-            'cv' => '',
-            'license' => '',
-            'tinggi_badan' => 'required|int',
-            'berat_badan' => 'required|int'
-        ]);
-
-        // store to database
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'tgl_lahir' => $request->tgl_lahir,
-            'no_telp' => $request->no_telp,
-            'gender' => $request->gender,
-            'cv' => $request->cv,
-            'license' => $request->license,
-            'tinggi_badan' => $request->tinggi_badan,
-            'berat_badan' => $request->berat_badan
-        ]);
-
-        $user->attachRole($request->role_id);
-        // $user->attachRole('admin');
-
-        // result with token
-        $token = $user->createToken('API Token')->plainTextToken;
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Successfull registgered',
-            'token' => $token,
-        ], 200);
-    }
-
-    //Login User
-    public function indexUser()
-    {
-        return 'This is API page for Login User';
-    }
-
-    public function loginUser(Request $request)
-    {
-        $fields = $request->validate([
-            'email' => 'required|string',
-            'password' => 'required|string'
-        ]);
-
-        //Check email
-        $user = User::where('email', $fields['email'])->first();
-
-        //Check Password
-        if (!$user || !Hash::check($fields['password'], $user->password)) {
-            return response([
-                'message' => "Bad Crendential"
-            ], 401);
-        }
-
-        $token = $user->createToken('myapptoken')->plainTextToken;
-
-        $response = [
-            'user' => $user,
-            'token' => $token
-        ];
-
-        return response($response, 201);
-    }
-
-    //Login ADMIN
-    public function indexAdmin()
-    {
-        return 'This is API page for Login Admin';
-    }
-
-    public function loginAdmin(Request $request)
-    {
-        $fields = $request->validate([
-            'email' => 'required|string',
-            'password' => 'required|string'
-        ]);
-
-        //Check email
-        $user = User::where('email', $fields['email'])->first();
-
-        //Check Password
-        if (!$user || !Hash::check($fields['password'], $user->password)) {
-            return response([
-                'message' => "Bad Crendential"
-            ], 401);
-        }
-
-        $token = $user->createToken('myapptoken')->plainTextToken;
-
-        $response = [
-            'user' => $user,
-            'token' => $token
-        ];
-
-        return response($response, 201);
-    }
 
     public function index()
     {
         //This could be view file
         return 'This is API for Login';
+    }
+    
+    public function indexUser()
+    {
+        return 'This is API page for Login User';
+    }
+
+    public function loginUser()
+    {
+        $fields = $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string'
+        ]);
+
+        //Check email
+        $user = User::where('email', $fields['email'])->where('status', 'active')->first();
+        
+        //check if user active
+        if($user == null)
+        {
+            return response([
+                'message' => "Account Inactive"
+            ], 401);
+        }
+
+        //Check Password
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return response([
+                'message' => "Bad Crendential"
+            ], 401);
+        }
+
+        $token = $user->createToken('myapptoken')->plainTextToken;
+
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token
+        ], 200);
+    }
+
+    public function indexAdmin()
+    {
+        return 'This is API page for Login Admin';
+    }
+
+    public function login(Request $request)
+    {
+        $fields = $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string'
+        ]);
+
+        //Check email
+        $user = User::where('email', $fields['email'])->where('status', 'active')->first();
+
+        //Check Password
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return response([
+                'message' => "Bad Crendential"
+            ], 401);
+        }
+
+        $token = $user->createToken('myapptoken')->plainTextToken;
+
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+
+        return response($response, 201);
     }
 
     public function logout(Request $request)

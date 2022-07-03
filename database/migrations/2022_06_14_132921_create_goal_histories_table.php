@@ -39,7 +39,7 @@ class CreateGoalHistoriesTable extends Migration
             $table->double('total_vitamin_c')->default(0);
             $table->unsignedBigInteger('user_id');
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

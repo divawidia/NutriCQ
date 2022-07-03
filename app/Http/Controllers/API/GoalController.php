@@ -13,12 +13,11 @@ class GoalController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $data = Goal::all();
-        
         if (count($data) > 0) {
             return response()->json([
                 'message' => 'success',
@@ -37,7 +36,7 @@ class GoalController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -65,12 +64,12 @@ class GoalController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Goal  $goal
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
         $data = Goal::find($id);
-        
+
         if ($data) {
             return response()->json([
                 'message' => 'success',
@@ -91,7 +90,7 @@ class GoalController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Goal  $goal
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Goal $id)
     {
@@ -110,7 +109,7 @@ class GoalController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Goal  $goal
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Goal $id)
     {
