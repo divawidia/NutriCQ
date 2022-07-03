@@ -46,6 +46,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+
+Route::put('/profile/{id}', [UserController::class, 'update'])->name('profile.update');
+
 //Get Route Review
 Route::get('/doctor/reviews', [ReviewController::class, 'index'])->name('review.index');
 Route::get('/doctor/{id}/reviews', [ReviewController::class, 'reviewList'])->name('review.reviewList');
