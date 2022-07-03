@@ -72,5 +72,13 @@ php artisan serve
 ```
 9. navigate to `http://127.0.0.1:8000/api/`
 
+* For running the unit test you can run the following command :
+```
+php artisan test
+```
+Or
+```
+./vendor/bin/phpunit
+```
 ## API Documentation
 The API documentation of the NutriCQ application can be seen in the following Postman collection:
