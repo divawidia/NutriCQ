@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    
+
     public function index()
     {
         //This could be view file
@@ -21,6 +21,11 @@ class AuthController extends Controller
     public function indexUser()
     {
         return 'This is API page for Login User';
+    }
+
+    public function indexAdmin()
+    {
+        return 'This is API page for Login Admin';
     }
 
     public function login(Request $request)
