@@ -127,17 +127,6 @@ class FoodController extends Controller
         ]);
     }
 
-    public function destroy($id)
-    {
-        FoodDiary::destroy($id);
-
-        return response()->json([
-            'message' => 'success',
-            'status_code' => 200,
-        ], Response::HTTP_NO_CONTENT);
-        //return redirect('foods');
-    }
-
     public function destroy_food_detail(FoodDiary $id, $detail_id)
     {
         // dd($detail_id);
