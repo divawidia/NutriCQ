@@ -15,7 +15,6 @@ class CreateGoalHistoriesTable extends Migration
     {
         Schema::create('goal_histories', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal_goals')->useCurrent();
             $table->double('total_air')->default(0);
             $table->double('total_energi')->default(0);
             $table->double('total_protein')->default(0);

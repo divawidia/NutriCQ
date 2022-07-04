@@ -68,7 +68,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::get('/goal', [GoalController::class, 'index']);
     Route::get('/goal/{id}', [GoalController::class, 'show']);
     Route::post('/goal', [GoalController::class, 'store']);
-    Route::put('/goal/{id}', [GoalController::class, 'update']);
+    Route::patch('/goal/{id}', [GoalController::class, 'update']);
     Route::delete('/goal/{id}', [GoalController::class, 'destroy']);
 
     Route::apiResource('food-diary', FoodDiaryController::class);
