@@ -37,10 +37,6 @@ Route::post('/register/doctor', [RegisterController::class, 'register_doctor'])-
 Route::get('/login', [AuthController::class, 'indexUser']);
 Route::post('/login/authenticate', [AuthController::class, 'login'])->name('login.user');
 
-//Admin Login Route
-Route::get('/login/admin', [AuthController::class, 'indexAdmin']);
-Route::post('/login/admin/authenticate', [AuthController::class, 'login']);
-
 //Logout Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);

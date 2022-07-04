@@ -30,7 +30,7 @@ class UserController extends Controller
         $user = User::find($id);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email,'.$user->id,
+            'email' => 'required|string|email|unique:users,email,' . $user->id,
             'password' => 'required|string|min:6|confirmed',
             'tgl_lahir' => '',
             'no_telp' => 'required|string',
@@ -72,6 +72,7 @@ class UserController extends Controller
             'message' => 'success',
             'status_code' => 200,
         ], 200);
+    }
 
     public function doctorIndex()
     {

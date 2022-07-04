@@ -42,7 +42,6 @@ class UserTest extends TestCase
 
     public function test_user_belongs_to_many_role()
     {
-
         $this->assertInstanceOf(Collection::class,  $this->userUser->roles);
         $this->assertInstanceOf(Role::class,  $this->userUser->roles->first());
     }
