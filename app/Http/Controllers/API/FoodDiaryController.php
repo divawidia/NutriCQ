@@ -41,6 +41,7 @@ class FoodDiaryController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
         }
+
         $servingSize = $request->serving_size;
         $foodId = $request->food_id;
 
@@ -56,7 +57,7 @@ class FoodDiaryController extends Controller
             $foodDiary->update(FoodDiary::updateWhenFoodAdded($calculateFood));
         }
 
-        $foodDiary = $foodDiary->where('id', $foodDiary->id)->get();
+        $foodDiary = $foodDiary->with('foodDiaryDetails')->where('id', $foodDiary->id)->get();
 
         //return response($foodDiary, Response::HTTP_CREATED);
         return response()->json([
@@ -67,7 +68,7 @@ class FoodDiaryController extends Controller
 
     public function show(FoodDiary $food_diary)
     {
-        $foodDiary = auth()->user()->foodDiaries()->where('id', $food_diary->id)->get();
+        $foodDiary = auth()->user()->foodDiaries()->with('foodDiaryDetails')->where('id', $food_diary->id)->get();
 
         return response()->json([
             'message' => 'Data successfully retrieved',
@@ -98,10 +99,10 @@ class FoodDiaryController extends Controller
 
             $food_diary->update(FoodDiary::updateWhenFoodAdded($calculateFood));
 
-            $foodDiary = $food_diary->where('id', $food_diary->id)->get();
+            $foodDiary = $food_diary->with('foodDiaryDetails')->where('id', $food_diary->id)->get();
 
             return response()->json([
-                'message' => 'Food data successfully added to food diaryZ',
+                'message' => 'Food data successfully added to food diary',
                 'data' => $foodDiary
             ], Response::HTTP_CREATED);
         }

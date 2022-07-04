@@ -160,7 +160,7 @@ class FoodDiaryTest extends TestCase
         $this->deleteJson(route('fooddetail.destroy', [
             'id' => $this->foodDiary->id,
             'detail_id' => $foodDiaryDetail->id]))
-            ->assertNoContent();
+            ->assertOk();
 
         $this->assertDatabaseMissing('food_diary_details', ['id' => $foodDiaryDetail->id]);
     }

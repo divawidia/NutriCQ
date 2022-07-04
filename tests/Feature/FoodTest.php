@@ -63,7 +63,7 @@ class FoodTest extends TestCase
             ->json();
 
         //assertion
-        $this->assertEquals($this->food->air * $servingSize/100, $response[0]['air']);
+        $this->assertEquals($this->food->air * $servingSize/100, $response['data'][0]['air']);
     }
 
     public function test_admin_fetch_all_food_data()
@@ -80,7 +80,7 @@ class FoodTest extends TestCase
             ->assertOk()
             ->json();
 
-        $this->assertEquals($response['name'], $this->food->name);
+        $this->assertEquals($response['data']['name'], $this->food->name);
     }
 
     public function test_admin_store_new_food_data()
@@ -116,7 +116,7 @@ class FoodTest extends TestCase
         ])->assertCreated()
         ->json();
 
-        $this->assertEquals($food->name, $response['name']);
+        $this->assertEquals($food->name, $response['data']['name']);
         $this->assertDatabaseHas('foods', [
             'name' => $food->name,
             'sumber' => $food->sumber,
@@ -157,7 +157,7 @@ class FoodTest extends TestCase
     public function test_admin_destroy_food_data()
     {
         $this->deleteJson(route('foods.destroy', $this->food->id))
-            ->assertNoContent();
+            ->assertOk();
 
         $this->assertDatabaseMissing('foods', ['name' => $this->food->id]);
     }
