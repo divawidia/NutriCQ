@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Goal;
+use App\Models\GoalHistory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class GoalFactory extends Factory
+class GoalHistoryFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
      * @return array
      */
-    protected $model = Goal::class;
+    protected $model = GoalHistory::class;
 
     public function definition()
     {
