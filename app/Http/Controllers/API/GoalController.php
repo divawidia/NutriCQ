@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Goal;
 use App\Models\GoalHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class GoalController extends Controller
 {
@@ -17,18 +19,18 @@ class GoalController extends Controller
      */
     public function index()
     {
-        $data = Goal::all();
-        if (count($data) > 0) {
+        $goal = auth()->user()->goals;
+
+        if (count($goal) > 0) {
             return response()->json([
                 'message' => 'success',
-                'status_code' => 200,
-                'data' => $data
-            ]);
+                'data' => $goal
+            ], Response::HTTP_OK);
         } else {
             return response()->json([
-                'message' => 'data not found.',
-                'status_code' => 404
-            ]);
+                'message' => 'user has no goal data',
+                'data' => $goal
+            ], Response::HTTP_OK);
         }
     }
 
@@ -40,24 +42,47 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
-        $user_id = $request->input('user_id');
+        $validator = Validator::make($request->all(), [
+            'total_air' => 'numeric',
+            'total_energi' => 'numeric',
+            'total_protein' => 'numeric',
+            'total_lemak' => 'numeric',
+            'total_karbohidrat' => 'numeric',
+            'total_serat' => 'numeric',
+            'total_abu' => 'numeric',
+            'total_kalsium' => 'numeric',
+            'total_fosfor' => 'numeric',
+            'total_besi' => 'numeric',
+            'total_natrium' => 'numeric',
+            'total_kalium' => 'numeric',
+            'total_tembaga' => 'numeric',
+            'total_seng' => 'numeric',
+            'total_retinol' => 'numeric',
+            'total_b_karoten' => 'numeric',
+            'total_karoten_total' => 'numeric',
+            'total_thiamin' => 'numeric',
+            'total_riboflamin' => 'numeric',
+            'total_niasin' => 'numeric',
+            'total_vitamin_c' => 'numeric'
+        ]);
 
-        if (Goal::where('user_id', '=', $user_id)->exists()) {
-            return response()->json([
-                'message' => 'Goal only can be stored once',
-                'status_code' => 403,
-            ], 403);
-        } else {
-            Goal::create($request->all());
-            GoalHistory::create($request->all());
-            
-            return response()->json([
-                'message' => 'success',
-                'status_code' => 201,
-            ], 201);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        
+        if (Goal::where('user_id', '=', $this->authUserId())->exists()) {
+            return response()->json([
+                'message' => 'Goal only can be stored once',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } else {
+            $goal = auth()->user()->goals()->create($request->all());
+            auth()->user()->goalHistories()->create($request->all());
+
+            return response()->json([
+                'message' => 'success',
+                'data' => $goal
+            ], Response::HTTP_CREATED);
+        }
     }
 
     /**
@@ -66,22 +91,20 @@ class GoalController extends Controller
      * @param  \App\Models\Goal  $goal
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(Goal $id)
     {
-        $data = Goal::find($id);
+        $data = auth()->user()->goals()->where('id', $id->id)->get();
 
-        if ($data) {
+        if ($this->authUserId() == $id->user_id) {
             return response()->json([
-                'message' => 'success',
-                'status_code' => 200,
+                'message' => 'Data successfully retrieved',
                 'data' => $data
-            ], 200);
-        } 
-        else {
+            ], Response::HTTP_OK);
+        }
+        else{
             return response()->json([
-                'message' => 'data not found.',
-                'status_code' => 404
-            ], 404);
+                'message' => 'Unauthorized User'
+            ], Response::HTTP_UNAUTHORIZED);
         }
     }
 
@@ -92,17 +115,50 @@ class GoalController extends Controller
      * @param  \App\Models\Goal  $goal
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Goal $id)
+    public function update(Goal $id, Request $request)
     {
-        // $user = auth()->user()->goals();
-        // $goal = auth()->user()->goals()->update($request->all());
-        $id->update($request->all());
-        GoalHistory::create($request->all());
+        $validator = Validator::make($request->all(), [
+            'total_air' => 'numeric',
+            'total_energi' => 'numeric',
+            'total_protein' => 'numeric',
+            'total_lemak' => 'numeric',
+            'total_karbohidrat' => 'numeric',
+            'total_serat' => 'numeric',
+            'total_abu' => 'numeric',
+            'total_kalsium' => 'numeric',
+            'total_fosfor' => 'numeric',
+            'total_besi' => 'numeric',
+            'total_natrium' => 'numeric',
+            'total_kalium' => 'numeric',
+            'total_tembaga' => 'numeric',
+            'total_seng' => 'numeric',
+            'total_retinol' => 'numeric',
+            'total_b_karoten' => 'numeric',
+            'total_karoten_total' => 'numeric',
+            'total_thiamin' => 'numeric',
+            'total_riboflamin' => 'numeric',
+            'total_niasin' => 'numeric',
+            'total_vitamin_c' => 'numeric'
+        ]);
 
-        return response()->json([
-            'message' => 'success',
-            'status_code' => 201
-        ], 201);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if ($this->authUserId() == $id->user_id) {
+            $id->update($request->all());
+            auth()->user()->goalHistories()->create($request->all());
+
+            return response()->json([
+                'message' => 'success',
+                'data' => $id
+            ], Response::HTTP_OK);
+        }
+        else{
+            return response()->json([
+                'message' => 'Unauthorized User'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
     }
 
     /**
@@ -113,11 +169,17 @@ class GoalController extends Controller
      */
     public function destroy(Goal $id)
     {
-        $id->delete();
+        if ($this->authUserId() == $id->user_id) {
+            $id->delete();
 
-        return response()->json([
-            'message' => 'success',
-            'status_code' => 200,
-        ]);
+            return response()->json([
+                'message' => 'Goals data successfully deleted'
+            ], Response::HTTP_OK);
+        }
+        else{
+            return response()->json([
+                'message' => 'Unauthorized User'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
     }
 }

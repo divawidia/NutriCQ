@@ -80,5 +80,12 @@ Or
 ```
 ./vendor/bin/phpunit
 ```
+* To login as admin, you can use the following email and password :
+```
+email : admin@gmail.com
+password : admin12345
+```
 ## API Documentation
-The API documentation of the NutriCQ application can be seen in the following Postman collection:
+The API documentation of the NutriCQ application can be seen in the following Postman collection :
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/21652206/UzJFvy4Y)

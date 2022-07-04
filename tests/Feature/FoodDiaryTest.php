@@ -48,24 +48,9 @@ class FoodDiaryTest extends TestCase
             ->json();
 
         //assertion
-        $this->assertEquals($foodDiary->tgl_food_diary, $response[0]['tgl_food_diary']);
+        $this->assertEquals($foodDiary->tgl_food_diary, $response['data'][0]['tgl_food_diary']);
         $this->assertDatabaseHas('food_diaries', ['tgl_food_diary' => $foodDiary->tgl_food_diary]);
     }
-
-//    public function test_store_food_diary_without_foods_validation()
-//    {
-//        //preparation
-//        $foodDiary = FoodDiary::factory()->make(['user_id' => $this->user->id]);
-//
-//        //action
-//        $response = $this->postJson(route('food-diary.store'), [
-//            'tgl_food_diary' => null]);
-//
-//        $response->assertJsonMissingValidationErrors(['tgl_food_diary']);
-//        //assertion
-////        $this->assertEquals($foodDiary->tgl_food_diary, $response[0]['tgl_food_diary']);
-////        $this->assertDatabaseHas('food_diaries', ['tgl_food_diary' => $foodDiary->tgl_food_diary]);
-//    }
 
     public function test_fetch_all_food_diary()
     {
@@ -84,7 +69,7 @@ class FoodDiaryTest extends TestCase
             ->json();
 
         //assertion
-        $this->assertEquals($response[0]['tgl_food_diary'], $this->foodDiary->tgl_food_diary);
+        $this->assertEquals($response['data'][0]['tgl_food_diary'], $this->foodDiary->tgl_food_diary);
     }
 
     public function test_store_food_diary_with_foods()
@@ -107,9 +92,9 @@ class FoodDiaryTest extends TestCase
         //dd($response, $food, $foodCategory);
 
         //assertion
-        $this->assertEquals($foodDiary->tgl_food_diary, $response[0]['tgl_food_diary']);
-        $this->assertDatabaseHas('food_diaries', ['tgl_food_diary' => $foodDiary->tgl_food_diary, 'total_air' => $response[0]['total_air']]);
-        $this->assertDatabaseHas('food_diary_details', ['food_id' => $food->id, 'food_diary_id' => $response[0]['id'], 'air' => $food->air * $servingSize/100]);
+        $this->assertEquals($foodDiary->tgl_food_diary, $response['data'][0]['tgl_food_diary']);
+        $this->assertDatabaseHas('food_diaries', ['tgl_food_diary' => $foodDiary->tgl_food_diary, 'total_air' => $response['data'][0]['total_air']]);
+        $this->assertDatabaseHas('food_diary_details', ['food_id' => $food->id, 'food_diary_id' => $response['data'][0]['id'], 'air' => $food->air * $servingSize/100]);
     }
 
     public function test_add_food_to_existing_food_diary()
@@ -128,8 +113,8 @@ class FoodDiaryTest extends TestCase
             ->json();
 
         //assertion
-        $this->assertEquals($response[0]['total_air'], $this->foodDiary->total_air + $food->air * $servingSize/100);
-        $this->assertDatabaseHas('food_diary_details', ['food_id' => $food->id, 'food_diary_id' => $response[0]['id'], 'air' => $food->air * $servingSize/100]);
+        $this->assertEquals($response['data'][0]['total_air'], $this->foodDiary->total_air + $food->air * $servingSize/100);
+        $this->assertDatabaseHas('food_diary_details', ['food_id' => $food->id, 'food_diary_id' => $response['data'][0]['id'], 'air' => $food->air * $servingSize/100]);
     }
 
     public function test_store_calculated_food_to_food_diary()
@@ -175,7 +160,7 @@ class FoodDiaryTest extends TestCase
         $this->deleteJson(route('fooddetail.destroy', [
             'id' => $this->foodDiary->id,
             'detail_id' => $foodDiaryDetail->id]))
-            ->assertNoContent();
+            ->assertOk();
 
         $this->assertDatabaseMissing('food_diary_details', ['id' => $foodDiaryDetail->id]);
     }

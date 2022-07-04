@@ -33,8 +33,8 @@ class LoginTest extends TestCase
             'email' => $this->user->email,
             'password' => 'halo1234'])
             ->assertValid()
-            ->assertOk();
-        
+            ->assertCreated();
+
         $this->assertArrayHasKey('token', $response->json());
     }
 
@@ -65,7 +65,7 @@ class LoginTest extends TestCase
             'license' => $lincense])
             ->assertValid()
             ->assertCreated();
-        
+
         $response = $this->postJson(route('login.user'),[
             'email' => 'jackalive@gmail.com',
             'password' => 'jack1234'])

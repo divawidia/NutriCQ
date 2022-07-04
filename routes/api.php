@@ -37,10 +37,6 @@ Route::post('/register/doctor', [RegisterController::class, 'register_doctor'])-
 Route::get('/login', [AuthController::class, 'indexUser']);
 Route::post('/login/authenticate', [AuthController::class, 'login'])->name('login.user');
 
-//Admin Login Route
-Route::get('/login/admin', [AuthController::class, 'indexAdmin']);
-Route::post('/login/admin/authenticate', [AuthController::class, 'login']);
-
 //Logout Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -69,11 +65,11 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::get('/mybooking', [BookingController::class, 'my_booking']);
 
     //Goal Route
-    Route::get('/goal', [GoalController::class, 'index']);
-    Route::get('/goal/{id}', [GoalController::class, 'show']);
-    Route::post('/goal', [GoalController::class, 'store']);
-    Route::put('/goal/{id}', [GoalController::class, 'update']);
-    Route::delete('/goal/{id}', [GoalController::class, 'destroy']);
+    Route::get('/goal', [GoalController::class, 'index'])->name('goal.index');
+    Route::get('/goal/{id}', [GoalController::class, 'show'])->name('goal.show');
+    Route::post('/goal', [GoalController::class, 'store'])->name('goal.store');
+    Route::patch('/goal/{id}', [GoalController::class, 'update'])->name('goal.update');
+    Route::delete('/goal/{id}', [GoalController::class, 'destroy'])->name('goal.destroy');
 
     Route::apiResource('food-diary', FoodDiaryController::class);
     Route::patch('/food-diary/{food_diary}', [FoodDiaryController::class, 'addFoodToExistingFoodDiary'])->name('food-diary.addFoodToExistingFoodDiary');
