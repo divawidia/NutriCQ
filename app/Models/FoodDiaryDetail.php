@@ -16,42 +16,35 @@ class FoodDiaryDetail extends Model
 
     protected $with = ['foods'];
 
-    public function calculateFood($servingSize, $id)
+    public function calculateFoodForFoodDiaryDetail($foodDiaryId, $foodId, $calculateFood, $servingSize)
     {
-        $food = Food::find($id);
-        $calculateFood = $food->with('foodCategory')->selectRaw(
-                'id,
-                name,
-                sumber,
-                air *' . $servingSize . '/100 AS air,
-                energi *' . $servingSize . '/100 AS energi,
-                protein *' . $servingSize . '/100 AS protein,
-                lemak *' . $servingSize . '/100 AS lemak,
-                karbohidrat *' . $servingSize . '/100 AS karbohidrat,
-                serat *' . $servingSize . '/100 AS serat,
-                abu *' . $servingSize . '/100 AS abu,
-                kalsium *' . $servingSize . '/100 AS kalsium,
-                fosfor *' . $servingSize . '/100 AS fosfor,
-                besi *' . $servingSize . '/100 AS besi,
-                natrium *' . $servingSize . '/100 AS natrium,
-                kalium *' . $servingSize . '/100 AS kalium,
-                tembaga *' . $servingSize . '/100 AS tembaga,
-                seng *' . $servingSize . '/100 AS seng,
-                retinol *' . $servingSize . '/100 AS retinol,
-                b_karoten *' . $servingSize . '/100 AS b_karoten,
-                karoten_total *' . $servingSize . '/100 AS karoten_total,
-                thiamin *' . $servingSize . '/100 AS thiamin,
-                riboflamin *' . $servingSize . '/100 AS riboflamin,
-                niasin *' . $servingSize . '/100 AS niasin,
-                vitamin_c *' . $servingSize . '/100 AS vitamin_c,
-                porsi_berat_dapat_dimakan,
-                category_id,
-                created_at,
-                updated_at')
-                ->where('id', $food->id)
-                ->get();
-        
-        return $calculateFood;
+        $foodCalculated = array(
+            'food_diary_id' => $foodDiaryId,
+            'food_id' => $foodId,
+            'air' => $calculateFood[0]['air'],
+            'energi' => $calculateFood[0]['energi'],
+            'protein' => $calculateFood[0]['protein'],
+            'lemak' => $calculateFood[0]['lemak'],
+            'karbohidrat' => $calculateFood[0]['karbohidrat'],
+            'serat' => $calculateFood[0]['serat'],
+            'abu' => $calculateFood[0]['abu'],
+            'kalsium' => $calculateFood[0]['kalsium'],
+            'fosfor' => $calculateFood[0]['fosfor'],
+            'besi' => $calculateFood[0]['besi'],
+            'natrium' => $calculateFood[0]['natrium'],
+            'kalium' => $calculateFood[0]['kalium'],
+            'tembaga' => $calculateFood[0]['tembaga'],
+            'seng' => $calculateFood[0]['seng'],
+            'retinol' => $calculateFood[0]['retinol'],
+            'b_karoten' => $calculateFood[0]['b_karoten'],
+            'karoten_total' => $calculateFood[0]['karoten_total'],
+            'thiamin' => $calculateFood[0]['thiamin'],
+            'riboflamin' => $calculateFood[0]['riboflamin'],
+            'niasin' => $calculateFood[0]['niasin'],
+            'vitamin_c' => $calculateFood[0]['vitamin_c'],
+            'takaran_saji' => $servingSize
+        );
+        return $foodCalculated;
     }
 
     public function foodDiary(): BelongsTo
