@@ -253,7 +253,7 @@ class FoodDiaryController extends Controller
             return response()->json(['message' => 'Unauthorized User'], Response::HTTP_UNAUTHORIZED);
         }
     }
-    
+
     public function destroy($id)
     {
         FoodDiary::destroy($id);

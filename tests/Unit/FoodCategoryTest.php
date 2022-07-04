@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use App\Models\Food;
 use App\Models\FoodCategory;
-use App\Models\FoodDiaryDetail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

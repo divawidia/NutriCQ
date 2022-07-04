@@ -2,12 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Models\Food;
-use App\Models\FoodCategory;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -71,6 +68,4 @@ class UserTest extends TestCase
             ->assertUnauthorized()
             ->assertJson(['message' => 'User is not doctor']);
     }
-
-
 }

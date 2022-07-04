@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Food;
 use App\Models\FoodCategory;
-use App\Models\FoodDiary;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -38,10 +37,6 @@ class FoodTest extends TestCase
 
     public function test_seach_food_by_name()
     {
-        //preparation
-//        $foodCategory = FoodCategory::factory()->create();
-//        $food = Food::factory()->create(['category_id' => $foodCategory->id]);
-
         //action
         $response = $this->getJson(route('foods.search', ['search' => $this->food->name]));
 
@@ -51,10 +46,6 @@ class FoodTest extends TestCase
 
     public function test_seach_food_by_id()
     {
-        //preparation
-//        $foodCategory = FoodCategory::factory()->create();
-//        $food = Food::factory()->create(['category_id' => $foodCategory->id]);
-
         //action
         $response = $this->getJson(route('foods.search', ['food_id' => $this->food->id]));
 
@@ -64,9 +55,6 @@ class FoodTest extends TestCase
 
     public function test_calculate_serving_size_of_food()
     {
-        //preparation
-//        $foodCategory = FoodCategory::factory()->create();
-//        $food = Food::factory()->create(['category_id' => $foodCategory->id]);
         $servingSize = 200;
 
         //action
@@ -77,20 +65,6 @@ class FoodTest extends TestCase
         //assertion
         $this->assertEquals($this->food->air * $servingSize/100, $response[0]['air']);
     }
-
-//    public function test_search_food_by_name_only_input_alphabet()
-//    {
-//        $foodCategory = FoodCategory::factory()->create();
-//        $food = Food::factory()->create(['category_id' => $foodCategory->id]);
-//
-//        //action
-//        $response = $this->getJson(route('foods.search', ['search' => null]));
-//
-//        //assertion
-//        $response->assertSessionHasErrors([
-//            "search" => "The search field is required when food id is not present."
-//        ]);
-//    }
 
     public function test_admin_fetch_all_food_data()
     {
