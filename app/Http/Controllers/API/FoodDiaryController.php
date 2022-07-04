@@ -70,10 +70,17 @@ class FoodDiaryController extends Controller
     {
         $foodDiary = auth()->user()->foodDiaries()->with('foodDiaryDetails')->where('id', $food_diary->id)->get();
 
-        return response()->json([
-            'message' => 'Data successfully retrieved',
-            'data' => $foodDiary
-        ], Response::HTTP_OK);
+        if ($this->authUserId() == $food_diary->user_id) {
+            return response()->json([
+                'message' => 'Data successfully retrieved',
+                'data' => $foodDiary
+            ], Response::HTTP_OK);
+        }
+        else{
+            return response()->json([
+                'message' => 'Unauthorized User'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
     }
 
     public function addFoodToExistingFoodDiary(Request $request, FoodDiary $food_diary)
@@ -111,13 +118,19 @@ class FoodDiaryController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(FoodDiary $id)
     {
-        FoodDiary::destroy($id);
+        if ($this->authUserId() == $id->user_id) {
+            $id->delete();
 
-        return response()->json([
-            'message' => 'successfully deleted'
-        ], Response::HTTP_OK);
-
+            return response()->json([
+                'message' => 'Food diary data successfully deleted'
+            ], Response::HTTP_OK);
+        }
+        else{
+            return response()->json([
+                'message' => 'Unauthorized User'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
     }
 }

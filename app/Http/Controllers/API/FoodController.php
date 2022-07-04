@@ -7,7 +7,6 @@ use App\Models\Food;
 use App\Models\FoodDiary;
 use App\Models\FoodDiaryDetail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -48,10 +47,9 @@ class FoodController extends Controller
 
         $servingSize = $request->serving_size;
         $food = Food::find($detail_id->foods->id);
-        $authUserId = auth()->user()->id;
 
         //mengurangi nilai fooddetail sebelumnya dari food diary agar dapat memperbarui nilai dari food diary saat takaran saji di update
-        if ($id->user_id == $authUserId) {
+        if ($id->user_id == $this->authUserId()) {
             $id->update(FoodDiary::updateWhenFoodDeleted($detail_id));
 
             $calculateFood = Food::calculateFood($servingSize, $food->id);
@@ -74,10 +72,9 @@ class FoodController extends Controller
     {
         // dd($detail_id);
         $detail = FoodDiaryDetail::find($detail_id);
-        $authUserId = auth()->user()->id;
 
         //mengurangi nilai nutrisi pada food diary sebelum food detail dihapus
-        if ($id->user_id == $authUserId) {
+        if ($id->user_id == $this->authUserId()) {
             $id->update(FoodDiary::updateWhenFoodDeleted($detail));
         }
         else{
@@ -164,13 +161,12 @@ class FoodController extends Controller
         }
 
         $calculateFood = Food::calculateFood($servingSize, $foodId);
-        $authUserId = auth()->user()->id;
         $foodDiary = FoodDiary::find($foodDiaryId);
 
         //cek id user yg sedang login sama dengan user_id di data food_diaries supaya user tidak bisa mengubah food diarynya user lain
         //jika sama, maka bisa diproses memasukan makanan ke food diary
         //jika tidak, maka return error unauthorized user
-        if ($foodDiary->user_id == $authUserId) {
+        if ($foodDiary->user_id == $this->authUserId()) {
             $foodCalculated = FoodDiaryDetail::calculateFoodForFoodDiaryDetail($foodDiaryId, $foodId, $calculateFood, $servingSize);
 
             FoodDiaryDetail::create($foodCalculated);
