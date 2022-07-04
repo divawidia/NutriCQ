@@ -22,15 +22,16 @@ class FoodDiaryController extends Controller
     {
         $foodDiary = auth()->user()->foodDiaries;
 
-        if ($foodDiary) {
+        if (count($foodDiary) > 0) {
             return response()->json([
                 'message' => 'success',
                 'data' => $foodDiary
             ], Response::HTTP_OK);
         } else {
             return response()->json([
-                'message' => 'data not found.'
-            ], Response::HTTP_NO_CONTENT);
+                'message' => 'user has no food diary data',
+                'data' => $foodDiary
+            ], Response::HTTP_OK);
         }
     }
 
@@ -38,7 +39,7 @@ class FoodDiaryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -138,20 +139,27 @@ class FoodDiaryController extends Controller
 
         $foodDiary = $foodDiary->where('id', $foodDiary->id)->with('foodDiaryDetails')->get();
 
-        return response($foodDiary, Response::HTTP_CREATED);
+        //return response($foodDiary, Response::HTTP_CREATED);
+        return response()->json([
+            'message' => 'Data successfully created',
+            'data' => $foodDiary
+        ], Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(FoodDiary $food_diary)
     {
         $foodDiary = auth()->user()->foodDiaries()->where('id', $food_diary->id)->get();
 
-        return response($foodDiary, Response::HTTP_OK);
+        return response()->json([
+            'message' => 'Data successfully retrieved',
+            'data' => $foodDiary
+        ], Response::HTTP_OK);
     }
 
     public function addFoodToExistingFoodDiary(Request $request, FoodDiary $food_diary)
@@ -169,32 +177,9 @@ class FoodDiaryController extends Controller
         }
 
         if (auth()->user()->foodDiaries()->find($food_diary->id)){
-            $calculateFood = Food::selectRaw(
-                'air *' . $servingSize . '/100 AS air,
-                energi *' . $servingSize . '/100 AS energi,
-                protein *' . $servingSize . '/100 AS protein,
-                lemak *' . $servingSize . '/100 AS lemak,
-                karbohidrat *' . $servingSize . '/100 AS karbohidrat,
-                serat *' . $servingSize . '/100 AS serat,
-                abu *' . $servingSize . '/100 AS abu,
-                kalsium *' . $servingSize . '/100 AS kalsium,
-                fosfor *' . $servingSize . '/100 AS fosfor,
-                besi *' . $servingSize . '/100 AS besi,
-                natrium *' . $servingSize . '/100 AS natrium,
-                kalium *' . $servingSize . '/100 AS kalium,
-                tembaga *' . $servingSize . '/100 AS tembaga,
-                seng *' . $servingSize . '/100 AS seng,
-                retinol *' . $servingSize . '/100 AS retinol,
-                b_karoten *' . $servingSize . '/100 AS b_karoten,
-                karoten_total *' . $servingSize . '/100 AS karoten_total,
-                thiamin *' . $servingSize . '/100 AS thiamin,
-                riboflamin *' . $servingSize . '/100 AS riboflamin,
-                niasin *' . $servingSize . '/100 AS niasin,
-                vitamin_c *' . $servingSize . '/100 AS vitamin_c')
-                ->where('id', $foodId)
-                ->get();
+            $calculateFood = FoodDiaryDetail::calculateFood($servingSize, $foodId);
 
-            $foodCalculated = $food_diary->foodDiaryDetails()->create(array(
+            $food_diary->foodDiaryDetails()->create(array(
                 'food_id' => $foodId,
                 'air' => $calculateFood[0]['air'],
                 'energi' => $calculateFood[0]['energi'],
@@ -247,7 +232,10 @@ class FoodDiaryController extends Controller
 
             $foodDiary = $food_diary->where('id', $food_diary->id)->with('foodDiaryDetails')->get();
 
-            return response($foodDiary, Response::HTTP_CREATED);
+            return response()->json([
+                'message' => 'Food data successfully added to food diaryZ',
+                'data' => $foodDiary
+            ], Response::HTTP_CREATED);
         }
         else{
             return response()->json(['message' => 'Unauthorized User'], Response::HTTP_UNAUTHORIZED);
