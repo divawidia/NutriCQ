@@ -21,7 +21,7 @@ class CreateGoalHistoriesTable extends Migration
             $table->double('total_lemak')->default(0);
             $table->double('total_karbohidrat')->default(0);
             $table->double('total_serat')->default(0);
-            $table->double('total_abu')->default(0);
+            $table->double('total_abu')->nullable();
             $table->double('total_kalsium')->default(0);
             $table->double('total_fosfor')->default(0);
             $table->double('total_besi')->default(0);

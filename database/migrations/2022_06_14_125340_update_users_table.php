@@ -21,7 +21,7 @@ class UpdateUsersTable extends Migration
             $table->string('license')->nullable();
             $table->integer('tinggi_badan')->nullable();
             $table->integer('berat_badan')->nullable();
-            $table->integer('tingkat_aktivitas')->nullable();
+            $table->string('tingkat_aktivitas')->nullable();
             $table->string('status');
         });
     }
