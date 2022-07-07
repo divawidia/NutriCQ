@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Goal;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -67,5 +68,46 @@ class UserTest extends TestCase
         $this->patchJson(route('admin.updateStatusDoctor', $this->userUser->id), ['status' => 'active'])
             ->assertUnauthorized()
             ->assertJson(['message' => 'User is not doctor']);
+    }
+
+    public function test_user_update_profile()
+    {
+        Sanctum::actingAs(
+            $this->userUser,
+            ['*']
+        );
+        Goal::factory()->create(['user_id' => $this->userUser->id]);
+
+        $response = $this->putJson(route('profile.update'), [
+            'name' => 'user',
+            'email' => 'user@user.com',
+            'password' => 'user12345',
+            'no_telp' => '0767575457474',
+            'tgl_lahir' => '2001-02-02',
+            'gender' => 'male',
+            'tinggi_badan' => 170,
+            'berat_badan' => 79,
+            'tingkat_aktivitas' => 'sedentary'
+        ])
+            ->assertOk();
+
+        $this->assertDatabaseHas('users', [
+            'name' => 'user',
+            'email' => 'user@user.com',
+            'no_telp' => '0767575457474',
+            'tgl_lahir' => '2001-02-02',
+            'gender' => 'male',
+            'tinggi_badan' => 170,
+            'berat_badan' => 79,
+            'tingkat_aktivitas' => 'sedentary'
+        ]);
+
+        //checking tdee calculation
+        $this->assertDatabaseHas('goals', [
+            'total_energi' => 2103,
+            'total_protein' => 157.725,
+            'total_karbohidrat' => 210.3,
+            'total_lemak' => 70.1,
+        ]);
     }
 }

@@ -42,9 +42,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-
-Route::put('/profile/{id}', [UserController::class, 'update'])->name('profile.update');
-
 //Get Route Review
 Route::get('/doctor/reviews', [ReviewController::class, 'index'])->name('review.index');
 Route::get('/doctor/{id}/reviews', [ReviewController::class, 'reviewList'])->name('review.reviewList');
@@ -54,6 +51,9 @@ Route::get('/doctor/{id}/review/{id_review}', [ReviewController::class, 'specifi
 //middleware for user
 Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::get('/dashboard/user', [UserController::class, 'index']);
+
+    Route::get('/profile', [UserController::class, 'showUserProfile'])->name('profile.show');
+    Route::put('/profile', [UserController::class, 'updateUserProfile'])->name('profile.update');
 
     //Route review
     Route::post('/doctor/{id}/review/add', [ReviewController::class, 'addReview'])->name('review.addReview');
@@ -66,10 +66,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
 
     //Goal Route
     Route::get('/goal', [GoalController::class, 'index'])->name('goal.index');
-    Route::get('/goal/{id}', [GoalController::class, 'show'])->name('goal.show');
-    Route::post('/goal', [GoalController::class, 'store'])->name('goal.store');
-    Route::patch('/goal/{id}', [GoalController::class, 'update'])->name('goal.update');
-    Route::delete('/goal/{id}', [GoalController::class, 'destroy'])->name('goal.destroy');
+    Route::put('/goal', [GoalController::class, 'update'])->name('goal.update');
 
     Route::apiResource('food-diary', FoodDiaryController::class);
     Route::patch('/food-diary/{food_diary}', [FoodDiaryController::class, 'addFoodToExistingFoodDiary'])->name('food-diary.addFoodToExistingFoodDiary');

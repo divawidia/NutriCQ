@@ -19,167 +19,55 @@ class GoalController extends Controller
      */
     public function index()
     {
-        $goal = auth()->user()->goals;
-
-        if (count($goal) > 0) {
-            return response()->json([
-                'message' => 'success',
-                'data' => $goal
-            ], Response::HTTP_OK);
-        } else {
-            return response()->json([
-                'message' => 'user has no goal data',
-                'data' => $goal
-            ], Response::HTTP_OK);
-        }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'total_air' => 'numeric',
-            'total_energi' => 'numeric',
-            'total_protein' => 'numeric',
-            'total_lemak' => 'numeric',
-            'total_karbohidrat' => 'numeric',
-            'total_serat' => 'numeric',
-            'total_abu' => 'numeric',
-            'total_kalsium' => 'numeric',
-            'total_fosfor' => 'numeric',
-            'total_besi' => 'numeric',
-            'total_natrium' => 'numeric',
-            'total_kalium' => 'numeric',
-            'total_tembaga' => 'numeric',
-            'total_seng' => 'numeric',
-            'total_retinol' => 'numeric',
-            'total_b_karoten' => 'numeric',
-            'total_karoten_total' => 'numeric',
-            'total_thiamin' => 'numeric',
-            'total_riboflamin' => 'numeric',
-            'total_niasin' => 'numeric',
-            'total_vitamin_c' => 'numeric'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        if (Goal::where('user_id', '=', $this->authUserId())->exists()) {
-            return response()->json([
-                'message' => 'Goal only can be stored once',
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        } else {
-            $goal = auth()->user()->goals()->create($request->all());
-            auth()->user()->goalHistories()->create($request->all());
-
-            return response()->json([
-                'message' => 'success',
-                'data' => $goal
-            ], Response::HTTP_CREATED);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Goal  $goal
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show(Goal $id)
-    {
-        $data = auth()->user()->goals()->where('id', $id->id)->get();
-
-        if ($this->authUserId() == $id->user_id) {
-            return response()->json([
-                'message' => 'Data successfully retrieved',
-                'data' => $data
-            ], Response::HTTP_OK);
-        }
-        else{
-            return response()->json([
-                'message' => 'Unauthorized User'
-            ], Response::HTTP_UNAUTHORIZED);
-        }
+        return response()->json([
+            'message' => 'success',
+            'data' => auth()->user()->goals
+        ], Response::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Goal  $goal
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Goal $id, Request $request)
+    public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'total_air' => 'numeric',
-            'total_energi' => 'numeric',
-            'total_protein' => 'numeric',
-            'total_lemak' => 'numeric',
-            'total_karbohidrat' => 'numeric',
-            'total_serat' => 'numeric',
-            'total_abu' => 'numeric',
-            'total_kalsium' => 'numeric',
-            'total_fosfor' => 'numeric',
-            'total_besi' => 'numeric',
-            'total_natrium' => 'numeric',
-            'total_kalium' => 'numeric',
-            'total_tembaga' => 'numeric',
-            'total_seng' => 'numeric',
-            'total_retinol' => 'numeric',
-            'total_b_karoten' => 'numeric',
-            'total_karoten_total' => 'numeric',
-            'total_thiamin' => 'numeric',
-            'total_riboflamin' => 'numeric',
-            'total_niasin' => 'numeric',
-            'total_vitamin_c' => 'numeric'
+            'total_air' => 'required|numeric',
+            'total_energi' => 'required|numeric',
+            'total_protein' => 'required|numeric',
+            'total_lemak' => 'required|numeric',
+            'total_karbohidrat' => 'required|numeric',
+            'total_serat' => 'required|numeric',
+            'total_abu' => 'required|numeric',
+            'total_kalsium' => 'required|numeric',
+            'total_fosfor' => 'required|numeric',
+            'total_besi' => 'required|numeric',
+            'total_natrium' => 'required|numeric',
+            'total_kalium' => 'required|numeric',
+            'total_tembaga' => 'required|numeric',
+            'total_seng' => 'required|numeric',
+            'total_retinol' => 'required|numeric',
+            'total_b_karoten' => 'required|numeric',
+            'total_karoten_total' => 'required|numeric',
+            'total_thiamin' => 'required|numeric',
+            'total_riboflamin' => 'required|numeric',
+            'total_niasin' => 'required|numeric',
+            'total_vitamin_c' => 'required|numeric'
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        if ($this->authUserId() == $id->user_id) {
-            $id->update($request->all());
-            auth()->user()->goalHistories()->create($request->all());
+        auth()->user()->goals()->update($request->all());
+        auth()->user()->goalHistories()->create($request->all());
 
-            return response()->json([
-                'message' => 'success',
-                'data' => $id
-            ], Response::HTTP_OK);
-        }
-        else{
-            return response()->json([
-                'message' => 'Unauthorized User'
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-    }
+        return response()->json([
+            'message' => 'success',
+            'data' => auth()->user()->goals
+        ], Response::HTTP_OK);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Goal  $goal
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy(Goal $id)
-    {
-        if ($this->authUserId() == $id->user_id) {
-            $id->delete();
-
-            return response()->json([
-                'message' => 'Goals data successfully deleted'
-            ], Response::HTTP_OK);
-        }
-        else{
-            return response()->json([
-                'message' => 'Unauthorized User'
-            ], Response::HTTP_UNAUTHORIZED);
-        }
     }
 }

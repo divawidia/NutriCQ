@@ -33,182 +33,91 @@ class GoalTest extends TestCase
             $this->user,
             ['*']
         );
+
+        Goal::factory()->create(['user_id' => $this->user->id]);
+        GoalHistory::factory()->create(['user_id' => $this->user->id]);
     }
 
-    public function test_user_fetch_all_goal_data()
+    public function test_user_fetch_goal_data()
     {
-        Goal::factory()->create(['user_id' => $this->user->id]);
-
         $response = $this->getJson(route('goal.index'))
             ->assertOk();
 
         $this->assertEquals(1, $this->count($response->json()));
     }
 
-    public function test_user_fetch_single_goal_data()
+    public function test_update_food_data()
     {
-        $goal = Goal::factory()->create(['user_id' => $this->user->id]);
+        $this->putJson(route('goal.update'), [
+            'total_air' => 100,
+            'total_energi' => 100,
+            'total_protein' => 100,
+            'total_lemak' => 100,
+            'total_karbohidrat' => 100,
+            'total_serat' => 100,
+            'total_abu' => 100,
+            'total_kalsium' => 100,
+            'total_fosfor' => 100,
+            'total_besi' => 100,
+            'total_natrium' => 100,
+            'total_kalium' => 100,
+            'total_tembaga' => 100,
+            'total_seng' => 100,
+            'total_retinol' => 100,
+            'total_b_karoten' => 100,
+            'total_karoten_total' => 100,
+            'total_thiamin' => 100,
+            'total_riboflamin' => 100,
+            'total_niasin' => 100,
+            'total_vitamin_c' => 100,
+        ])
+            ->assertOk();
 
-        $response = $this->getJson(route('goal.show', $goal->id))
-            ->assertOk()
-            ->json();
-
-        $this->assertEquals($response['data'][0]['total_air'], $goal->total_air);
-    }
-
-    public function test_user_store_new_goal_data()
-    {
-        $goal = Goal::factory()->make(['user_id' => $this->user->id]);
-        $goalHistory = GoalHistory::factory()->make([
-            'total_air' => $goal->total_air,
-            'total_energi'=> $goal->total_energi,
-            'total_protein'=> $goal->total_protein,
-            'total_lemak'=> $goal->total_lemak,
-            'total_karbohidrat'=> $goal->total_karbohidrat,
-            'total_serat'=> $goal->total_serat,
-            'total_abu'=> $goal->total_abu,
-            'total_kalsium'=> $goal->total_kalsium,
-            'total_fosfor'=> $goal->total_fosfor,
-            'total_besi'=> $goal->total_besi,
-            'total_natrium'=> $goal->total_natrium,
-            'total_kalium'=> $goal->total_kalium,
-            'total_tembaga'=> $goal->total_tembaga,
-            'total_seng'=> $goal->total_seng,
-            'total_retinol'=> $goal->total_retinol,
-            'total_b_karoten'=> $goal->total_b_karoten,
-            'total_karoten_total'=> $goal->total_karoten_total,
-            'total_thiamin'=> $goal->total_thiamin,
-            'total_riboflamin'=> $goal->total_riboflamin,
-            'total_niasin'=> $goal->total_niasin,
-            'total_vitamin_c'=> $goal->total_vitamin_c,
-            'user_id' => $this->user->id
-        ]);
-
-        $response = $this->postJson(route('goal.store'), [
-            'total_air' => $goal->total_air,
-            'total_energi'=> $goal->total_energi,
-            'total_protein'=> $goal->total_protein,
-            'total_lemak'=> $goal->total_lemak,
-            'total_karbohidrat'=> $goal->total_karbohidrat,
-            'total_serat'=> $goal->total_serat,
-            'total_abu'=> $goal->total_abu,
-            'total_kalsium'=> $goal->total_kalsium,
-            'total_fosfor'=> $goal->total_fosfor,
-            'total_besi'=> $goal->total_besi,
-            'total_natrium'=> $goal->total_natrium,
-            'total_kalium'=> $goal->total_kalium,
-            'total_tembaga'=> $goal->total_tembaga,
-            'total_seng'=> $goal->total_seng,
-            'total_retinol'=> $goal->total_retinol,
-            'total_b_karoten'=> $goal->total_b_karoten,
-            'total_karoten_total'=> $goal->total_karoten_total,
-            'total_thiamin'=> $goal->total_thiamin,
-            'total_riboflamin'=> $goal->total_riboflamin,
-            'total_niasin'=> $goal->total_niasin,
-            'total_vitamin_c'=> $goal->total_vitamin_c
-        ])->assertCreated()
-            ->json();
-
-        $this->assertEquals($goal->total_air, $response['data']['total_air']);
         $this->assertDatabaseHas('goals', [
-            'total_air' => $goal->total_air,
-            'total_energi'=> $goal->total_energi,
-            'total_protein'=> $goal->total_protein,
-            'total_lemak'=> $goal->total_lemak,
-            'total_karbohidrat'=> $goal->total_karbohidrat,
-            'total_serat'=> $goal->total_serat,
-            'total_abu'=> $goal->total_abu,
-            'total_kalsium'=> $goal->total_kalsium,
-            'total_fosfor'=> $goal->total_fosfor,
-            'total_besi'=> $goal->total_besi,
-            'total_natrium'=> $goal->total_natrium,
-            'total_kalium'=> $goal->total_kalium,
-            'total_tembaga'=> $goal->total_tembaga,
-            'total_seng'=> $goal->total_seng,
-            'total_retinol'=> $goal->total_retinol,
-            'total_b_karoten'=> $goal->total_b_karoten,
-            'total_karoten_total'=> $goal->total_karoten_total,
-            'total_thiamin'=> $goal->total_thiamin,
-            'total_riboflamin'=> $goal->total_riboflamin,
-            'total_niasin'=> $goal->total_niasin,
-            'total_vitamin_c'=> $goal->total_vitamin_c,
-            'user_id' => $goal->user_id,
+            'total_air' => 100,
+            'total_energi' => 100,
+            'total_protein' => 100,
+            'total_lemak' => 100,
+            'total_karbohidrat' => 100,
+            'total_serat' => 100,
+            'total_abu' => 100,
+            'total_kalsium' => 100,
+            'total_fosfor' => 100,
+            'total_besi' => 100,
+            'total_natrium' => 100,
+            'total_kalium' => 100,
+            'total_tembaga' => 100,
+            'total_seng' => 100,
+            'total_retinol' => 100,
+            'total_b_karoten' => 100,
+            'total_karoten_total' => 100,
+            'total_thiamin' => 100,
+            'total_riboflamin' => 100,
+            'total_niasin' => 100,
+            'total_vitamin_c' => 100
         ]);
         $this->assertDatabaseHas('goal_histories', [
-            'total_air' => $goalHistory->total_air,
-            'total_energi'=> $goalHistory->total_energi,
-            'total_protein'=> $goalHistory->total_protein,
-            'total_lemak'=> $goalHistory->total_lemak,
-            'total_karbohidrat'=> $goalHistory->total_karbohidrat,
-            'total_serat'=> $goalHistory->total_serat,
-            'total_abu'=> $goalHistory->total_abu,
-            'total_kalsium'=> $goalHistory->total_kalsium,
-            'total_fosfor'=> $goalHistory->total_fosfor,
-            'total_besi'=> $goalHistory->total_besi,
-            'total_natrium'=> $goalHistory->total_natrium,
-            'total_kalium'=> $goalHistory->total_kalium,
-            'total_tembaga'=> $goalHistory->total_tembaga,
-            'total_seng'=> $goalHistory->total_seng,
-            'total_retinol'=> $goalHistory->total_retinol,
-            'total_b_karoten'=> $goalHistory->total_b_karoten,
-            'total_karoten_total'=> $goalHistory->total_karoten_total,
-            'total_thiamin'=> $goalHistory->total_thiamin,
-            'total_riboflamin'=> $goalHistory->total_riboflamin,
-            'total_niasin'=> $goalHistory->total_niasin,
-            'total_vitamin_c'=> $goalHistory->total_vitamin_c,
-            'user_id' => $goalHistory->user_id,
+            'total_air' => 100,
+            'total_energi' => 100,
+            'total_protein' => 100,
+            'total_lemak' => 100,
+            'total_karbohidrat' => 100,
+            'total_serat' => 100,
+            'total_abu' => 100,
+            'total_kalsium' => 100,
+            'total_fosfor' => 100,
+            'total_besi' => 100,
+            'total_natrium' => 100,
+            'total_kalium' => 100,
+            'total_tembaga' => 100,
+            'total_seng' => 100,
+            'total_retinol' => 100,
+            'total_b_karoten' => 100,
+            'total_karoten_total' => 100,
+            'total_thiamin' => 100,
+            'total_riboflamin' => 100,
+            'total_niasin' => 100,
+            'total_vitamin_c' => 100
         ]);
-    }
-
-    public function test_user_cannot_store_goal_data_more_than_one()
-    {
-        $goal1 = Goal::factory()->create(['user_id' => $this->user->id]);
-        $goal2 = Goal::factory()->make(['user_id' => $this->user->id]);
-
-        $response = $this->postJson(route('goal.store'), [
-            'total_air' => $goal2->total_air,
-            'total_energi'=> $goal2->total_energi,
-            'total_protein'=> $goal2->total_protein,
-            'total_lemak'=> $goal2->total_lemak,
-            'total_karbohidrat'=> $goal2->total_karbohidrat,
-            'total_serat'=> $goal2->total_serat,
-            'total_abu'=> $goal2->total_abu,
-            'total_kalsium'=> $goal2->total_kalsium,
-            'total_fosfor'=> $goal2->total_fosfor,
-            'total_besi'=> $goal2->total_besi,
-            'total_natrium'=> $goal2->total_natrium,
-            'total_kalium'=> $goal2->total_kalium,
-            'total_tembaga'=> $goal2->total_tembaga,
-            'total_seng'=> $goal2->total_seng,
-            'total_retinol'=> $goal2->total_retinol,
-            'total_b_karoten'=> $goal2->total_b_karoten,
-            'total_karoten_total'=> $goal2->total_karoten_total,
-            'total_thiamin'=> $goal2->total_thiamin,
-            'total_riboflamin'=> $goal2->total_riboflamin,
-            'total_niasin'=> $goal2->total_niasin,
-            'total_vitamin_c'=> $goal2->total_vitamin_c
-        ])->assertUnprocessable();
-    }
-
-    public function test_admin_update_food_data()
-    {
-        $goal = Goal::factory()->create(['user_id' => $this->user->id]);
-        $goalHistory = GoalHistory::factory()->create(['user_id' => $this->user->id]);
-
-        $this->patchJson(route('goal.update', $goal->id), ['total_air' => 100])
-            ->assertOk();
-
-        $this->assertDatabaseHas('goals', ['total_air' => 100]);
-        $this->assertDatabaseHas('goal_histories', ['total_air' => 100]);
-    }
-
-    public function test_admin_destroy_food_data()
-    {
-        $goal = Goal::factory()->create(['user_id' => $this->user->id]);
-
-        $this->deleteJson(route('goal.destroy', $goal->id))
-            ->assertOk();
-
-        $this->assertDatabaseMissing('goals', ['id' => $goal->id]);
     }
 }

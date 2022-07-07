@@ -2,7 +2,10 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use App\Models\Goal;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class GoalTest extends TestCase
 {
@@ -11,8 +14,13 @@ class GoalTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
+    use RefreshDatabase;
+
+    public function test_goal_belongs_to_user()
     {
-        $this->assertTrue(true);
+        $user = User::factory()->create();
+        $goal = Goal::factory()->create(['user_id' => $user->id]);
+
+        $this->assertInstanceOf(User::class, $goal->user);
     }
 }

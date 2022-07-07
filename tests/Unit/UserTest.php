@@ -4,6 +4,9 @@ namespace Tests\Unit;
 
 use App\Models\Booking;
 use App\Models\FoodDiary;
+use App\Models\Goal;
+use App\Models\GoalHistory;
+use App\Models\Review;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -92,5 +95,50 @@ class UserTest extends TestCase
         $this->assertDatabaseMissing('users', ['id' => $this->userUser->id]);
         $this->assertDatabaseMissing('bookings', ['id' => $booking1->id]);
         $this->assertDatabaseMissing('bookings', ['id' => $booking2->id]);
+    }
+
+    public function test_user_can_has_one_goal()
+    {
+        Goal::factory()->create(['user_id' => $this->userUser->id]);
+
+        $this->assertInstanceOf(Goal::class,  $this->userUser->goals->first());
+    }
+
+    public function test_user_can_has_many_goal_history()
+    {
+        GoalHistory::factory()->create(['user_id' => $this->userUser->id]);
+
+        $this->assertInstanceOf(Collection::class, $this->userUser->goalHistories);
+        $this->assertInstanceOf(GoalHistory::class,  $this->userUser->goalHistories->first());
+    }
+
+    public function test_if_user_deleted_then_goal_will_be_deleted()
+    {
+        $goal1 = Goal::factory()->create(['user_id' => $this->userUser->id]);
+
+        $this->userUser->delete();
+
+        $this->assertDatabaseMissing('users', ['id' => $this->userUser->id]);
+        $this->assertDatabaseMissing('goals', ['id' => $goal1->id]);
+    }
+
+    public function test_if_user_deleted_then_all_goal_history_will_be_deleted()
+    {
+        $goalHistory1 = GoalHistory::factory()->create(['user_id' => $this->userUser->id]);
+        $goalHistory2 = GoalHistory::factory()->create(['user_id' => $this->userUser->id]);
+
+        $this->userUser->delete();
+
+        $this->assertDatabaseMissing('users', ['id' => $this->userUser->id]);
+        $this->assertDatabaseMissing('goal_histories', ['id' => $goalHistory1->id]);
+        $this->assertDatabaseMissing('goal_histories', ['id' => $goalHistory2->id]);
+    }
+
+    public function test_user_can_has_many_reviews()
+    {
+        Review::factory()->create(['user_id' => $this->userUser->id, 'doctor_id' => $this->userDokter->id]);
+
+        $this->assertInstanceOf(Collection::class, $this->userUser->reviews);
+        $this->assertInstanceOf(Review::class,  $this->userUser->reviews->first());
     }
 }

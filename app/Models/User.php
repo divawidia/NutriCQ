@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -24,7 +25,14 @@ class User extends Authenticatable
         'email',
         'password',
         'no_telp',
-        'status'
+        'status',
+        'tgl_lahir',
+        'gender',
+        'cv',
+        'license',
+        'tinggi_badan',
+        'berat_badan',
+        'tingkat_aktivitas'
     ];
 
     /**
@@ -46,9 +54,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function goals(): HasMany
+    public function goals(): HasOne
     {
-        return $this->hasMany(Goal::class);
+        return $this->hasOne(Goal::class);
     }
 
     public function goalHistories(): HasMany
@@ -61,8 +69,6 @@ class User extends Authenticatable
         return $this->hasMany(FoodDiary::class);
     }
 
-
-    //ini define fungsi relasi many to many lagi antara users sama roles biar di unit test food diarynya bisa buat factory user sama rolenya untuk authnya juga, tapi masih aman kok fungsinya buat register sama login user seperti biasa
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
@@ -71,5 +77,10 @@ class User extends Authenticatable
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }

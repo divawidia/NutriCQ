@@ -39,6 +39,8 @@ class RegisterController extends Controller
         ]);
 
         $user->attachRole('user');
+        $user->goals()->create();
+        $user->goalHistories()->create();
 
         // result with token
         $token = $user->createToken('user')->plainTextToken;
