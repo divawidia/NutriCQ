@@ -1,4 +1,4 @@
-# NutriCQ - Backend Capstone Project
+# NutriCQ
 
 NutriCQ is a web API based application that can assist users in 
 controlling and tracking their nutritional intake, 
