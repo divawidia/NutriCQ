@@ -1,52 +1,4 @@
-/*
-SQLyog Ultimate v13.1.1 (64 bit)
-MySQL - 10.4.22-MariaDB : Database - capstone
-*********************************************************************
-*/
-
-/*!40101 SET NAMES utf8 */;
-
-/*!40101 SET SQL_MODE=''*/;
-
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_capstone_project` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
-
-USE `db_capstone_project`;
-
-/*Data for the table `food_categories` */
-
-insert  into `food_categories`(`id`,`category_name`) values 
-(1,'Serealia'),
-(2,'Serealia Olahan'),
-(3,'Umbi Berpati'),
-(4,'Umbi Berpati Olahan'),
-(5,'Kacang, Biji'),
-(6,'Kacang, Biji Olahan'),
-(7,'Sayuran'),
-(8,'Sayuran Olahan'),
-(9,'Buah'),
-(10,'Buah Olahan'),
-(11,'Daging, Unggas'),
-(12,'Daging, Unggas Olahan'),
-(13,'Ikan, Kerang, Udang'),
-(14,'Ikan, Kerang, Udang Olahan'),
-(15,'Telur'),
-(16,'Telur Olahan'),
-(17,'Susu'),
-(18,'Susu Olahan'),
-(19,'Lemak dan Minyak'),
-(20,'Lemak dan Minyak Olahan'),
-(21,'Gula, Sirup'),
-(22,'Bumbu'),
-(23,'Bumbu Olahan'),
-(24,'Minuman');
-
-/*Data for the table `foods` */
-
-insert  into `foods`(`id`,`name`,`sumber`,`air`,`energi`,`protein`,`lemak`,`karbohidrat`,`serat`,`abu`,`kalsium`,`fosfor`,`besi`,`natrium`,`kalium`,`tembaga`,`seng`,`retinol`,`b_karoten`,`karoten_total`,`thiamin`,`riboflamin`,`niasin`,`vitamin_c`,`porsi_berat_dapat_dimakan`,`category_id`) values 
+insert  into `foods`(`id`,`name`,`sumber`,`air`,`energi`,`protein`,`lemak`,`karbohidrat`,`serat`,`abu`,`kalsium`,`fosfor`,`besi`,`natrium`,`kalium`,`tembaga`,`seng`,`retinol`,`b_karoten`,`karoten_total`,`thiamin`,`riboflamin`,`niasin`,`vitamin_c`,`porsi_berat_dapat_dimakan`,`category_id`) values
 (1,'Beras giling, mentah ','KZGMI-2001 ',12,357,8.4,1.7,77.1,0.2,0.8,147,81,1.8,27,71,0.1,0.5,0,0,0,0.2,0.08,2.6,0,100,1),
 (2,'Beras giling var pelita, mentah ','KZGPI- 1990 ',11.4,369,9.5,1.4,77.1,0.4,0.6,68,171,1.4,34,0,0,0,0,0,0,0.26,0,0,0,100,1),
 (3,'Beras giling var rojolele, mentah ','KZGPI- 1990 ',12,357,8.4,1.7,77.1,0.2,0.8,147,81,1.8,34,112.9,0.14,0.1,0,0,80,0.2,0.02,1.5,0,100,1),
@@ -1193,8 +1145,3 @@ insert  into `foods`(`id`,`name`,`sumber`,`air`,`energi`,`protein`,`lemak`,`karb
 (1144,'Terasi dobo ','KZGMI-2001 ',58.4,191,33.1,3.6,6.6,1.6,11.5,2250,1130,22.9,650,1260,2.9,5,0,0,0,3.74,0.22,2,0,100,23),
 (1145,'Terasi merah ','DABM-1964 ',40,174,30,3.5,5.6,2.2,20.4,100,150,3.1,7850,302.8,0.49,1.2,0,0,0,0,0.12,1.7,0,100,23),
 (1146,'Kelapa muda, air, segar ','DABM-1964 ',95.5,17,0.2,0.1,3.8,0,0.4,15,8,0.2,1,149,0.04,0.1,0,0,0,0,0,0,1,100,24);
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
