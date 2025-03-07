@@ -30,12 +30,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Register route
-Route::post('/register/user', [RegisterController::class, 'register_user'])->name('register.user');
-Route::post('/register/doctor', [RegisterController::class, 'register_doctor'])->name('register.doctor');
+Route::prefix('register')->name('register.')->group(function () {
+    Route::middleware(['auth:sanctum', 'role:admin'])->post('admin', [AuthController::class, 'registerAdmin'])->name('admin');
+    Route::post('user', [AuthController::class, 'registerUser'])->name('user');
+    Route::post('doctor', [AuthController::class, 'registerDoctor'])->name('doctor');
+});
 
 //User Login Route
-Route::get('/login', [AuthController::class, 'indexUser']);
-Route::post('/login/authenticate', [AuthController::class, 'login'])->name('login.user');
+Route::post('login', [AuthController::class, 'login'])->name('login');
 
 //Logout Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
