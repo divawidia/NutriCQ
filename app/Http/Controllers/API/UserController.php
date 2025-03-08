@@ -66,32 +66,9 @@ class UserController extends Controller
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $gender = $request->gender;
-
-        if ($gender == 'male'){
-            $genderTDEE = 5;
-        } elseif ($gender == 'female'){
-            $genderTDEE = -161;
-        }
-
-        if ($request->tingkat_aktivitas == 'sedentary'){
-            $activityLevel = 1.2;
-        }elseif ($request->tingkat_aktivitas == 'lightly_active'){
-            $activityLevel = 1.375;
-        }elseif ($request->tingkat_aktivitas == 'moderately_active'){
-            $activityLevel = 1.550;
-        }elseif ($request->tingkat_aktivitas == 'very_active'){
-            $activityLevel = 1.725;
-        }elseif ($request->tingkat_aktivitas == 'extra_active'){
-            $activityLevel = 1.9;
-        }
-
-        $currentDate = date("Y-m-d");
-        $age = date_diff(date_create($request->tgl_lahir), date_create($currentDate));
-        $ageVal = intval($age->format("%y"));
-
-
-        $bmr = (10 * $request->berat_badan + 6.25 * $request->tinggi_badan - 5 * $ageVal) + $genderTDEE;
+        $genderTDEE = $this->getGenderTDEE($request->gender);
+        $activityLevelValue = $this->getActivityLevelMultiplier($request->tingkat_aktivitas);
+        $bmr = $this->getBMRValue($activityLevelValue);
 
         $tdee = $bmr * $activityLevel;
         $protein = $tdee * 30/100 / 4;
@@ -191,6 +168,44 @@ class UserController extends Controller
             ]
         ], Response::HTTP_OK);
     }
+
+    public function getGenderTDEE(int $gender): int
+    {
+        return ($gender == 'male') ? 5 : -161;
+    }
+
+    /**
+     * Get the numeric activity level multiplier based on the tingkat_aktivitas string.
+     *
+     * @param string $activityLevel
+     * @return float
+     */
+    public function getActivityLevelMultiplier(string $activityLevel): float
+    {
+        return match ($activityLevel) {
+            'sedentary' => 1.2,
+            'lightly_active' => 1.375,
+            'moderately_active' => 1.550,
+            'very_active' => 1.725,
+            'extra_active' => 1.9,
+        };
+    }
+
+    /**
+     * Get the numeric activity level multiplier based on the tingkat_aktivitas string.
+     *
+     * @param int $weight
+     * @param int $height
+     * @param int $age
+     * @param int $genderTDEE
+     * @return float
+     */
+    public function getBMRValue(int $weight, int $height, int $age, int $genderTDEE): float
+    {
+        return (10 * $weight + 6.25 * $height - 5 * $age) + $genderTDEE;
+    }
+
+
 
     public function doctorIndex()
     {
