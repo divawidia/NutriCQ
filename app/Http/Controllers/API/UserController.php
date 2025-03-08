@@ -176,36 +176,9 @@ class UserController extends Controller
         ], Response::HTTP_OK);
     }
 
-    /**
-     * Get the numeric activity level multiplier based on the tingkat_aktivitas string.
-     *
-     * @param string $activityLevel
-     * @return float
-     */
-    public function getActivityLevelMultiplier(string $activityLevel): float
-    {
-        return match ($activityLevel) {
-            'sedentary' => 1.2,
-            'lightly_active' => 1.375,
-            'moderately_active' => 1.550,
-            'very_active' => 1.725,
-            'extra_active' => 1.9,
-        };
-    }
 
-    /**
-     * Get the numeric activity level multiplier based on the tingkat_aktivitas string.
-     *
-     * @param int $weight
-     * @param int $height
-     * @param int $age
-     * @param int $genderTDEE
-     * @return float
-     */
-    public function getBMRValue(int $weight, int $height, int $age, int $genderTDEE): float
-    {
-        return (10 * $weight + 6.25 * $height - 5 * $age) + $genderTDEE;
-    }
+
+
 
 
 

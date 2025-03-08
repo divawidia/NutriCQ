@@ -32,4 +32,17 @@ class GoalService
         };
     }
 
+    /**
+     * Get the numeric activity level multiplier based on the tingkat_aktivitas string.
+     *
+     * @param int $weight
+     * @param int $height
+     * @param int $age
+     * @param int $genderTDEE
+     * @return float
+     */
+    public function getBMRValue(int $weight, int $height, int $age, int $genderTDEE): float
+    {
+        return (10 * $weight + 6.25 * $height - 5 * $age) + $genderTDEE;
+    }
 }
