@@ -15,5 +15,21 @@ class GoalService
         return ($gender === 'male') ? 5 : -161;
     }
 
-    
+    /**
+     * Get the numeric activity level multiplier based on the tingkat_aktivitas string.
+     *
+     * @param string $activityLevel
+     * @return float
+     */
+    public function getActivityLevelMultiplier(string $activityLevel): float
+    {
+        return match ($activityLevel) {
+            'sedentary' => 1.2,
+            'lightly_active' => 1.375,
+            'moderately_active' => 1.550,
+            'very_active' => 1.725,
+            'extra_active' => 1.9,
+        };
+    }
+
 }
