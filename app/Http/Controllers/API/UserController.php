@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Food;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -14,25 +15,42 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    public function showUserProfile()
+    /**
+     * Get the authenticated user's profile data.
+     *
+     * @authenticated
+     *
+     * @return JsonResponse
+     */
+    public function showUserProfile(): JsonResponse
     {
-        $user = auth()->user();
+        try {
+            $user = auth()->user();
+            return response()->json([
+                'message' => 'User data successfully retrieved',
+                'data' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'email_verified_at' => $user->email_verified_at,
+                    'tgl_lahir' => $user->tgl_lahir,
+                    'no_telp' => $user->no_telp,
+                    'gender' => $user->gender,
+                    'tinggi_badan' => $user->tinggi_badan,
+                    'berat_badan' => $user->berat_badan,
+                    'tingkat_aktivitas' => $user->tingkat_aktivitas,
+                    'status' => $user->status
+                ]
+            ], Response::HTTP_OK);
 
-        return response()->json([
-            'message' => 'Data successfully updated',
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'email_verified_at' => $user->email_verified_at,
-                'tgl_lahir' => $user->tgl_lahir,
-                'no_telp' => $user->no_telp,
-                'gender' => $user->gender,
-                'tinggi_badan' => $user->tinggi_badan,
-                'berat_badan' => $user->berat_badan,
-                'tingkat_aktivitas' => $user->tingkat_aktivitas
-            ]
-        ], Response::HTTP_OK);
+        }catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'status' => 500,
+                'message' => 'Something went wrong while retrieving user data',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function updateUserProfile(Request $request)
