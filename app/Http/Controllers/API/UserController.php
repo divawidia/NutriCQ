@@ -176,11 +176,6 @@ class UserController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function getGenderTDEE(int $gender): int
-    {
-        return ($gender == 'male') ? 5 : -161;
-    }
-
     /**
      * Get the numeric activity level multiplier based on the tingkat_aktivitas string.
      *
