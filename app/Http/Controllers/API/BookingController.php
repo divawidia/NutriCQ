@@ -22,7 +22,7 @@ class BookingController extends Controller
         $data->status = 'Waiting';
         $data->user_id = $userid->id;
 
-        $doctor = User::WhereRoleIs('doctor')
+        $doctor = User::hasRoles('doctor')
             ->where('id', '=', $request->input('user_dokter_id'))
             ->first();
 
