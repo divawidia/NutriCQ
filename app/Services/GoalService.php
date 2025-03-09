@@ -78,4 +78,9 @@ class GoalService
     {
         return $weight / 30;
     }
+
+    public function getFiberNeeds(float $tdee): float
+    {
+        return $tdee / 1000 * 14;
+    }
 }
