@@ -66,6 +66,11 @@ class GoalService
 
     public function getCarbNeeds(float $tdee): float
     {
-        return $tdee * 30/100 / 4;
+        return $tdee * 40/100 / 4;
+    }
+
+    public function getFatsNeeds(float $tdee): float
+    {
+        return $tdee * 30/100 / 9;
     }
 }
