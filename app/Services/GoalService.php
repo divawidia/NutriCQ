@@ -83,4 +83,27 @@ class GoalService
     {
         return $tdee / 1000 * 14;
     }
+
+    /**
+     * Calculate the recommended calcium intake based on the age.
+     *
+     * @param int $age The age of the person in years.
+     * @return int The recommended daily calcium intake in milligrams.
+     */
+    public function getCalciumNeeds(int $age)
+    {
+        if ($age < 1) {
+            $calcium = 270;
+        } elseif ($age >= 1 && $age <= 3) {
+            $calcium = 650;
+        } elseif (($age >= 4 && $age <= 9) || ($age >= 19 && $age <= 49)) {
+            $calcium = 1000;
+        } elseif (($age >= 10 && $age <= 18) || $age >= 50) {
+            $calcium = 1200;
+        }
+
+        return $calcium;
+    }
+
+    
 }

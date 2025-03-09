@@ -221,20 +221,6 @@ class UserController extends Controller
         }
     }
 
-    private function hitungKalsium($umur)
-    {
-        if ($umur < 1){
-            $kalsium = 270;
-        }elseif ($umur >= 1 && $umur <= 3){
-            $kalsium = 650;
-        }elseif (($umur >= 4 && $umur <= 9) || ($umur >= 19 && $umur <= 49)){
-            $kalsium = 1000;
-        }elseif (($umur >= 10 && $umur <= 18)||($umur >= 50)) {
-            $kalsium = 1200;
-        }
-        return $kalsium;
-    }
-
     private function hitungFosfor($umur)
     {
         if ($umur < 1){
