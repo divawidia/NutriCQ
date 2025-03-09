@@ -188,4 +188,37 @@ class GoalService
         }
         return $sodium;
     }
+
+    /**
+     * Calculate potassium intake based on age and gender.
+     *
+     * @param int $age The age of the individual.
+     * @param string $gender The gender of the individual ('male' or 'female').
+     * @return int The required potassium intake.
+     */
+    public function calculatePotassium(int $age, string $gender): int
+    {
+        if ($age < 1) {
+            $potassium = 700;
+        } elseif ($age >= 1 && $age <= 3) {
+            $potassium = 2600;
+        } elseif ($age >= 4 && $age <= 6) {
+            $potassium = 2700;
+        } elseif ($age >= 7 && $age <= 9) {
+            $potassium = 3200;
+        } elseif ($age >= 10 && $age <= 12 && $gender == 'male') {
+            $potassium = 3900;
+        } elseif ($age >= 10 && $age <= 12 && $gender == 'female') {
+            $potassium = 4400;
+        } elseif ($age >= 13 && $age <= 15) {
+            $potassium = 4800;
+        } elseif ($age >= 16 && $age <= 18 && $gender == 'male') {
+            $potassium = 5300;
+        } elseif ($age >= 16 && $age <= 18 && $gender == 'female') {
+            $potassium = 5000;
+        } elseif ($age >= 19) {
+            $potassium = 4700;
+        }
+        return $potassium;
+    }
 }
