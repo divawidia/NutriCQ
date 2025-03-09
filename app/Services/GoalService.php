@@ -106,12 +106,12 @@ class GoalService
     }
 
     /**
-     * Calculate the recommended phosphorus intake based on age.
+     * Calculate phosphorus intake based on age.
      *
-     * @param int $age The age of the person in years.
-     * @return int The recommended daily phosphorus intake in milligrams.
+     * @param int $age The age of the individual.
+     * @return int The required phosphorus intake.
      */
-    public function calculatePhosphorus($age)
+    public function calculatePhosphorus(int $age): int
     {
         if ($age < 1) {
             $phosphorus = 250;
