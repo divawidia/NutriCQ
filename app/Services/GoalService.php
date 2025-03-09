@@ -45,4 +45,17 @@ class GoalService
     {
         return (10 * $weight + 6.25 * $height - 5 * $age) + $genderTDEE;
     }
+
+    /**
+     * Calculate the Total Daily Energy Expenditure (TDEE) based on BMR and activity level.
+     *
+     * @param float $bmr The Basal Metabolic Rate (BMR) of the user.
+     * @param float $activityLevelValue The multiplier based on the user's activity level.
+     * @return float The calculated TDEE value.
+     */
+    public function getTDEEValue(float $bmr, float $activityLevelValue): float
+    {
+        return $bmr * $activityLevelValue;
+    }
+
 }
