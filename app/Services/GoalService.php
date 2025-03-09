@@ -154,4 +154,38 @@ class GoalService
         return $iron;
     }
 
+    /**
+     * Calculate sodium intake based on age and gender.
+     *
+     * @param int $age The age of the individual.
+     * @param string $gender The gender of the individual ('male' or 'female').
+     * @return int The required sodium intake.
+     */
+    public function calculateSodium(int $age, string $gender): int
+    {
+        if ($age < 1) {
+            $sodium = 370;
+        } elseif ($age >= 1 && $age <= 3) {
+            $sodium = 800;
+        } elseif ($age >= 4 && $age <= 6) {
+            $sodium = 900;
+        } elseif (($age >= 7 && $age <= 9) || ($age >= 80)) {
+            $sodium = 1000;
+        } elseif (($age >= 10 && $age <= 12) || ($age >= 50 && $age <= 64) && $gender == 'male') {
+            $sodium = 1300;
+        } elseif ($age >= 65 && $age <= 80 && $gender == 'male') {
+            $sodium = 1100;
+        } elseif ($age >= 65 && $age <= 80 && $gender == 'female') {
+            $sodium = 1200;
+        } elseif (($age >= 10 && $age <= 12) || ($age >= 50 && $age <= 64) && $gender == 'female') {
+            $sodium = 1400;
+        } elseif (($age >= 13 && $age <= 15) || ($age >= 19 && $age <= 49)) {
+            $sodium = 1500;
+        } elseif ($age >= 16 && $age <= 18 && $gender == 'female') {
+            $sodium = 1600;
+        } elseif ($age >= 16 && $age <= 18 && $gender == 'male') {
+            $sodium = 1700;
+        }
+        return $sodium;
+    }
 }
