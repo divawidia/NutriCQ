@@ -73,4 +73,9 @@ class GoalService
     {
         return $tdee * 30/100 / 9;
     }
+
+    public function getWaterNeeds(float $weight): float
+    {
+        return $weight / 30;
+    }
 }
