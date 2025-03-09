@@ -105,5 +105,24 @@ class GoalService
         return $calcium;
     }
 
-    
+    /**
+     * Calculate the recommended phosphorus intake based on age.
+     *
+     * @param int $age The age of the person in years.
+     * @return int The recommended daily phosphorus intake in milligrams.
+     */
+    public function calculatePhosphorus($age)
+    {
+        if ($age < 1) {
+            $phosphorus = 250;
+        } elseif ($age >= 1 && $age <= 9) {
+            $phosphorus = 500;
+        } elseif ($age >= 10 && $age <= 18) {
+            $phosphorus = 1200;
+        } elseif ($age >= 19) {
+            $phosphorus = 700;
+        }
+        return $phosphorus;
+    }
+
 }
