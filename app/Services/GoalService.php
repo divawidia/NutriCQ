@@ -58,4 +58,9 @@ class GoalService
         return $bmr * $activityLevelValue;
     }
 
+
+    public function getProteinNeeds(float $tdee): float
+    {
+        return $tdee * 30/100 / 4;
+    }
 }
