@@ -125,4 +125,33 @@ class GoalService
         return $phosphorus;
     }
 
+    /**
+     * Calculate iron intake based on age and gender.
+     *
+     * @param int $age The age of the individual.
+     * @param string $gender The gender of the individual ('male' or 'female').
+     * @return int The required iron intake.
+     */
+    public function calculateIron(int $age, string $gender): int
+    {
+        if ($age < 1) {
+            $iron = 11;
+        } elseif ($age >= 1 && $age <= 3) {
+            $iron = 7;
+        } elseif ($age >= 4 && $age <= 9) {
+            $iron = 10;
+        } elseif (($age >= 10 && $age <= 12) || ($age >= 50 && $gender == 'female')) {
+            $iron = 8;
+        } elseif ($age >= 19 && $gender == 'male') {
+            $iron = 9;
+        } elseif ($age >= 13 && $age <= 18 && $gender == 'male') {
+            $iron = 11;
+        } elseif ($age >= 13 && $age <= 18 && $gender == 'female') {
+            $iron = 15;
+        } elseif ($age >= 19 && $age <= 49 && $gender == 'female') {
+            $iron = 18;
+        }
+        return $iron;
+    }
+
 }
