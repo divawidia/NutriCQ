@@ -221,4 +221,32 @@ class GoalService
         }
         return $potassium;
     }
+
+    /**
+     * Calculate copper intake based on age.
+     *
+     * @param int $age The age of the individual.
+     * @return int The required copper intake.
+     */
+    public function calculateCopper(int $age): int
+    {
+        if ($age < 1) {
+            $copper = 220;
+        } elseif ($age >= 1 && $age <= 3) {
+            $copper = 340;
+        } elseif ($age >= 4 && $age <= 6) {
+            $copper = 440;
+        } elseif ($age >= 7 && $age <= 9) {
+            $copper = 570;
+        } elseif ($age >= 10 && $age <= 12) {
+            $copper = 700;
+        } elseif ($age >= 13 && $age <= 15) {
+            $copper = 795;
+        } elseif ($age >= 16 && $age <= 18) {
+            $copper = 890;
+        } elseif ($age >= 19) {
+            $copper = 900;
+        }
+        return $copper;
+    }
 }
