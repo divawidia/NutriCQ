@@ -393,5 +393,29 @@ class GoalService
         return $niacin;
     }
 
+    /**
+     * Calculate vitamin C intake based on age and gender.
+     *
+     * @param int $age The age of the individual.
+     * @param string $gender The gender of the individual ('male' or 'female').
+     * @return int The required vitamin C intake.
+     */
+    public function calculateVitaminC(int $age, string $gender): int
+    {
+        if (($age < 1) || ($age >= 10 && $age <= 12)) {
+            $vitaminC = 50;
+        } elseif ($age >= 1 && $age <= 3) {
+            $vitaminC = 40;
+        } elseif ($age >= 4 && $age <= 9) {
+            $vitaminC = 45;
+        } elseif (($age >= 13 && $age <= 15 && $gender == 'male') || ($age >= 16 && $gender == 'female')) {
+            $vitaminC = 75;
+        } elseif ($age >= 13 && $age <= 15 && $gender == 'female') {
+            $vitaminC = 65;
+        } elseif ($age >= 16 && $gender == 'male') {
+            $vitaminC = 90;
+        }
+        return $vitaminC;
+    }
 
 }
