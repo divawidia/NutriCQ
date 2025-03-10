@@ -418,4 +418,69 @@ class GoalService
         return $vitaminC;
     }
 
+    /**
+     * Calculate the nutritional goals and needs based on individual parameters such as gender, activity level, weight, height, and age.
+     *
+     * This method calculates the Total Daily Energy Expenditure (TDEE), macronutrient needs (protein, carbohydrates, fats),
+     * and essential micronutrient needs (water, fiber, calcium, phosphorus, iron, sodium, potassium, copper, zinc, vitamin A,
+     * beta-carotene, thiamine, riboflavin, niacin, and vitamin C) based on the provided user information.
+     *
+     * @param string $gender The gender of the individual ('male' or 'female').
+     * @param string $activityLevel The activity level of the individual ('sedentary', 'light', 'moderate', 'active', 'very active').
+     * @param int $weight The weight of the individual in kilograms.
+     * @param int $height The height of the individual in centimeters.
+     * @param int $age The age of the individual in years.
+     *
+     * @return array An associative array containing the calculated nutritional needs
+     */
+    public function calculateGoal(string $gender, string $activityLevel, int $weight, int $height, int $age): array
+    {
+        $genderTDEE = $this->getGenderTDEE($gender);
+        $activityLevelValue = $this->getActivityLevelMultiplier($activityLevel);
+        $bmr = $this->getBMRValue($weight, $height, $age, $genderTDEE);
+        $tdee = $this->getTDEEValue($bmr, $activityLevelValue);
+
+        $protein = $this->getProteinNeeds($tdee);
+        $carb = $this->getCarbNeeds($tdee);
+        $fat = $this->getFatsNeeds($tdee);
+
+        $air = $this->getWaterNeeds($tdee);
+        $serat = $this->getFiberNeeds($tdee);
+        $kalsium = $this->getCalciumNeeds($age);
+        $fosfor = $this->calculatePhosphorus($age);
+        $besi = $this->calculateIron($age, $gender);
+        $natrium = $this->calculateSodium($age, $gender);
+        $kalium = $this->calculatePotassium($age, $gender);
+        $tembaga = $this->calculateCopper($age);
+        $seng = $this->calculateZinc($age, $gender);
+        $retinol = $this->calculateRetinol($age, $gender);
+        $bKaroten = $this->calculateBetaCarotene($age);
+        $thiamin = $this->calculateThiamine($age, $gender);
+        $riboflamin = $this->calculateRiboflavin($age, $gender);
+        $niasin = $this->calculateNiacin($age, $gender);
+        $vitC = $this->calculateVitaminC($age, $gender);
+
+        return compact(
+            'air',
+            'tdee',
+            'protein',
+            'fat',
+            'carb',
+            'serat',
+            'kalsium',
+            'fosfor',
+            'besi',
+            'natrium',
+            'kalium',
+            'tembaga',
+            'seng',
+            'retinol',
+            'bKaroten',
+            'thiamin',
+            'riboflamin',
+            'niasin',
+            'vitC',
+        );
+    }
+
 }
