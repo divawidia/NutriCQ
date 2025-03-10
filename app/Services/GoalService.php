@@ -298,4 +298,20 @@ class GoalService
         return $retinol;
     }
 
+    /**
+     * Calculate beta-carotene intake based on age.
+     *
+     * @param int $age The age of the individual.
+     * @return int The required beta-carotene intake.
+     */
+    public function calculateBetaCarotene(int $age): int
+    {
+        if ($age <= 12) {
+            $betaCarotene = 6;
+        } elseif ($age >= 13) {
+            $betaCarotene = 15;
+        }
+        return $betaCarotene;
+    }
+
 }
