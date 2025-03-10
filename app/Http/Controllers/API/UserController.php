@@ -110,7 +110,7 @@ class UserController extends Controller
             'tingkat_aktivitas' => $request->tingkat_aktivitas
         ]);
 
-            $user->goals()->update([
+            $user->goal()->update([
                 'total_air' => $air,
                 'total_energi' => $tdee,
                 'total_protein' => $protein,
