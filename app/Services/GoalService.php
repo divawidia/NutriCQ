@@ -314,4 +314,30 @@ class GoalService
         return $betaCarotene;
     }
 
+    /**
+     * Calculate thiamine (Vitamin B1) intake based on age and gender.
+     *
+     * @param int $age The age of the individual.
+     * @param string $gender The gender of the individual ('male' or 'female').
+     * @return float The required thiamine intake.
+     */
+    public function calculateThiamine(int $age, string $gender): float
+    {
+        if ($age < 1) {
+            $thiamine = 0.3;
+        } elseif ($age >= 1 && $age <= 3) {
+            $thiamine = 0.5;
+        } elseif ($age >= 4 && $age <= 8) {
+            $thiamine = 0.6;
+        } elseif ($age >= 9 && $age <= 13) {
+            $thiamine = 0.9;
+        } elseif ($age >= 14 && $gender == 'male') {
+            $thiamine = 1.2;
+        } elseif ($age >= 14 && $age <= 18 && $gender == 'female') {
+            $thiamine = 1;
+        } elseif ($age >= 19 && $gender == 'female') {
+            $thiamine = 1.1;
+        }
+        return $thiamine;
+    }
 }
