@@ -340,4 +340,32 @@ class GoalService
         }
         return $thiamine;
     }
+
+    /**
+     * Calculate riboflavin (Vitamin B2) intake based on age and gender.
+     *
+     * @param int $age The age of the individual.
+     * @param string $gender The gender of the individual ('male' or 'female').
+     * @return float The required riboflavin intake.
+     */
+    public function calculateRiboflavin(int $age, string $gender): float
+    {
+        if ($age < 1) {
+            $riboflavin = 0.3;
+        } elseif ($age >= 1 && $age <= 3) {
+            $riboflavin = 0.5;
+        } elseif ($age >= 4 && $age <= 8) {
+            $riboflavin = 0.6;
+        } elseif ($age >= 9 && $age <= 13) {
+            $riboflavin = 0.9;
+        } elseif ($age >= 14 && $gender == 'male') {
+            $riboflavin = 1.3;
+        } elseif ($age >= 14 && $age <= 18 && $gender == 'female') {
+            $riboflavin = 1;
+        } elseif ($age >= 19 && $gender == 'female') {
+            $riboflavin = 1.1;
+        }
+        return $riboflavin;
+    }
+
 }
