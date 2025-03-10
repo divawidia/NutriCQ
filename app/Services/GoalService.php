@@ -438,48 +438,50 @@ class GoalService
         $genderTDEE = $this->getGenderTDEE($gender);
         $activityLevelValue = $this->getActivityLevelMultiplier($activityLevel);
         $bmr = $this->getBMRValue($weight, $height, $age, $genderTDEE);
-        $tdee = $this->getTDEEValue($bmr, $activityLevelValue);
+        $total_energi = $this->getTDEEValue($bmr, $activityLevelValue);
 
-        $protein = $this->getProteinNeeds($tdee);
-        $carb = $this->getCarbNeeds($tdee);
-        $fat = $this->getFatsNeeds($tdee);
+        $total_protein = $this->getProteinNeeds($total_energi);
+        $total_karbohidrat = $this->getCarbNeeds($total_energi);
+        $total_lemak = $this->getFatsNeeds($total_energi);
 
-        $air = $this->getWaterNeeds($tdee);
-        $serat = $this->getFiberNeeds($tdee);
-        $kalsium = $this->getCalciumNeeds($age);
-        $fosfor = $this->calculatePhosphorus($age);
-        $besi = $this->calculateIron($age, $gender);
-        $natrium = $this->calculateSodium($age, $gender);
-        $kalium = $this->calculatePotassium($age, $gender);
-        $tembaga = $this->calculateCopper($age);
-        $seng = $this->calculateZinc($age, $gender);
-        $retinol = $this->calculateRetinol($age, $gender);
-        $bKaroten = $this->calculateBetaCarotene($age);
-        $thiamin = $this->calculateThiamine($age, $gender);
-        $riboflamin = $this->calculateRiboflavin($age, $gender);
-        $niasin = $this->calculateNiacin($age, $gender);
-        $vitC = $this->calculateVitaminC($age, $gender);
+        $total_air = $this->getWaterNeeds($total_energi);
+        $total_serat = $this->getFiberNeeds($total_energi);
+        $total_kalsium = $this->getCalciumNeeds($age);
+        $total_fosfor = $this->calculatePhosphorus($age);
+        $total_besi = $this->calculateIron($age, $gender);
+        $total_natrium = $this->calculateSodium($age, $gender);
+        $total_kalium = $this->calculatePotassium($age, $gender);
+        $total_tembaga = $this->calculateCopper($age);
+        $total_seng = $this->calculateZinc($age, $gender);
+        $total_retinol = $this->calculateRetinol($age, $gender);
+        $total_b_karoten = $this->calculateBetaCarotene($age);
+        $total_karoten_total = $this->calculateBetaCarotene($age);
+        $total_thiamin = $this->calculateThiamine($age, $gender);
+        $total_riboflamin = $this->calculateRiboflavin($age, $gender);
+        $total_niasin = $this->calculateNiacin($age, $gender);
+        $total_vitamin_c = $this->calculateVitaminC($age, $gender);
 
         return compact(
-            'air',
-            'tdee',
-            'protein',
-            'fat',
-            'carb',
-            'serat',
-            'kalsium',
-            'fosfor',
-            'besi',
-            'natrium',
-            'kalium',
-            'tembaga',
-            'seng',
-            'retinol',
-            'bKaroten',
-            'thiamin',
-            'riboflamin',
-            'niasin',
-            'vitC',
+            'total_air',
+            'total_energi',
+            'total_protein',
+            'total_lemak',
+            'total_karbohidrat',
+            'total_serat',
+            'total_kalsium',
+            'total_fosfor',
+            'total_besi',
+            'total_natrium',
+            'total_kalium',
+            'total_tembaga',
+            'total_seng',
+            'total_retinol',
+            'total_b_karoten',
+            'total_karoten_total',
+            'total_thiamin',
+            'total_riboflamin',
+            'total_niasin',
+            'total_vitamin_c',
         );
     }
 
