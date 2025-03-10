@@ -368,4 +368,30 @@ class GoalService
         return $riboflavin;
     }
 
+    /**
+     * Calculate niacin (Vitamin B3) intake based on age and gender.
+     *
+     * @param int $age The age of the individual.
+     * @param string $gender The gender of the individual ('male' or 'female').
+     * @return int The required niacin intake.
+     */
+    public function calculateNiacin(int $age, string $gender): int
+    {
+        if ($age < 1) {
+            $niacin = 4;
+        } elseif ($age >= 1 && $age <= 3) {
+            $niacin = 6;
+        } elseif ($age >= 4 && $age <= 8) {
+            $niacin = 8;
+        } elseif ($age >= 9 && $age <= 13) {
+            $niacin = 12;
+        } elseif ($age >= 14 && $gender == 'male') {
+            $niacin = 16;
+        } elseif ($age >= 14 && $gender == 'female') {
+            $niacin = 14;
+        }
+        return $niacin;
+    }
+
+
 }
