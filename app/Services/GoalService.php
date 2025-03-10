@@ -273,4 +273,29 @@ class GoalService
         return $zinc;
     }
 
+    /**
+     * Calculate retinol (Vitamin A) intake based on age and gender.
+     *
+     * @param int $age The age of the individual.
+     * @param string $gender The gender of the individual ('male' or 'female').
+     * @return int The required retinol intake.
+     */
+    public function calculateRetinol(int $age, string $gender): int
+    {
+        if ($age <= 3) {
+            $retinol = 400;
+        } elseif ($age >= 4 && $age <= 6) {
+            $retinol = 450;
+        } elseif ($age >= 7 && $age <= 9) {
+            $retinol = 500;
+        } elseif (($age >= 10 && $age <= 15 && $gender == 'male') || ($age >= 10 && $gender == 'female')) {
+            $retinol = 600;
+        } elseif ($age >= 16 && $age <= 18 && $gender == 'male') {
+            $retinol = 700;
+        } elseif ($age >= 19 && $gender == 'male') {
+            $retinol = 650;
+        }
+        return $retinol;
+    }
+
 }
