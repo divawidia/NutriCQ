@@ -249,4 +249,28 @@ class GoalService
         }
         return $copper;
     }
+
+    /**
+     * Calculate zinc intake based on age and gender.
+     *
+     * @param int $age The age of the individual.
+     * @param string $gender The gender of the individual ('male' or 'female').
+     * @return int The required zinc intake.
+     */
+    public function calculateZinc(int $age, string $gender): int
+    {
+        if ($age <= 3) {
+            $zinc = 3;
+        } elseif ($age >= 4 && $age <= 9) {
+            $zinc = 5;
+        } elseif (($age >= 10 && $age <= 12) || ($age >= 19 && $gender == 'female')) {
+            $zinc = 8;
+        } elseif ($age >= 13 && $gender == 'male') {
+            $zinc = 11;
+        } elseif ($age >= 13 && $age <= 18 && $gender == 'female') {
+            $zinc = 9;
+        }
+        return $zinc;
+    }
+
 }
