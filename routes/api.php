@@ -50,34 +50,37 @@ Route::get('/doctor/{id}/reviews', [ReviewController::class, 'reviewList'])->nam
 Route::get('/doctor/{id}/reviewstar', [ReviewController::class, 'reviewStar'])->name('review.reviewStar');
 Route::get('/doctor/{id}/review/{id_review}', [ReviewController::class, 'specificReview'])->name('review.specificReview');
 
-//middleware for user
-Route::prefix('user')->name('user.')->middleware(['auth:sanctum', 'role:user'])->group(function () {
-    Route::prefix('profile')->name('profile.')->group(function () {
-        Route::get('', [UserController::class, 'showUserProfile'])->name('show');
-        Route::put('', [UserController::class, 'updateAuthUserProfile'])->name('update');
+Route::middleware('auth:sanctum')->group(function () {
+    //middleware for user
+    Route::prefix('user')->name('user.')->middleware('role:user')->group(function () {
+        Route::prefix('profile')->name('profile.')->group(function () {
+            Route::get('', [UserController::class, 'showUserProfile'])->name('show');
+            Route::put('', [UserController::class, 'updateAuthUserProfile'])->name('update');
+        });
+
+        //Route review
+        Route::post('doctor/{id}/review/add', [ReviewController::class, 'addReview'])->name('review.addReview');
+        Route::patch('/doctor/{id}/review/{id_review}', [ReviewController::class, 'editReview'])->name('review.editReview');
+        Route::delete('/doctor/{id}/review/{id_review}', [ReviewController::class, 'destroyReview'])->name('review.destroyReview');
+
+        // Route Booking
+        Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+        Route::get('/mybooking', [BookingController::class, 'my_booking']);
+
+        //Goal Route
+        Route::get('/goal', [GoalController::class, 'index'])->name('goal.index');
+        Route::put('/goal', [GoalController::class, 'update'])->name('goal.update');
+
+        Route::apiResource('food-diary', FoodDiaryController::class);
+        Route::patch('/food-diary/{food_diary}', [FoodDiaryController::class, 'addFoodToExistingFoodDiary'])->name('food-diary.addFoodToExistingFoodDiary');
+        Route::patch('/foods/{food}', [FoodController::class, 'storeCalculatedFoodToFoodDiary'])->name('foods.storeCalculatedFoodToFoodDiary');
+
+        Route::put('/foods-diary/{id}/{detail_id}', [FoodController::class, 'updateFoodDiaryDetail'])->name('fooddetail.update');
+        Route::delete('/foods-diary/{id}', [FoodDiaryController::class, 'destroy'])->name('food.destroy');
+        Route::delete('/foods-diary/{id}/{detail_id}', [FoodController::class, 'destroy_food_detail'])->name('fooddetail.destroy');
     });
-
-    //Route review
-    Route::post('doctor/{id}/review/add', [ReviewController::class, 'addReview'])->name('review.addReview');
-    Route::patch('/doctor/{id}/review/{id_review}', [ReviewController::class, 'editReview'])->name('review.editReview');
-    Route::delete('/doctor/{id}/review/{id_review}', [ReviewController::class, 'destroyReview'])->name('review.destroyReview');
-
-    // Route Booking
-    Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
-    Route::get('/mybooking', [BookingController::class, 'my_booking']);
-
-    //Goal Route
-    Route::get('/goal', [GoalController::class, 'index'])->name('goal.index');
-    Route::put('/goal', [GoalController::class, 'update'])->name('goal.update');
-
-    Route::apiResource('food-diary', FoodDiaryController::class);
-    Route::patch('/food-diary/{food_diary}', [FoodDiaryController::class, 'addFoodToExistingFoodDiary'])->name('food-diary.addFoodToExistingFoodDiary');
-    Route::patch('/foods/{food}', [FoodController::class, 'storeCalculatedFoodToFoodDiary'])->name('foods.storeCalculatedFoodToFoodDiary');
-
-    Route::put('/foods-diary/{id}/{detail_id}', [FoodController::class, 'updateFoodDiaryDetail'])->name('fooddetail.update');
-    Route::delete('/foods-diary/{id}', [FoodDiaryController::class, 'destroy'])->name('food.destroy');
-    Route::delete('/foods-diary/{id}/{detail_id}', [FoodController::class, 'destroy_food_detail'])->name('fooddetail.destroy');
 });
+
 
 //middleware for doctor
 Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
