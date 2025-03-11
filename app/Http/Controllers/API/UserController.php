@@ -21,7 +21,7 @@ class UserController extends Controller
     {
         $this->userService = $userService;
     }
-    
+
     /**
      * Get the authenticated user's profile data.
      *
