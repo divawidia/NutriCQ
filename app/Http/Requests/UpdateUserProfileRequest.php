@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class UpdateUserProfileRequest extends FormRequest
@@ -22,10 +24,9 @@ class UpdateUserProfileRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = auth()->user()->id;
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $userId,
+            'email' => ['required', 'string', 'email', 'max:255'],
             'tgl_lahir' => 'required|date|before:today',
             'no_telp' => 'required|string|max:255',
             'gender' => 'required|string|in:male,female',

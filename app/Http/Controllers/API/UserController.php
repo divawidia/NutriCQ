@@ -67,7 +67,7 @@ class UserController extends Controller
      * Update the authenticated user's profile.
      *
      * @authenticated
-     * 
+     *
      * @param UpdateUserProfileRequest $request The validated request data for updating the user's profile.
      * @return JsonResponse A JSON response containing the updated user profile details and a success message.
      */
