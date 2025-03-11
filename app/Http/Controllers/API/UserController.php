@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\UpdateUserProfileRequest;
 use App\Models\Food;
 use App\Models\User;
 use App\Services\UserService;
@@ -34,6 +35,8 @@ class UserController extends Controller
         try {
             $user = auth()->user();
             return response()->json([
+                'success' => true,
+                'status' => Response::HTTP_OK,
                 'message' => 'User data successfully retrieved',
                 'data' => [
                     'id' => $user->id,
@@ -60,125 +63,24 @@ class UserController extends Controller
         }
     }
 
-    public function updateUserProfile(Request $request)
+    public function updateAuthUserProfile(UpdateUserProfileRequest $request): JsonResponse
     {
-        $authUserId = $this->authUserId();
-        $user = auth()->user();
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email,' . $authUserId,
-            'password' => 'required|string|min:6',
-            'tgl_lahir' => 'required|date',
-            'no_telp' => 'required|string',
-            'gender' => ['required',Rule::in(['male', 'female'])],
-            'tinggi_badan' => 'required|numeric',
-            'berat_badan' => 'required|numeric',
-            'tingkat_aktivitas' => ['required',Rule::in(['sedentary', 'lightly_active', 'moderately_active ', 'very_active', 'extra_active'])]
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $genderTDEE = $this->getGenderTDEE($request->gender);
-        $activityLevelValue = $this->getActivityLevelMultiplier($request->tingkat_aktivitas);
-        $bmr = $this->getBMRValue($activityLevelValue);
-
-        $tdee = $bmr * $activityLevel;
-        $protein = $tdee * 30/100 / 4;
-        $carb = $tdee * 40/100 / 4;
-        $fat = $tdee * 30/100 / 9;
-
-        $air = $request->berat_badan / 30;
-        $serat = $tdee / 1000 * 14;
-        $kalsium = $this->hitungKalsium($ageVal);
-        $fosfor = $this->hitungFosfor($ageVal);
-        $besi = $this->hitungZatBesi($ageVal, $gender);
-        $natrium = $this->hitungNatrium($ageVal, $gender);
-        $kalium = $this->hitungKalium($ageVal, $gender);
-        $tembaga = $this->hitungTembaga($ageVal);
-        $seng = $this->hitungSeng($ageVal, $gender);
-        $retinol = $this->hitungRetinol($ageVal, $gender);
-        $bKaroten = $this->hitungBKaroten($ageVal);
-        $thiamin = $this->hitungThiamin($ageVal, $gender);
-        $riboflamin = $this->hitungRiboflamin($ageVal, $gender);
-        $niasin = $this->hitungNiasin($ageVal, $gender);
-        $vitC = $this->hitungVitC($ageVal, $gender);
-
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'no_telp' => $request->no_telp,
-            'tgl_lahir' => $request->tgl_lahir,
-            'gender' => $request->gender,
-            'tinggi_badan' => $request->tinggi_badan,
-            'berat_badan' => $request->berat_badan,
-            'tingkat_aktivitas' => $request->tingkat_aktivitas
-        ]);
-
-            $user->goal()->update([
-                'total_air' => $air,
-                'total_energi' => $tdee,
-                'total_protein' => $protein,
-                'total_lemak' => $fat,
-                'total_karbohidrat' => $carb,
-                'total_serat' => $serat,
-                'total_abu' => null,
-                'total_kalsium' => $kalsium,
-                'total_fosfor' => $fosfor,
-                'total_besi' => $besi,
-                'total_natrium' => $natrium,
-                'total_kalium' => $kalium,
-                'total_tembaga' => $tembaga,
-                'total_seng' => $seng,
-                'total_retinol' => $retinol,
-                'total_b_karoten' => $bKaroten,
-                'total_karoten_total' => $bKaroten,
-                'total_thiamin' => $thiamin,
-                'total_riboflamin' => $riboflamin,
-                'total_niasin' => $niasin,
-                'total_vitamin_c' => $vitC
-            ]);
-
-            $user->goalHistories()->create([
-                'total_air' => $air,
-                'total_energi' => $tdee,
-                'total_protein' => $protein,
-                'total_lemak' => $fat,
-                'total_karbohidrat' => $carb,
-                'total_serat' => $serat,
-                'total_abu' => null,
-                'total_kalsium' => $kalsium,
-                'total_fosfor' => $fosfor,
-                'total_besi' => $besi,
-                'total_natrium' => $natrium,
-                'total_kalium' => $kalium,
-                'total_tembaga' => $tembaga,
-                'total_seng' => $seng,
-                'total_retinol' => $retinol,
-                'total_b_karoten' => $bKaroten,
-                'total_karoten_total' => $bKaroten,
-                'total_thiamin' => $thiamin,
-                'total_riboflamin' => $riboflamin,
-                'total_niasin' => $niasin,
-                'total_vitamin_c' => $vitC
-            ]);
-
-
+        $result = $this->userService->updateAuthUserProfile($request->validated(), auth()->user());
         return response()->json([
-            'message' => 'Data successfully updated',
+            'success' => true,
+            'status' => Response::HTTP_OK,
+            'message' => 'Your profile successfully updated',
             'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'email_verified_at' => $user->email_verified_at,
-                'tgl_lahir' => $user->tgl_lahir,
-                'no_telp' => $user->no_telp,
-                'gender' => $user->gender,
-                'tinggi_badan' => $user->tinggi_badan,
-                'berat_badan' => $user->berat_badan,
-                'tingkat_aktivitas' => $user->tingkat_aktivitas
+                'id' => $result->id,
+                'name' => $result->name,
+                'email' => $result->email,
+                'email_verified_at' => $result->email_verified_at,
+                'tgl_lahir' => $result->tgl_lahir,
+                'no_telp' => $result->no_telp,
+                'gender' => $result->gender,
+                'tinggi_badan' => $result->tinggi_badan,
+                'berat_badan' => $result->berat_badan,
+                'tingkat_aktivitas' => $result->tingkat_aktivitas
             ]
         ], Response::HTTP_OK);
     }
