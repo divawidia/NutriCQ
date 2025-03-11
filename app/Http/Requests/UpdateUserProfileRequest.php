@@ -22,9 +22,10 @@ class UpdateUserProfileRequest extends FormRequest
      */
     public function rules(): array
     {
+        $userId = auth()->user()->id;
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $userId,
             'tgl_lahir' => 'required|date|before:today',
             'no_telp' => 'required|string|max:255',
             'gender' => 'required|string|in:male,female',
