@@ -51,14 +51,14 @@ Route::get('/doctor/{id}/reviewstar', [ReviewController::class, 'reviewStar'])->
 Route::get('/doctor/{id}/review/{id_review}', [ReviewController::class, 'specificReview'])->name('review.specificReview');
 
 //middleware for user
-Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
-    Route::get('/dashboard/user', [UserController::class, 'index']);
-
-    Route::get('/profile', [UserController::class, 'showUserProfile'])->name('profile.show');
-    Route::put('/profile', [UserController::class, 'updateUserProfile'])->name('profile.update');
-
+Route::prefix('user')->name('user.')->middleware(['auth:sanctum', 'role:user'])->group(function () {
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('', [UserController::class, 'showUserProfile'])->name('show');
+        Route::put('', [UserController::class, 'updateAuthUserProfile'])->name('update');
+    });
+    
     //Route review
-    Route::post('/doctor/{id}/review/add', [ReviewController::class, 'addReview'])->name('review.addReview');
+    Route::post('doctor/{id}/review/add', [ReviewController::class, 'addReview'])->name('review.addReview');
     Route::patch('/doctor/{id}/review/{id_review}', [ReviewController::class, 'editReview'])->name('review.editReview');
     Route::delete('/doctor/{id}/review/{id_review}', [ReviewController::class, 'destroyReview'])->name('review.destroyReview');
 
