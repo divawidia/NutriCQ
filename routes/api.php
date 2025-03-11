@@ -56,7 +56,7 @@ Route::prefix('user')->name('user.')->middleware(['auth:sanctum', 'role:user'])-
         Route::get('', [UserController::class, 'showUserProfile'])->name('show');
         Route::put('', [UserController::class, 'updateAuthUserProfile'])->name('update');
     });
-    
+
     //Route review
     Route::post('doctor/{id}/review/add', [ReviewController::class, 'addReview'])->name('review.addReview');
     Route::patch('/doctor/{id}/review/{id_review}', [ReviewController::class, 'editReview'])->name('review.editReview');

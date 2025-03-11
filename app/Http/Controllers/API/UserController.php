@@ -63,6 +63,14 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Update the authenticated user's profile.
+     *
+     * @authenticated
+     * 
+     * @param UpdateUserProfileRequest $request The validated request data for updating the user's profile.
+     * @return JsonResponse A JSON response containing the updated user profile details and a success message.
+     */
     public function updateAuthUserProfile(UpdateUserProfileRequest $request): JsonResponse
     {
         $result = $this->userService->updateAuthUserProfile($request->validated(), auth()->user());
