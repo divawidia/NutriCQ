@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Food;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
+    protected UserService $userService;
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+    
     /**
      * Get the authenticated user's profile data.
      *
