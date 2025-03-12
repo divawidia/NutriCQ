@@ -73,24 +73,35 @@ class UserController extends Controller
      */
     public function updateAuthUserProfile(UpdateUserProfileRequest $request): JsonResponse
     {
-        $result = $this->userService->updateAuthUserProfile($request->validated(), auth()->user());
-        return response()->json([
-            'success' => true,
-            'status' => Response::HTTP_OK,
-            'message' => 'Your profile successfully updated',
-            'data' => [
-                'id' => $result->id,
-                'name' => $result->name,
-                'email' => $result->email,
-                'email_verified_at' => $result->email_verified_at,
-                'tgl_lahir' => $result->tgl_lahir,
-                'no_telp' => $result->no_telp,
-                'gender' => $result->gender,
-                'tinggi_badan' => $result->tinggi_badan,
-                'berat_badan' => $result->berat_badan,
-                'tingkat_aktivitas' => $result->tingkat_aktivitas
-            ]
-        ], Response::HTTP_OK);
+        try {
+            $result = $this->userService->updateAuthUserProfile($request->validated(), auth()->user());
+            return response()->json([
+                'success' => true,
+                'status' => Response::HTTP_OK,
+                'message' => 'Your profile successfully updated',
+                'data' => [
+                    'id' => $result->id,
+                    'name' => $result->name,
+                    'email' => $result->email,
+                    'email_verified_at' => $result->email_verified_at,
+                    'tgl_lahir' => $result->tgl_lahir,
+                    'no_telp' => $result->no_telp,
+                    'gender' => $result->gender,
+                    'tinggi_badan' => $result->tinggi_badan,
+                    'berat_badan' => $result->berat_badan,
+                    'tingkat_aktivitas' => $result->tingkat_aktivitas,
+                    'goal' => $result->goal
+                ]
+            ], Response::HTTP_OK);
+
+        }catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'status' => 500,
+                'message' => 'Something went wrong while updating profile',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
 
