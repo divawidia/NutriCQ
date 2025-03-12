@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
+use Dedoc\Scramble\Attributes\QueryParameter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,33 +18,21 @@ class UserController extends Controller
     }
 
     /**
-     * Retrieve a paginated list of users based on optional filter criteria.
-     *
-     * Filters available:
-     * - search (string): Keyword to search users by name or email.
-     * - gender (string): Filter by gender ('male' or 'female').
-     * - minHeight (int): Minimum height filter (in cm).
-     * - maxHeight (int): Maximum height filter (in cm).
-     * - minWeight (int): Minimum weight filter (in kg).
-     * - maxWeight (int): Maximum weight filter (in kg).
-     * - activityLevel (string): Activity level filter (e.g., 'sedentary', 'lightly_active').
-     * - status (string): User status filter.
-     *
-     * Query Parameters:
-     * @queryParam search string optional Search keyword for users.
-     * @queryParam gender string optional Filter by gender (male or female).
-     * @queryParam minHeight int optional Minimum height in centimeters.
-     * @queryParam maxHeight int optional Maximum height in centimeters.
-     * @queryParam minWeight int optional Minimum weight in kilograms.
-     * @queryParam maxWeight int optional Maximum weight in kilograms.
-     * @queryParam activityLevel string optional Filter by activity level.
-     * @queryParam status string optional Filter by user status.
-     * @queryParam page int optional Page number for pagination. Defaults to 1.
-     * @queryParam perPage int optional Number of items per page. Defaults to 10.
+     * Retrieve a paginated list of users based on optional filter criteria for admin.
      *
      * @param Request $request
      * @return JsonResponse
      */
+    #[QueryParameter('search', description: 'Search keyword for users.', type: 'string', default: null, example: 'John')]
+    #[QueryParameter('gender', description: 'Filter by gender (male or female).', type: 'string', default: null, example: 'male')]
+    #[QueryParameter('minHeight', description: 'Minimum height in centimeters.', type: 'int', default: null, example: 150)]
+    #[QueryParameter('maxHeight', description: 'Maximum height in centimeters.', type: 'int', default: null, example: 180)]
+    #[QueryParameter('minWeight', description: 'Minimum weight in kilograms.', type: 'int', default: null, example: 50)]
+    #[QueryParameter('maxWeight', description: 'Maximum weight in kilograms.', type: 'int', default: null, example: 90)]
+    #[QueryParameter('activityLevel', description: 'Filter by activity level.', type: 'string', default: null, example: 'lightly_active')]
+    #[QueryParameter('status', description: 'Filter by user status.', type: 'string', default: null, example: 'active')]
+    #[QueryParameter('page', description: 'Page number for pagination. Defaults to 1.', type: 'int', default: 1, example: 2)]
+    #[QueryParameter('perPage', description: 'Number of items per page. Defaults to 10.', type: 'int', default: 10, example: 20)]
     public function index(Request $request): JsonResponse
     {
         try {
