@@ -79,6 +79,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/foods-diary/{id}', [FoodDiaryController::class, 'destroy'])->name('food.destroy');
         Route::delete('/foods-diary/{id}/{detail_id}', [FoodController::class, 'destroy_food_detail'])->name('fooddetail.destroy');
     });
+
+    //middleware for admin
+    Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
+        Route::apiResource('users', App\Http\Controllers\API\Admin\UserController::class);
+        Route::apiResource('foods', FoodController::class);
+        Route::apiResource('food-categories', FoodCategoryController::class)->except('show');
+    });
 });
 
 
@@ -93,19 +100,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:doctor']], function () {
     Route::put('/bookinglist/{id}/done', [BookingController::class, 'done']);
 });
 
-//middleware for admin
-Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
-    Route::get('/dashboard/admin', [UserController::class, 'index']);
 
-    Route::get('/admin/doctor-list', [UserController::class, 'doctorIndex'])->name('admin.doctorList');
-    Route::get('/admin/doctor-list/{doctor}', [UserController::class, 'showDoctor'])->name('admin.showDoctor');
-    Route::patch('/admin/doctor-list/{doctor}/', [UserController::class, 'updateStatusDoctor'])->name('admin.updateStatusDoctor');
-
-
-    Route::apiResource('admin/foods', FoodController::class);
-
-    Route::apiResource('admin/food-categories', FoodCategoryController::class)->except('show');
-});
 
 Route::get('/foods', [FoodController::class, 'search'])->name('foods.search');
 Route::get('/foods/{food}', [FoodController::class, 'calculate'])->name('foods.calculate');
