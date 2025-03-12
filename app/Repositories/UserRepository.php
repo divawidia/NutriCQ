@@ -39,6 +39,7 @@ class UserRepository
             ->when($status, fn($query) => $query->where('status', $status))
             ->when($page, fn($query) => $query->skip($skip))
             ->when($status, fn($query) => $query->take($perPage))
+            ->role('user')
             ->get();
     }
 
