@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-    class UpdateUserProfileRequest extends FormRequest
+class UpdateUserProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +24,8 @@ use Illuminate\Foundation\Http\FormRequest;
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'tgl_lahir' => 'required|date|before:today',
+            'email' => ['required', 'string', 'email'],
+            'tgl_lahir' => ['required', 'date:Y-m-d', 'before:today'],
             'no_telp' => 'required|string|max:255',
             'gender' => 'required|string|in:male,female',
             'tinggi_badan' => 'required|numeric',
