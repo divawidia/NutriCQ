@@ -37,9 +37,8 @@ class UserRepository
             ->when($maxWeight, fn($query) => $query->where('berat_badan', '<=', $maxWeight))
             ->when($activityLevel, fn($query) => $query->where('tingkat_aktivitas', $activityLevel))
             ->when($status, fn($query) => $query->where('status', $status))
-            ->when($page, fn($query) => $query->skip($skip))
-            ->when($status, fn($query) => $query->take($perPage))
             ->role('user')
+            ->paginate($perPage, ['*'], 'page', $page)
             ->get();
     }
 
