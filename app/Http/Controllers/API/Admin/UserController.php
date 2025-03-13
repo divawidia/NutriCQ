@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\UpdateUserProfileRequest;
+use App\Models\User;
 use App\Services\UserService;
 use Dedoc\Scramble\Attributes\QueryParameter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class UserController extends Controller
 {
@@ -18,7 +22,7 @@ class UserController extends Controller
     }
 
     /**
-     * Retrieve a paginated list of users based on optional filter criteria for admin.
+     * Admin: Retrieve a paginated list of users based on optional filter criteria.
      *
      * @param Request $request
      * @return JsonResponse
@@ -70,7 +74,7 @@ class UserController extends Controller
                 ]
             ], Response::HTTP_OK);
 
-        }catch (\Throwable $e) {
+        }catch (Throwable $e) {
             return response()->json([
                 'success' => false,
                 'status' => 500,
@@ -81,50 +85,84 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user): JsonResponse
     {
-        //
-    }
+        try {
+            return response()->json([
+                'success' => true,
+                'status' => Response::HTTP_OK,
+                'message' => 'User data successfully retrieved',
+                'data' => $user
+            ], Response::HTTP_OK);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        }catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'status' => 500,
+                'message' => 'Something went wrong while retrieving user data',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserProfileRequest $request, User $user): JsonResponse
     {
-        //
+        try {
+            $result = $this->userService->updateAuthUserProfile($request->validated(), $user);
+            return response()->json([
+                'success' => true,
+                'status' => Response::HTTP_OK,
+                'message' => 'User profile successfully updated',
+                'data' => [
+                    'id' => $result->id,
+                    'name' => $result->name,
+                    'email' => $result->email,
+                    'email_verified_at' => $result->email_verified_at,
+                    'tgl_lahir' => $result->tgl_lahir,
+                    'no_telp' => $result->no_telp,
+                    'gender' => $result->gender,
+                    'tinggi_badan' => $result->tinggi_badan,
+                    'berat_badan' => $result->berat_badan,
+                    'tingkat_aktivitas' => $result->tingkat_aktivitas,
+                    'goal' => $result->goal
+                ]
+            ], Response::HTTP_OK);
+
+        }catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'status' => 500,
+                'message' => 'Something went wrong while updating user profile',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user): JsonResponse
     {
-        //
+        try {
+            $user->delete();
+            return response()->json([
+                'success' => true,
+                'status' => Response::HTTP_NO_CONTENT,
+                'message' => 'User account successfully deleted',
+            ], Response::HTTP_NO_CONTENT);
+
+        }catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'status' => 500,
+                'message' => 'Something went wrong while deleting user',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
