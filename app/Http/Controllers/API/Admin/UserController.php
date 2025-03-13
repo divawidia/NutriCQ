@@ -88,7 +88,7 @@ class UserController extends Controller
     }
 
     /**
-     * Create a new user account.
+     * Admin: Create a new user account.
      *
      * @authenticated
      *
@@ -123,7 +123,7 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified user data.
+     * Admin: Display the specified user data.
      *
      * @urlParam user int required The ID of the user.
      *
@@ -151,7 +151,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified user profile.
+     * Admin: Update the specified user profile.
      *
      * @urlParam user int required The ID of the user.
      *
@@ -193,7 +193,7 @@ class UserController extends Controller
     }
 
     /**
-     * Delete the specified user account.
+     * Admin: Delete the specified user account.
      *
      * @urlParam user int required The ID of the user.
      *
