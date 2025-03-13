@@ -9,8 +9,10 @@ use Illuminate\Validation\ValidationException;
 class AuthService
 {
     private UserRepository $userRepository;
-    public function __construct(UserRepository $userRepository) {
+    private GoalService $goalService;
+    public function __construct(UserRepository $userRepository, GoalService $goalService) {
         $this->userRepository = $userRepository;
+        $this->goalService = $goalService;
     }
 
     /**
@@ -32,6 +34,13 @@ class AuthService
 
         $user = $this->userRepository->create($data);
         $user->assignRole($role);
+
+        // create nutrition goal data when user created
+        if ($role == 'user') {
+            $goalData = $this->goalService->calculateGoal($data['gender'], $data['tingkat_aktivitas'], $data['berat_badan'], $data['tinggi_badan'], $user->getAgeAttribute());
+            $user->goal()->updateOrCreate($goalData);
+            $user->goalHistories()->create($goalData);
+        }
 
         return $user;
     }
