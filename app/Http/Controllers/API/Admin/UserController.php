@@ -123,7 +123,12 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified user data.
+     *
+     * @urlParam user int required The ID of the user.
+     *
+     * @param User $user
+     * @return JsonResponse
      */
     public function show(User $user): JsonResponse
     {
