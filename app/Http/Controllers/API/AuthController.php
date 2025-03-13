@@ -116,7 +116,7 @@ class AuthController extends Controller
      *
      * @unauthenticated
      *
-     * @param RegisterUserRequest $request
+     * @param RegisterDoctorRequest $request
      * @return JsonResponse
      *
      * @bodyParam name string required The user's full name. Example: John Doe
