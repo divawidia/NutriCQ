@@ -151,7 +151,13 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified user profile.
+     *
+     * @urlParam user int required The ID of the user.
+     *
+     * @param UpdateUserProfileRequest $request
+     * @param User $user
+     * @return JsonResponse
      */
     public function update(UpdateUserProfileRequest $request, User $user): JsonResponse
     {
