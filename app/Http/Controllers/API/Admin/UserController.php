@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\UpdateUserProfileRequest;
 use App\Models\User;
+use App\Services\AuthService;
 use App\Services\UserService;
 use Dedoc\Scramble\Attributes\QueryParameter;
 use Illuminate\Http\JsonResponse;
@@ -16,9 +17,11 @@ use Throwable;
 class UserController extends Controller
 {
     protected UserService $userService;
-    public function __construct(UserService $userService)
+    protected AuthService $authService;
+    public function __construct(UserService $userService, AuthService $authService)
     {
         $this->userService = $userService;
+        $this->authService = $authService;
     }
 
     /**
@@ -81,6 +84,41 @@ class UserController extends Controller
                 'message' => 'Something went wrong while retrieving user data',
                 'error' => $e->getMessage(),
             ], 500);
+        }
+    }
+
+    /**
+     * Create a new user account.
+     *
+     * @authenticated
+     *
+     * @param RegisterUserRequest $request
+     * @return JsonResponse
+     */
+    public function store(RegisterUserRequest $request): JsonResponse
+    {
+        try {
+            $user = $this->authService->register($request->validated(), 'user');
+
+            return response()->json([
+                'success' => true,
+                'status' => Response::HTTP_CREATED,
+                'message' => 'User account created successfully',
+                'data' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->getRoleNames()->first(),
+                ],
+            ], Response::HTTP_CREATED);
+
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => 'Something went wrong while creating user account',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
