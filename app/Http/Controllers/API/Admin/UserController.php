@@ -193,7 +193,12 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the specified user account.
+     *
+     * @urlParam user int required The ID of the user.
+     *
+     * @param User $user
+     * @return JsonResponse
      */
     public function destroy(User $user): JsonResponse
     {
