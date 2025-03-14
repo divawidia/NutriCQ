@@ -55,6 +55,18 @@ class AuthService
     }
 
     /**
+     * Register a new admin logic.
+     *
+     * @param array $data
+     * @return User
+     */
+    public function registerAdmin(array $data): User
+    {
+        $data['status'] = 'active';
+        return $this->userRepository->create($data, 'admin');
+    }
+
+    /**
      * Attempt to login a user and return their data and token.
      *
      * @param string $email
