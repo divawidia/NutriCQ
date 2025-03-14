@@ -35,13 +35,12 @@ class AuthService
     }
 
     /**
-     * Register a new user with a specific role and optional file uploads.
+     * Register a new doctor logic.
      *
      * @param array $data
-     * @param string $role
      * @return User
      */
-    public function register(array $data, string $role): User
+    public function registerDoctor(array $data): User
     {
         if (array_key_exists('cv', $data)) {
             $data['cv'] = $data['cv']->store('public/cv');
@@ -51,17 +50,8 @@ class AuthService
             $data['license'] = $data['license']->store('public/license');
         }
 
-        $user = $this->userRepository->create($data, 'doctor');
-
-
-        // create nutrition goal data when user created
-        if ($role == 'user') {
-            $goalData = $this->goalService->calculateGoal($data['gender'], $data['tingkat_aktivitas'], $data['berat_badan'], $data['tinggi_badan'], $user->getAgeAttribute());
-            $user->goal()->updateOrCreate($goalData);
-            $user->goalHistories()->create($goalData);
-        }
-
-        return $user;
+        $data['status'] = 'inactive';
+        return $this->userRepository->create($data, 'doctor');
     }
 
     /**
