@@ -51,7 +51,8 @@ class AuthService
         }
 
         $data['status'] = 'inactive';
-        return $this->userRepository->create($data, 'doctor');
+        $user = $this->userRepository->create($data, 'doctor');
+        return $user;
     }
 
     /**
