@@ -32,7 +32,6 @@ class RegisterUserRequest extends FormRequest
             'tinggi_badan' => 'required|int',
             'berat_badan' => 'required|int',
             'tingkat_aktivitas' => 'required|string|in:sedentary,lightly_active,moderately_active ,very_active,extra_active',
-            'status' => 'required|string|in:Aktif,Tidak Aktif',
         ];
     }
 }
