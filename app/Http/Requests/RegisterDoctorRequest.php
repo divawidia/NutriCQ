@@ -31,7 +31,6 @@ class RegisterDoctorRequest extends FormRequest
             'gender' => 'required|string|in:Laki-laki,Perempuan',
             'cv' => 'required|file|mimes:pdf,doc,docx|max:2048',
             'license' => 'required|file|mimes:pdf,doc,docx|max:2048',
-            'status' => 'required|string|in:Aktif,Tidak Aktif',
         ];
     }
 }
