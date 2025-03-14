@@ -101,7 +101,7 @@ class AuthController extends Controller
     public function registerDoctor(RegisterDoctorRequest $request): JsonResponse
     {
         try {
-            $user = $this->authService->register($request->validated(), 'doctor');
+            $user = $this->authService->registerDoctor($request->validated());
 
             return response()->json([
                 'success' => true,
