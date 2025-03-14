@@ -38,7 +38,7 @@ class UserRepositoryTest extends TestCase
         $this->assertEquals('paginated_users', $result);
     }
 
-    public function test_create_creates_a_user()
+    public function test_create_creates_a_user_with_role()
     {
         $userMock = Mockery::mock(User::class);
         $repository = new UserRepository($userMock);
@@ -60,7 +60,7 @@ class UserRepositoryTest extends TestCase
             }))
             ->andReturn(new User($expectedData));
 
-        $user = $repository->create($data);
+        $user = $repository->create($data, 'admin');
 
         $this->assertInstanceOf(User::class, $user);
     }
