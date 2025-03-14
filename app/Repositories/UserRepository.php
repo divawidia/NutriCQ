@@ -48,10 +48,12 @@ class UserRepository
      * @param array $data
      * @return User
      */
-    public function create(array $data): User
+    public function create(array $data, string $role): User
     {
         $data['password'] = Hash::make($data['password']);
-        return $this->user->create($data);
+        $user = $this->user->create($data);
+        $user->assignRole($role);
+        return $user;
     }
 
     /**

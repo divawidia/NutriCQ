@@ -32,8 +32,8 @@ class AuthService
             $data['license'] = $data['license']->store('public/license');
         }
 
-        $user = $this->userRepository->create($data);
-        $user->assignRole($role);
+        $user = $this->userRepository->create($data, 'doctor');
+
 
         // create nutrition goal data when user created
         if ($role == 'user') {
