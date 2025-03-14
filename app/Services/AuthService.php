@@ -16,6 +16,25 @@ class AuthService
     }
 
     /**
+     * Register a new user logic.
+     *
+     * @param array $data
+     * @return User
+     */
+    public function registerUser(array $data): User
+    {
+        $data['status'] = 'active';
+        $user = $this->userRepository->create($data, 'user');
+
+        // create nutrition goal data when user created
+        $goalData = $this->goalService->calculateGoal($data['gender'], $data['tingkat_aktivitas'], $data['berat_badan'], $data['tinggi_badan'], $user->getAgeAttribute());
+        $user->goal()->updateOrCreate($goalData);
+        $user->goalHistories()->create($goalData);
+
+        return $user;
+    }
+
+    /**
      * Register a new user with a specific role and optional file uploads.
      *
      * @param array $data
