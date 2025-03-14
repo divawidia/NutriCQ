@@ -119,6 +119,37 @@ class AuthServiceTest extends TestCase
         $this->assertInstanceOf(User::class, $user);
     }
 
+    public function test_register_creates_admin_account()
+    {
+        $userRepositoryMock = Mockery::mock(UserRepository::class);
+        $goalServiceMock = Mockery::mock(GoalService::class);
+
+        $data = [
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'password' => bcrypt('password'),
+        ];
+
+        $dataAfterStore = $data;
+        $dataAfterStore['status'] = 'active';
+
+        // Mock the user repository's create method
+        $user = new User($dataAfterStore);
+
+        $userRepositoryMock->shouldReceive('create')
+            ->once()
+            ->with(Mockery::on(function ($arg) use ($dataAfterStore) {
+                return $arg['status'] === 'active';
+            }), 'admin')
+            ->andReturn($user);
+
+        $service = new AuthService($userRepositoryMock, $goalServiceMock);
+
+        $user = $service->registerAdmin($data);
+
+        $this->assertInstanceOf(User::class, $user);
+    }
+
     public function test_login_success()
     {
         $userRepositoryMock = Mockery::mock(UserRepository::class);
