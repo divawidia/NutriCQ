@@ -29,7 +29,6 @@ class RegisterAdminRequest extends FormRequest
             'tgl_lahir' => 'required|date|before:today',
             'no_telp' => 'required|string|max:255',
             'gender' => 'required|string|in:male,female',
-            'status' => 'required|string|in:active,inactive',
         ];
     }
 }
