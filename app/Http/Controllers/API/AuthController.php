@@ -62,23 +62,11 @@ class AuthController extends Controller
      *
      * @param RegisterUserRequest $request
      * @return JsonResponse
-     *
-     * @bodyParam name string required The user's full name. Example: John Doe
-     * @bodyParam email string required The user's email address. Must be unique. Example: john@example.com
-     * @bodyParam password string required The user's password. Minimum 8 characters, must include letters, numbers, mixed case. Example: Secret123
-     * @bodyParam password_confirmation string required Must match the password field. Example: Secret123
-     * @bodyParam tgl_lahir date required Date of birth. Must be a date before today. Example: 2000-01-01
-     * @bodyParam no_telp string required The user's phone number. Example: 081234567890
-     * @bodyParam gender string required The user's gender. Must be either `male` or `female`. Example: male
-     * @bodyParam tinggi_badan integer required Height in centimeters. Example: 170
-     * @bodyParam berat_badan integer required Weight in kilograms. Example: 65
-     * @bodyParam tingkat_aktivitas string required Activity level. One of: sedentary, lightly_active, moderately_active, very_active, extra_active. Example: moderately_active
-     * @bodyParam status string required The account status. Must be either `active` or `inactive`. Example: active
      */
     public function registerUser(RegisterUserRequest $request): JsonResponse
     {
         try {
-            $user = $this->authService->register($request->validated(), 'user');
+            $user = $this->authService->registerUser($request->validated());
 
             return response()->json([
                 'success' => true,
