@@ -27,20 +27,11 @@ class AuthController extends Controller
      * @return JsonResponse
      *
      * @throws Throwable
-     *
-     * @bodyParam name string required Full name of the user. Example: John Doe
-     * @bodyParam email string required Valid email address. Must be unique. Example: john@example.com
-     * @bodyParam password string required Password with at least 8 characters, including uppercase, lowercase, and numbers. Must be confirmed. Example: Secret123
-     * @bodyParam password_confirmation string required Confirmation of the password. Must match `password`. Example: Secret123
-     * @bodyParam tgl_lahir date required Date of birth in YYYY-MM-DD format. Must be before today. Example: 1990-05-15
-     * @bodyParam no_telp string required Phone number. Example: 081234567890
-     * @bodyParam gender string required Gender of the user. Must be either `male` or `female`. Example: male
-     * @bodyParam status string required Account status. Must be either `active` or `inactive`. Example: active
      */
     public function registerAdmin(RegisterAdminRequest $request): JsonResponse
     {
         try {
-            $user = $this->authService->register($request->validated(), 'admin');
+            $user = $this->authService->registerAdmin($request->validated());
 
             return response()->json([
                 'success' => true,
