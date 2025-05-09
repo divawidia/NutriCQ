@@ -104,7 +104,7 @@ return [
 
     'middleware' => [
         'web',
-        \App\Http\Middleware\MyRestrictedDocsAccess::class,
+        RestrictedDocsAccess::class,
     ],
 
     'extensions' => [],
