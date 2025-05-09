@@ -98,7 +98,7 @@ class UserController extends Controller
     public function store(RegisterUserRequest $request): JsonResponse
     {
         try {
-            $user = $this->authService->register($request->validated(), 'user');
+            $user = $this->authService->registerUser($request->validated());
 
             return response()->json([
                 'success' => true,
